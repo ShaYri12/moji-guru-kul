@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Nordeco';
+    src: local('Nordeco Cyrillic Bold'), local('Nordeco-Cyrillic-Bold'),
+        url('NordecoCyrillic-Bold.woff2') format('woff2'),
+        url('NordecoCyrillic-Bold.woff') format('woff'),
+        url('NordecoCyrillic-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+  }

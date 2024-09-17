@@ -1,0 +1,20 @@
+stages:
+   - deploy
+deploy:
+  stage: deploy
+  image: kroniak/ssh-client
+  before_script:
+    - echo "deploying nextjs project"
+    - echo 'IMAGE_NAME='$CI_COMMIT_SHORT_SHA >> .env    
+    - echo "$AWS_PRIVATE_KEY_P2" > aws_private_key.pem
+  script:
+    - chmod 400 aws_private_key.pem
+    - rm -rf .git*
+    - ssh -o StrictHostKeyChecking=no -i aws_private_key.pem ubuntu@13.202.3.150 "mkdir /tmp/nextproject"
+    - tar -czf - . | ssh -o StrictHostKeyChecking=no -i aws_private_key.pem ubuntu@13.202.3.150 "tar -xzf - -C /tmp/nextproject/"
+    - ssh -o StrictHostKeyChecking=no -i aws_private_key.pem ubuntu@13.202.3.150 "rm -rf /home/ubuntu/nextproject/* ; cp -r /tmp/nextproject/. /home/ubuntu/nextproject/ ; rm -rf /tmp/nextproject"
+    - ssh -o StrictHostKeyChecking=no -i aws_private_key.pem ubuntu@13.202.3.150 "cd /home/ubuntu/nextproject/; sudo docker compose up --build --force-recreate -d"
+  only:
+    - main
+
+    

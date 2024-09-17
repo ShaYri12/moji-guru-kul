@@ -1,0 +1,43 @@
+{
+  "Home": {
+    "title": {
+      "discover": "Discover The",
+      "joy": "Joy",
+      "learning": "Of Learning"
+    },
+    "slogan": "15 mins a day to academic excellence for grades 6th to 10th. Learning made fun, engaging & interactive.",
+    "tryForFree": "Try For Free",
+    "howItWorks": "How It Works",
+    "discover": {
+      "title": "Discover MojiGurukul",
+      "description": "Discover modern learning that connects students, parents and tutors in interactive learning sessions, simplified with Interactive Games, Customised Lessons & Detailed insights the MojiGurukul way.",
+      "forStudent": "For Students",
+      "forParent": "For Parents",
+      "forTutor": "For Tutors"
+    },
+    "services": {
+      "title": "What Makes MojiGurukul Different?",
+      "description": "Interactive tools for students to enable them to learn, grow and master subject’s core concepts with just 15 mins a day."
+    },
+    "experts": {
+      "title": "Our Expert Tutors",
+      "description": "We match expert tutors in the subject with the students to ensure that every student gets the best possible tutoring with MojiGurukul.",
+      "exploreTutors": "Explore Tutors"
+    },
+    "stories": {
+      "title": "Student Success Stories",
+      "description": "Learn how MojiGurukul has helped students across India to overcome academic challenges and thrive with the support of our platform."
+    },
+    "contact": {
+      "title": "Experience the Revolution in Education",
+      "description": "Begin Your Free Trial Today & Feel the MojiGurukul Difference in Your Child's Learning Journey - No Commitment Required!",
+      "joinForFree":"Join For Free"
+    },
+
+    "joinNow": "Explore Now",
+    "contactUs":"Contact Us"
+  },
+  "AboutUs": {
+    "title": "About Us"
+  }
+}

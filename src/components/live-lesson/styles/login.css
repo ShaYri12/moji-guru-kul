@@ -1,0 +1,73 @@
+.room-preview {
+    padding: 10px 16px;
+    margin: 20px 0;
+    background-color: #D3D3D3;
+    border-bottom: 1px solid #fafafa;
+}
+
+.room-preview:hover {
+    box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+.room-preview h2 {
+    font-size: 20px;
+    color: #f1356d;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.room-preview p {
+    font-size: 20px;
+    text-align: center;
+    color: black;
+}
+
+.join-room-help-text {
+    padding: 10px 16px;
+    margin: 20px 0;
+    color: #f1356d;
+    margin-left: 18%;
+    border-bottom: 1px solid #fafafa;
+}
+
+.credentials {
+    max-width: 250px;
+    text-align: center;
+    margin: auto;
+    position: fixed;
+    top: 35%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.credentials label {
+    text-align: left;
+    display: block;
+}
+
+.credentials h2 {
+    font-size: 20px;
+    color: #f1356d;
+    margin-bottom: 30px;
+}
+
+.credentials input {
+    width: 100%;
+    height: 40px;
+    padding: 6px 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    display: block;
+}
+
+.credentials button {
+    background: #f1356d;
+    color: #fff;
+    border: 0;
+    height: 40px;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}

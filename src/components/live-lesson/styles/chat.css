@@ -1,0 +1,252 @@
+:root {
+  --send-bg: #eeffde;
+  --send-color: black;
+  --receive-bg: #ffffff;
+  --receive-text: black;
+  --page-background: #f6efdf;
+}
+
+.container {
+	font-family: "Helvetica Neue", Helvetica, sans-serif;
+	font-size: 20px;
+	font-weight: normal;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  vertical-align: bottom;
+  justify-content: flex-end;
+  align-items: center;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-width: 100%;
+  min-width: 97%;
+  max-height: 76.5vh;
+  min-height: 1vh;
+  background-color: var(--page-background);
+  white-space: nowrap;
+  padding: 1%;
+  top: 9%;
+  right: 0;
+  z-index: 100;
+}
+
+.container span{
+  position: absolute;
+  font-size: 0.8rem;
+  right: 2vw;
+  bottom: 0.5vh;
+  opacity: 0.5;
+  padding-top: 0.5vh;
+}
+
+
+.input-container {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  position: fixed;
+  right: 0%;
+  bottom: 0;
+  min-width: 99%;
+  max-width: 99%;
+  min-height: 40px;
+  max-height: 40px;
+  line-height: 1.5;
+  font-size: 1.3rem;
+  outline: black;
+  border: 0.1px solid;
+  padding: 0 0.59%;
+  color: black;
+  border-radius: 5px;
+  z-index: 100;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  resize: none;
+}
+
+
+.input-container-button {
+  display: inline-block;
+  cursor: pointer;
+  font-size: 1.25rem;
+  min-width: 2%;
+  max-width: 2%;
+  position: absolute;
+  right: 5px;
+  bottom: 0.5vh;
+  border-radius: 20px;
+  background-color: rgba(169,169,169, 0%);
+  color: white;
+  border: none;
+  z-index: 101;
+}
+
+.input-container-button img {
+  min-width: 25px;
+  max-width: 25px;
+  position: fixed;
+  right: 1%;
+  bottom: 10px;
+}
+
+.container::-webkit-scrollbar {
+  display: none;
+}
+
+.container{
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+
+p {
+  max-width: 90%;
+  word-wrap: break-word;
+  /*margin-bottom: 5px;*/
+  line-height: 22px;
+  position: relative;
+	padding: 10px 20px;
+  border-radius: 25px;
+  white-space: normal;
+  padding-bottom: 5vh;
+}
+
+p::before, p::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  height: 25px;
+}
+
+.send {
+	color: var(--send-color); 
+	background: var(--send-bg);
+	align-self: flex-end;
+}
+
+.send::before {
+  right: -7px;
+  width: 20px;
+  background-color: var(--send-bg);
+  border-bottom-left-radius: 16px 14px;
+}
+
+.send::after {
+  right: -26px;
+  width: 26px;
+  background-color: var(--page-background);
+  border-bottom-left-radius: 10px;
+}
+
+.receive {
+	background: var(--receive-bg);
+	color: black;
+  align-self: flex-start;
+		
+}
+
+.receive::before {
+  left: -7px;
+  width: 20px;
+  background-color: var(--receive-bg);
+  border-bottom-right-radius: 16px 14px;
+}
+
+.receive::after {
+  left: -26px;
+  width: 26px;
+  background-color: var(--page-background);
+  border-bottom-right-radius: 10px;
+}
+
+.chat-room-header {
+  text-align: center;
+  min-width: 100%;
+  max-width: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 99;
+}
+
+.chat-room-header button {
+  height: 60%;
+  width: 2%;
+  border: none;
+  background-color: rgba(169,169,169, 0%);
+}
+
+.chat-room-header img {
+  height: 20px;
+}
+
+.chat-room-header header {
+  background-color: #222831;
+  height: 9%;
+  color: white;
+  position: fixed;
+  max-width: 100%;
+  min-width: 100%;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 99;
+  padding: 1%;
+  box-sizing: border-box;
+}
+
+.chat-room-header span {
+  margin: 0 auto;
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
+@media only screen and (min-width: 768px) { /* desktop */
+
+  .container {
+    min-width: 25%;
+    max-width: 25%;
+    max-height: 82%;
+    min-height: 82%;
+  }
+
+  .container span{
+    right: 0.5vw;
+  }
+
+  .input-container {
+    min-width: 24.3%;
+    max-width: 24.3%;
+    padding-right: 2%;
+    height: 5%;
+  }
+  
+
+  .chat-room-header {
+    min-width: 27%;
+    max-width: 27%;
+  }
+
+  .chat-room-header header {
+    min-width: 27%;
+    max-width: 27%;
+  }
+
+  .input-container-button img {
+    right: 0.5%;
+    bottom: 1%;
+  }
+
+}
+
+@media only screen and (max-width: 1200px) { /* tablet */
+  .container {
+    max-height: 84%;
+    min-height: 84%;
+  }
+}
+
+@media only screen and (max-height: 700px) and (max-width: 400px) { /* xs displays */
+  .container{
+    max-height: 71vh;
+  }
+}
