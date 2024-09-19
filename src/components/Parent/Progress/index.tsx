@@ -108,12 +108,21 @@ const Progress = () => {
         <div>
           <h1 className="text-[#753CBD] text-[50px] lg:text-[56px] font-[700] leading-[67.2px] tracking-[2%]">Progress</h1>
         </div>
-        <div className="bg-titan-white w-14 h-14 border-[1.5px] border-soft-blue rounded-lg flex justify-center items-center hover:opacity-80 cursor-pointer">
-          <Image src="/assets/icons/kebab-icon.svg" alt="moji gurukul menu" width={24} height={24} />
-        </div>
+        <button className="flex items-center bg-[#F1ECF8] justify-center w-[58px] h-[58px] rounded-lg border-[1.6px] border-[#753CBD] text-[#753CBD] hover:bg-purple-100">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="3.3"
+            className="w-[28px] h-[28px]"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v.01M12 12v.01M12 18v.01" />
+          </svg>
+        </button>
       </div>
-      <div className="shadow-lg rounded-lg my-12">
-        <div className="flex flex-col sm:flex-row justify-between items-center px-4 sm:px-6 py-2 rounded-t-lg">
+      <div className="rounded-[15px] overflow-hidden my-12" style={{ boxShadow: '0px 0px 16px 0px #00000014' }}>
+        <div className="flex flex-col sm:flex-row justify-between items-center px-4 sm:px-6 py-[15px] rounded-t-[15px]">
           <h1 className="text-[20px] sm:text-[28px] font-[500] tracking-[2%] leading-[33.6px] text-[#753CBD] flex-grow mb-4 sm:mb-0">
             Student & Group
           </h1>
@@ -147,13 +156,13 @@ const Progress = () => {
           <div className="w-full flex flex-col md:flex-row md:space-x-6 mb-4">
             <h3
               onClick={() => handleTabChange('student')}
-              className={`cursor-pointer text-base lg:text-lg font-medium border-b border-b-[#D7D7D7] ${activeTab === 'student' ? 'text-[#753CBD] border-b-[#753CBD] border-b-[4px]' : 'text-[#B1AFB3]'} pb-[13px] px-[23px]`}
+              className={`cursor-pointer text-base lg:text-lg font-medium border-b ${activeTab === 'student' ? 'text-[#753CBD] border-b-[#753CBD] border-b-[4px]' : 'text-[#B1AFB3] border-b-[#D7D7D7]'} pb-[13px] px-[23px]`}
             >
               Student
             </h3>
             <h3
               onClick={() => handleTabChange('group')}
-              className={`cursor-pointer text-base lg:text-lg font-medium border-b border-b-[#D7D7D7] ${activeTab === 'group' ? 'text-[#753CBD] border-b-[#753CBD] border-b-[4px]' : 'text-[#B1AFB3]'} pb-[13px] px-[23px]`}
+              className={`cursor-pointer text-base lg:text-lg font-medium border-b ${activeTab === 'group' ? 'text-[#753CBD] border-b-[#753CBD] border-b-[4px]' : 'text-[#B1AFB3] border-b-[#D7D7D7]'} pb-[13px] px-[23px]`}
             >
               Group ({sampleGroups.length})
             </h3>
