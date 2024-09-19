@@ -17,9 +17,9 @@ const Schedule = () => {
       <header className="bg-white">
         <div className="flex items-center justify-between">
           {/* Left Section */}
-          <h1 className="text-[#753CBD] text-[50px] lg:text-[56px] font-[700] leading-[67.2px] tracking-[2%]">Schedule</h1>
+          <h1 className="text-purple text-[50px] lg:text-[56px] font-[700] leading-[67.2px] tracking-[2%]">Schedule</h1>
           {/* Ellipsis Menu */}
-          <button className="flex items-center bg-[#F1ECF8] justify-center w-[58px] h-[58px] rounded-lg border-[1.6px] border-[#753CBD] text-[#753CBD] hover:bg-purple-100">
+          <button className="flex items-center bg-[#F1ECF8] justify-center w-[58px] h-[58px] rounded-lg border-[1.6px] border-purple text-purple hover:bg-purple-100">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -52,7 +52,7 @@ const Schedule = () => {
               <button
                 key={tab}
                 onClick={() => handleTabClick(tab)}
-                className={`cursor-pointer text-[16px] font-[500] leading-[16.41px] border-b ${activeTab === tab ? 'text-[#753CBD] border-b-[#753CBD] border-b-[4px]' : 'text-[#B1AFB3] border-b-[#D7D7D7]'} pb-[13px] px-[13px]`}
+                className={`cursor-pointer text-[16px] font-[500] leading-[16.41px] border-b ${activeTab === tab ? 'text-purple border-b-purple border-b-[4px]' : 'text-[#B1AFB3] border-b-[#D7D7D7]'} pb-[13px] px-[13px]`}
               >
                 {tab}
               </button>
@@ -72,7 +72,7 @@ const Schedule = () => {
 
             {/* Create Schedule Button */}
             <button
-              className="bg-[#753CBD] text-white px-[18px] py-[10px] rounded-[8px] uppercase text-[13px] tracking-[2%] leading-[20px]"
+              className="bg-purple text-white px-[18px] py-[10px] rounded-[8px] uppercase text-[13px] tracking-[2%] leading-[20px]"
               style={{
                 boxShadow: `
       4px 4px 6px 0px #FFFFFF33 inset,

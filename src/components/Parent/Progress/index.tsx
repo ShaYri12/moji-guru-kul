@@ -8,7 +8,6 @@ import { useErrorStore } from '@/store/errorStore'
 import { useMilestoneStore } from '@/store/milestoneStore'
 import { IconsEnum } from '@/utils/enum'
 import { MilestoneResponseTypes } from '@/utils/types'
-import { useLocale } from 'next-intl'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
@@ -106,9 +105,9 @@ const Progress = () => {
     <div className="horizontal-spacing top-spacing">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-[#753CBD] text-[50px] lg:text-[56px] font-[700] leading-[67.2px] tracking-[2%]">Progress</h1>
+          <h1 className="text-purple text-[50px] lg:text-[56px] font-[700] leading-[67.2px] tracking-[2%]">Progress</h1>
         </div>
-        <button className="flex items-center bg-[#F1ECF8] justify-center w-[58px] h-[58px] rounded-lg border-[1.6px] border-[#753CBD] text-[#753CBD] hover:bg-purple-100">
+        <button className="flex items-center bg-[#F1ECF8] justify-center w-[58px] h-[58px] rounded-lg border-[1.6px] border-purple text-purple hover:bg-purple-100">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -123,7 +122,7 @@ const Progress = () => {
       </div>
       <div className="rounded-[15px] overflow-hidden my-12" style={{ boxShadow: '0px 0px 16px 0px #00000014' }}>
         <div className="flex flex-col sm:flex-row justify-between items-center px-4 sm:px-6 py-[15px] rounded-t-[15px]">
-          <h1 className="text-[20px] sm:text-[28px] font-[500] tracking-[2%] leading-[33.6px] text-[#753CBD] flex-grow mb-4 sm:mb-0">
+          <h1 className="text-[20px] sm:text-[28px] font-[500] tracking-[2%] leading-[33.6px] text-purple flex-grow mb-4 sm:mb-0">
             Student & Group
           </h1>
           <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
@@ -144,7 +143,7 @@ const Progress = () => {
                 className="bg-white rounded-[8px] w-full sm:w-auto px-[12px] py-[11px] sm:py-0"
               />
             </div>
-            <div className="w-[40px] h-[40px] border-[2px] border-[#753CBD] rounded-[8px] flex justify-center items-center hover:opacity-80 cursor-pointer">
+            <div className="w-[40px] h-[40px] border-[2px] border-purple rounded-[8px] flex justify-center items-center hover:opacity-80 cursor-pointer">
               <Image src="/assets/icons/plus-icon.svg" alt="moji gurukul menu" width={15} height={15} />
             </div>
           </div>
@@ -156,13 +155,13 @@ const Progress = () => {
           <div className="w-full flex flex-col md:flex-row md:space-x-6 mb-4">
             <h3
               onClick={() => handleTabChange('student')}
-              className={`cursor-pointer text-base lg:text-lg font-medium border-b ${activeTab === 'student' ? 'text-[#753CBD] border-b-[#753CBD] border-b-[4px]' : 'text-[#B1AFB3] border-b-[#D7D7D7]'} pb-[13px] px-[23px]`}
+              className={`cursor-pointer text-base lg:text-lg font-medium border-b ${activeTab === 'student' ? 'text-purple border-b-purple border-b-[4px]' : 'text-[#B1AFB3] border-b-[#D7D7D7]'} pb-[13px] px-[23px]`}
             >
               Student
             </h3>
             <h3
               onClick={() => handleTabChange('group')}
-              className={`cursor-pointer text-base lg:text-lg font-medium border-b ${activeTab === 'group' ? 'text-[#753CBD] border-b-[#753CBD] border-b-[4px]' : 'text-[#B1AFB3] border-b-[#D7D7D7]'} pb-[13px] px-[23px]`}
+              className={`cursor-pointer text-base lg:text-lg font-medium border-b ${activeTab === 'group' ? 'text-purple border-b-purple border-b-[4px]' : 'text-[#B1AFB3] border-b-[#D7D7D7]'} pb-[13px] px-[23px]`}
             >
               Group ({sampleGroups.length})
             </h3>
@@ -188,7 +187,7 @@ const Progress = () => {
                         {student.name}
                       </h3>
                       <p className="text-xs lg:text-lg w-max font-normal">
-                        <span className="px-[8.5px] w-max py-[4px] text-[#753CBD] bg-[#F1ECF8] rounded-[4px]">{student.class}</span>
+                        <span className="px-[8.5px] w-max py-[4px] text-purple bg-[#F1ECF8] rounded-[4px]">{student.class}</span>
                       </p>
                     </div>
                   </div>
@@ -250,21 +249,19 @@ const Progress = () => {
               <div className="flex flex-col md:flex-row justify-between items-center mt-6">
                 <p className="text-gray-600 mb-4 md:mb-0">Total {sampleStudents.length} Students</p>
                 <div className="flex flex-wrap items-center justify-center md:justify-end">
-                  <CustomButton
-                    variant="outlined"
-                    color="white"
-                    className="mr-2 md:mr-4 px-4 md:px-6 !border-[#753CBD] border-[1.5px] text-sm lg:text-base text-[#753CBD] rounded-lg !w-[90px] md:!w-[100px] !h-8 md:!h-10 hover:opacity-80"
-                    iconName={IconsEnum.LeftIcon}
+                  <button
+                    className="mr-2 md:mr-4 px-[16px] py-[12px] border-[1.5px] border-purple text-[16px] lg:text-[18px] font-[500] text-purple rounded-[15px] w-fit hover:opacity-80 flex items-center justify-center"
                     onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                   >
+                    <img src="/assets/icons/prev-arrow.png" alt="Previous" className="mr-2" />
                     Previous
-                  </CustomButton>
+                  </button>
 
                   <div className="rounded-[15px] overflow-hidden w-fit h-fit bg-[#F1ECF8]">
                     {[...Array(totalPages)].map((_, index) => (
                       <button
                         key={index}
-                        className={`px-3 md:px-[20px] text-[#753CBD] !w-[40px] md:!w-[50px] !h-8 md:!h-10 hover:opacity-80 ${index + 1 === currentPage ? '!bg-[#753CBD] text-white rounded-[15px]' : '!bg-[#eeecfa] rounded-r-sm'}`}
+                        className={`px-3 md:px-[20px] text-purple !w-[40px] md:!w-[50px] !h-8 md:!h-10 hover:opacity-80 ${index + 1 === currentPage ? '!bg-purple text-white rounded-[15px]' : '!bg-[#eeecfa] rounded-r-sm'}`}
                         onClick={() => setCurrentPage(index + 1)}
                       >
                         {index + 1}
@@ -272,16 +269,13 @@ const Progress = () => {
                     ))}
                   </div>
 
-                  <CustomButton
-                    variant="outlined"
-                    color="white"
-                    className="ml-2 md:ml-4 px-4 md:px-6 !border-[#753CBD] border-[1.5px] text-sm lg:text-base text-[#753CBD] rounded-lg !w-[70px] md:!w-[100px] !h-8 md:!h-10 hover:opacity-80"
-                    iconName={IconsEnum.RightIcon}
-                    iconPosition="end"
+                  <button
+                    className="ml-2 md:ml-4 px-[16px] py-[12px] border-[1.5px] border-purple text-[16px] lg:text-[18px] font-[500] text-purple rounded-[15px] hover:opacity-80 flex items-center justify-center"
                     onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                   >
                     Next
-                  </CustomButton>
+                    <img src="/assets/icons/next-arrow.png" alt="Next" className="ml-2" />
+                  </button>
                 </div>
               </div>
             </div>
@@ -303,7 +297,7 @@ const Progress = () => {
                     <div>
                       <h3 className="text-[18px] lg:text-[24px] font-[500] text-[#3D3842] tracking-[2%] leading-[28.8px]">{group.name}</h3>
                       <p className="text-xs lg:text-lg w-max font-normal">
-                        <span className="px-[8.5px] w-max py-[4px] text-[#753CBD] bg-[#F1ECF8] rounded-[4px]">{group.class}</span>
+                        <span className="px-[8.5px] w-max py-[4px] text-purple bg-[#F1ECF8] rounded-[4px]">{group.class}</span>
                       </p>
                     </div>
                   </div>
@@ -368,7 +362,7 @@ const Progress = () => {
                   <CustomButton
                     variant="outlined"
                     color="white"
-                    className="mr-2 md:mr-4 px-4 md:px-[16px] !border-[#753CBD] border-[1.5px] text-sm lg:text-base text-[#753CBD] rounded-lg !w-[90px] md:!w-[100px] !h-8 md:!h-10 hover:opacity-80"
+                    className="mr-2 md:mr-4 px-4 md:px-[16px] !border-purple border-[1.5px] text-sm lg:text-base text-purple rounded-lg !w-[90px] md:!w-[100px] !h-8 md:!h-10 hover:opacity-80"
                     iconName={IconsEnum.LeftIcon}
                     onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                   >
@@ -378,7 +372,7 @@ const Progress = () => {
                   {[...Array(totalPages)].map((_, index) => (
                     <button
                       key={index}
-                      className={`px-3 md:px-[20px] text-[#753CBD] !w-[40px] md:!w-[50px] !h-8 md:!h-10 hover:opacity-80 ${index + 1 === currentPage ? '!bg-[#753CBD] text-white rounded-l-lg' : '!bg-[#eeecfa] rounded-r-sm'}`}
+                      className={`px-3 md:px-[20px] text-purple !w-[40px] md:!w-[50px] !h-8 md:!h-10 hover:opacity-80 ${index + 1 === currentPage ? '!bg-purple text-white rounded-l-lg' : '!bg-[#eeecfa] rounded-r-sm'}`}
                       onClick={() => setCurrentPage(index + 1)}
                     >
                       {index + 1}
@@ -388,7 +382,7 @@ const Progress = () => {
                   <CustomButton
                     variant="outlined"
                     color="white"
-                    className="ml-2 md:ml-4 px-4 md:px-6 !border-[#753CBD] border-[1.5px] text-sm lg:text-base text-[#753CBD] rounded-lg !w-[70px] md:!w-[100px] !h-8 md:!h-10 hover:opacity-80"
+                    className="ml-2 md:ml-4 px-4 md:px-6 !border-purple border-[1.5px] text-sm lg:text-base text-purple rounded-lg !w-[70px] md:!w-[100px] !h-8 md:!h-10 hover:opacity-80"
                     iconName={IconsEnum.RightIcon}
                     iconPosition="end"
                     onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}

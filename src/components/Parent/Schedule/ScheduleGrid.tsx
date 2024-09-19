@@ -1,10 +1,10 @@
 import React from 'react'
-import { FaClock } from 'react-icons/fa' // For clock icon
+import { TbClockHour3Filled } from 'react-icons/tb'
 
 interface Meeting {
   type: string
   time: string
-  color: string // Background color class for the meeting type
+  color: string
 }
 
 interface ScheduleDay {
@@ -105,14 +105,14 @@ const ScheduleGrid: React.FC = () => {
   return (
     <div className="w-full overflow-x-auto">
       {/* Schedule grid container */}
-      <div className="grid grid-cols-8 border-collapse border border-gray-200 border-b-0">
+      <div className="grid grid-cols-8 border-collapse border border-[#F1ECF8] border-b-0">
         {/* First row: GMT and Day labels */}
         <div className="text-center py-[10px]">
           <div className="text-gray-600 font-medium">GMT</div>
           <div className="text-gray-400 text-sm">+06</div>
         </div>
         {mergedData.map((day, dayIndex) => (
-          <div key={dayIndex} className="text-center py-[10px] border border-b-0 border-gray-200">
+          <div key={dayIndex} className="text-center py-[10px] border border-b-0 border-[#F1ECF8]">
             <div className="text-gray-600 font-medium">{day.day}</div>
             <div className="text-gray-400 text-sm">{day.date}</div>
           </div>
@@ -121,25 +121,28 @@ const ScheduleGrid: React.FC = () => {
 
       {/* Time and Meeting rows */}
       {timeSlots.map((timeSlot) => (
-        <div key={timeSlot} className="grid grid-cols-8 border-collapse border border-gray-200">
+        <div key={timeSlot} className="grid grid-cols-8 border-collapse border border-[#F1ECF8]">
           {/* Time label */}
-          <div className="flex items-center justify-center py-8 border border-gray-200">
+          <div className="flex items-center justify-center py-8 border border-[#F1ECF8]">
             <div className="text-gray-500 font-medium text-center">{convertToGMTPlus6(timeSlot)}</div>
           </div>
 
           {/* Meeting columns */}
           {mergedData.map((day, dayIndex) => (
-            <div key={dayIndex} className="flex flex-col py-4 border border-gray-200">
+            <div key={dayIndex} className="flex flex-col py-4 border border-[#F1ECF8]">
               {/* Meetings */}
               <div className="flex flex-col space-y-2">
                 {day.meetings.length > 0 ? (
                   day.meetings.map((meeting, idx) => (
-                    <div key={idx} className={`p-2 rounded-lg text-center w-fit mx-auto ${meeting.color}`}>
-                      <div className="flex items-center justify-center space-x-1">
-                        <FaClock className="w-4 h-4" />
-                        <span className="text-sm font-semibold">{meeting.type}</span>
+                    <div key={idx} className={`p-[4px] rounded-[4px] text-left w-fit mx-auto ${meeting.color}`}>
+                      <span className="text-sm font-semibold">{meeting.type}</span>
+
+                      <div className="flex items-center justify-center gap-[4px]">
+                        <span className="min-w-[14px] min-h-[14px] h-[14px] w-[14px]">
+                          <TbClockHour3Filled size={14} />
+                        </span>
+                        <div className="text-xs font-[500] text-black">{meeting.time}</div>
                       </div>
-                      <div className="text-xs">{meeting.time}</div>
                     </div>
                   ))
                 ) : (

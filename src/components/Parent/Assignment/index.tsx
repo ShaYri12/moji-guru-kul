@@ -3,6 +3,10 @@ import VideoCard from '@/components/common/Cards/VideoCard'
 import CustomButton from '@/components/common/CustomButton'
 import Image from 'next/image'
 import { useState } from 'react'
+import { LuDot } from 'react-icons/lu'
+import { GoPlus } from 'react-icons/go'
+import CommentTab from './CommentTab'
+import AttachmentTab from './AttachmentTab'
 
 const Assignment = () => {
   const [activeTab, setActiveTab] = useState('Comments')
@@ -11,116 +15,9 @@ const Assignment = () => {
   const renderContent = () => {
     switch (activeTab) {
       case 'Comments':
-        return (
-          <div className="my-4 px-4">
-            <textarea
-              id="description"
-              rows={5}
-              className="w-full md:w-[95%] sm:w-[95%] p-2  sm:text-sm outline-none rounded-lg text-gray-500 bg-gray-100 my-4"
-              placeholder="Comment is Here"
-            ></textarea>
-            <div className="flex justify-end mr-10">
-              <CustomButton variant="contained" color="#753CBD" textColor="#fff" className="!w-[10%] !rounded px-2" onClick={() => {}}>
-                Post
-              </CustomButton>
-            </div>
-
-            <div className="flex items-center justify-between m-3">
-              <div className="flex items-center sm:gap-4 gap-2">
-                <Image
-                  className="w-16 h-16 rounded-xl"
-                  src="/img/profile.png"
-                  alt="Profile"
-                  width={50}
-                  height={50}
-                  sizes="100vw"
-                  quality={80}
-                  loading="lazy"
-                />
-                <div>
-                  <h1 className="w-[230px] sm:w-[350px] text-2xl font-normal text-black hover:opacity-80">Courtney Henry</h1>
-                  <p className="text-sm md:text-xl sm:text-base font-normal text-gray-400">20h Ago</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 w-10">
-                <Image src="/assets/icons/threedots.svg" alt="moji gurukul menu" width={24} height={24} />
-              </div>
-            </div>
-            <textarea
-              id="description"
-              rows={3}
-              className="w-full md:w-[95%] sm:w-[95%] p-5 sm:text-sm outline-none rounded-lg text-gray-500 bg-gray-100 my-4"
-              placeholder="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-            ></textarea>
-
-            <div className="flex items-center justify-between m-3">
-              <div className="flex items-center sm:gap-4 gap-2">
-                <Image
-                  className="w-16 h-16 rounded-xl"
-                  src="/img/profile.png"
-                  alt="Profile"
-                  width={50}
-                  height={50}
-                  sizes="100vw"
-                  quality={80}
-                  loading="lazy"
-                />
-                <div>
-                  <h1 className="w-[230px] sm:w-[350px] text-2xl font-normal text-black hover:opacity-80">Courtney Henry</h1>
-                  <p className="text-sm md:text-xl sm:text-base font-normal text-gray-400">20h Ago</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 w-10">
-                <Image src="/assets/icons/threedots.svg" alt="moji gurukul menu" width={24} height={24} />
-              </div>
-            </div>
-            <textarea
-              id="description"
-              rows={3}
-              className="w-full md:w-[95%] sm:w-[95%] p-5  sm:text-sm outline-none rounded-lg text-gray-500 bg-gray-100 my-4"
-              placeholder="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-            ></textarea>
-          </div>
-        )
+        return <CommentTab />
       case 'Attachment':
-        return (
-          <div className=" flex flex-row gap-4 mt-4 p-2 sm:p-4 rounded-lg">
-            <div className="flex items-center sm:gap-4 gap-2 border-2 border-gray-100 w-[170px] rounded-md">
-              <Image
-                className="w-10 h-10 rounded-xl"
-                src="/assets/icons/file-icon.svg"
-                alt="Profile"
-                width={30}
-                height={30}
-                sizes="100vw"
-                quality={80}
-                loading="lazy"
-              />
-              <div>
-                <h1 className="text-xs sm:text-xl font-normal text-black hover:opacity-80">Task Brief</h1>
-                <p className="text-xs sm:text-xl md:text-sm sm:text-base font-normal text-gray-400">1.5 Mb . Download</p>
-              </div>
-            </div>
-            <div className="flex items-center sm:gap-4 gap-2 border-2 border-gray-100 w-[170px] rounded-md">
-              <Image
-                className="w-10 h-10 rounded-xl"
-                src="/assets/icons/file-icon.svg"
-                alt="Profile"
-                width={30}
-                height={30}
-                sizes="100vw"
-                quality={80}
-                loading="lazy"
-              />
-              <div>
-                <h1 className="text-xs sm:text-xl font-normal text-black hover:opacity-80">Task Brief</h1>
-                <p className="text-xs sm:text-xl md:text-sm sm:text-base font-normal text-gray-400">1.5 Mb . Download</p>
-              </div>
-            </div>
-          </div>
-        )
+        return <AttachmentTab />
       case 'Video Explanation':
         return (
           <div className="mt-4 p-4 bg-gray-100 rounded-lg">
@@ -146,140 +43,137 @@ const Assignment = () => {
     }
   }
 
+  const maxImagesToShow = 4
+  const remainingImagesCount = imageData.length - maxImagesToShow
+
   return (
     <div className="flex justify-center horizontal-spacing top-spacing">
-      <div className="shadow-lg rounded-lg my-12 w-9/12">
-        <div className="flex justify-between items-center px-6 py-2 rounded-t-lg">
-          <h1 className="text-4xl font-normal text-violet-700 flex-grow">Assignment</h1>
-          <div className="flex items-center space-x-4">
-            <div className="w-10 h-10 rounded-xl flex justify-center items-center hover:opacity-80 cursor-pointer">
-              <Image src="/assets/icons/cross-icon.svg" alt="moji gurukul menu" width={30} height={30} />
-            </div>
+      <div className="rounded-[15px] overflow-hidden lg:mb-[100px] mb-[50px] w-9/12" style={{ boxShadow: '0px 0px 16px 0px #00000014' }}>
+        <div className="flex justify-between items-center p-[24px] border-b-[#EEEEEE] border-b">
+          <h1 className="text-[36px] font-[500] text-purple leading-[48px] tracking-[2%] flex-grow">Assignment</h1>
+          <div className="w-[40] h-[40] rounded-xl flex justify-center items-center transition hover:opacity-80 cursor-pointer">
+            <Image src="/assets/icons/cross-icon.svg" alt="moji gurukul menu" width={30} height={30} />
           </div>
         </div>
 
-        <hr />
+        <div className="max-w-6xl mx-auto rounded-lg lg:py-[32px] py-[26px] lg:px-[40px] px-[20px]">
+          {/* "New" badge */}
+          <div className="flex items-center mb-[6px]">
+            <span className="px-3 py-[5px] flex items-center rounded-[4px] justify-center text-base tracking-[2%] font-normal bg-[#EDF5FF] text-[#4D9EFA]">
+              <span className="">
+                <LuDot size={18} strokeWidth={5} />
+              </span>{' '}
+              New
+            </span>
+          </div>
 
-        <div className="max-w-6xl mx-auto rounded-lg p-6">
-          <div className="p-4">
-            {/* "New" badge */}
-            <div className="flex items-center mb-2">
-              <span className="px-4 py-1 text-base font-normal bg-violet-100 text-violet-700">New</span>
-            </div>
+          {/* Assignment Title */}
+          <h1 className="text-[24px] sm:text-[32px] sm:leading-[38.4px] font-[500] tracking-[2%] text-purple mb-2">Assignment Name</h1>
 
-            {/* Assignment Title */}
-            <h1 className="text-2xl sm:text-3xl font-normal text-violet-700 mb-2">Assignment Name</h1>
-
-            {/* Subject Badge and Creator Info */}
-            <div className="flex flex-wrap items-center space-x-2">
-              <span className="border border-violet-500 text-violet-700 text-lg sm:text-xl font-normal px-2 py-1 rounded-md">SCIENCE</span>
-              <span className="text-gray-400 font-normal text-xl sm:text-2xl">Created By</span>
-              <span className="text-black font-normal text-xl sm:text-2xl">Michael Richards</span>
+          {/* Subject Badge and Creator Info */}
+          <div className="flex flex-wrap items-center gap-[16px] border-b border-b-[#D3D2D2] pb-[32px]">
+            <span className="border border-purple text-purple text-[16px] sm:text-[18px] md:text-[20px] font-normal px-[8px] rounded-md">
+              SCIENCE
+            </span>
+            <div>
+              <span className="text-[#928F95] font-normal text-[18px] sm:text-[20px] md:text-[24px] sm:leading-[28.8px] tracking-[2%]">
+                Created By
+              </span>{' '}
+              <span className="text-[#241F2B] font-normal text-[18px] sm:text-[20px] md:text-[24px] sm:leading-[28.8px] tracking-[2%]">
+                Michael Richards
+              </span>
             </div>
           </div>
 
-          <hr className="w-[95%]" />
-
-          {[...Array(1)].map((_, i) => (
-            <div
-              key={i}
-              className="flex flex-col md:flex-row w-full md:w-[70%] items-center justify-between p-4 mb-4 rounded-2xl bg-white space-y-4 md:space-y-0 md:space-x-4"
-            >
-              <div className="w-full md:w-auto flex flex-col items-start md:items-center">
-                <div>
-                  <p className="text-sm md:text-lg text-green-600 font-normal">Created</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Image src="/assets/icons/calender-icon.svg" alt="moji gurukul menu" width={20} height={20} />
-                  <p className="text-sm md:text-lg font-normal">May 20</p>
-                </div>
-              </div>
-
-              <div className="w-full md:w-auto flex flex-col items-start md:items-center">
-                <div>
-                  <p className="text-sm md:text-lg text-green-600 font-normal">Deadline</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Image src="/assets/icons/calender-icon.svg" alt="moji gurukul menu" width={20} height={20} />
-                  <p className="text-sm md:text-lg font-normal">May 20</p>
-                </div>
-              </div>
-
-              <div className="w-full md:w-auto flex flex-col items-start md:items-center">
-                <div>
-                  <p className="text-sm md:text-lg text-green-600 font-normal">Total Point</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Image src="/assets/icons/star-icon.svg" alt="moji gurukul menu" width={24} height={24} />
-                  <p className="text-sm md:text-lg font-normal">+4</p>
-                </div>
-              </div>
-
-              <div className="w-full md:w-auto flex flex-col items-start md:items-center">
-                <div>
-                  <p className="text-sm md:text-lg text-green-600 font-normal">Total Point</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Image src="/assets/icons/star-icon.svg" alt="moji gurukul menu" width={24} height={24} />
-                  <p className="text-sm md:text-lg font-normal">+0</p>
-                </div>
-              </div>
-
-              <div className="text-left md:text-center mt-2 md:mt-0">
-                <p className="text-lg text-green-600 font-normal">Group</p>
-                <div className="relative flex w-[210px] md:w-[110px]">
-                  <div className="w-[22px] h-[22px] md:w-12 md:h-12 rounded-full flex justify-center items-center">
-                    <Image src="/assets/images/landing-page/avater-1.svg" alt="moji gurukul" width={24} height={24} />
-                  </div>
-                  <div className="absolute right-44 md:right-12 w-[22px] h-[22px] md:w-12 md:h-12 rounded-full flex justify-center items-center">
-                    <Image src="/assets/images/landing-page/avater-2.svg" alt="moji gurukul" width={24} height={24} />
-                  </div>
-                  <div className="absolute right-40 md:right-8 w-[22px] h-[22px] md:w-12 md:h-12 rounded-full flex justify-center items-center">
-                    <Image src="/assets/images/landing-page/avater-3.svg" alt="moji gurukul" width={24} height={24} />
-                  </div>
-                  <div className="absolute right-36 md:right-4 w-[22px] h-[22px] md:w-12 md:h-12 rounded-full flex justify-center items-center">
-                    <Image src="/assets/images/landing-page/avater-3.svg" alt="moji gurukul" width={24} height={24} />
-                  </div>
-                </div>
+          <div className="flex flex-wrap lg:gap-[40px] md:gap-[30px] gap-[16px] w-full items-start justify-start py-[32px] border-b border-b-[#D3D2D2] bg-white space-y-4 md:space-y-0 md:space-x-4">
+            <div className="w-full md:w-auto flex flex-col items-start">
+              <p className="text-[16px] md:text-[21px] md:leading-[36px] text-[#3D3842] font-[500] w-max">Created</p>
+              <div className="flex items-center gap-[8px]">
+                <Image src="/assets/icons/calender-icon.png" alt="moji gurukul menu" width={20} height={20} />
+                <p className="text-sm md:text-[19px] text-[#928F95] md:leading-[24px] font-normal">May 19</p>
               </div>
             </div>
-          ))}
 
-          <hr className="w-[95%]" />
+            <div className="w-full md:w-auto flex flex-col items-start">
+              <p className="text-[16px] md:text-[21px] md:leading-[36px] text-[#3D3842] font-[500] w-max">Deadline</p>
+              <div className="flex items-center gap-[8px]">
+                <Image src="/assets/icons/calender-icon.png" alt="moji gurukul menu" width={24} height={24} />
+                <p className="text-sm md:text-[19px] text-[#928F95] md:leading-[24px] font-normal">May 20</p>
+              </div>
+            </div>
 
-          <div className="my-4">
-            <label className="text-3xl font-normal text-violet-700 flex-grow">Description</label>
-            <textarea
-              id="description"
-              rows={5}
-              className="w-full md:w-[95%] sm:w-[95%] p-2  sm:text-sm outline-none rounded-lg text-gray-500 bg-gray-100 my-4"
-              placeholder="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-            ></textarea>
+            <div className="w-full md:w-auto flex flex-col items-start">
+              <p className="text-[16px] md:text-[21px] md:leading-[36px] text-[#3D3842] font-[500] w-max">Total Point</p>
+              <div className="flex items-center gap-[8px]">
+                <Image src="/assets/icons/star-icon.png" alt="moji gurukul menu" width={22} height={22} />
+                <p className="text-sm md:text-[19px] text-[#928F95] md:leading-[24px] font-normal">+4</p>
+              </div>
+            </div>
+
+            <div className="w-full md:w-auto flex flex-col items-start">
+              <p className="text-[16px] md:text-[21px] md:leading-[36px] text-[#3D3842] font-[500] w-max">Total Point</p>
+              <div className="flex items-center gap-[8px]">
+                <Image src="/assets/icons/star-icon.png" alt="moji gurukul menu" width={22} height={22} />
+                <p className="text-sm md:text-[19px] text-[#928F95] md:leading-[24px] font-normal">+0</p>
+              </div>
+            </div>
+
+            <div className="w-full md:w-auto flex flex-col items-start">
+              <p className="text-[16px] md:text-[21px] md:leading-[36px] text-[#3D3842] font-[500] w-max">Group</p>
+              <div className="relative flex space-x-[-11px]">
+                {imageData.slice(0, maxImagesToShow).map((image, index) => (
+                  <div
+                    key={index}
+                    className="w-[30px] h-[30px] md:w-[32px] md:h-[32px] rounded-full border-2 border-white overflow-hidden relative z-[2] flex justify-center items-center"
+                    style={{ zIndex: index }}
+                  >
+                    <img src={image.src} alt={image.alt} className="h-full w-full" />
+                  </div>
+                ))}
+
+                {remainingImagesCount > 0 && (
+                  <div className="w-[30px] h-[30px] md:w-[32px] md:h-[32px] relative z-[5] md:w-[32px] md:h-[32px] rounded-full border-2 border-purple bg-[#F1ECF8] flex justify-center items-center text-[16px] font-medium text-[#4E4E50] -ml-2">
+                    <span className="ml-[-1px] mt-[2px] flex items-center justify-center">
+                      <GoPlus size={12} strokeWidth={1} className="mr-[-1px]" />
+                      {remainingImagesCount}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
 
-          <div className="my-8">
+          <div className="md:my-[32px] my-[20px]">
+            <label className="text-[22px] md:text-[32px] md:leading-[38.4px] font-[500] text-purple flex-grow">Description</label>
+            <div className="w-full md:text-[20px] rounded-[15px] text-[16px] lg:p-[24px] p-[20px] text-[#928F95] bg-[#FAF8FC] mt-[16px]">
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy
+              text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+            </div>
+          </div>
+
+          <div className="my-[20px] md:my-[32px] border-b border-b-[#D3D2D2]">
             {/* Tab Menu */}
             <div className="flex flex-col space-y-4 sm:flex-row sm:space-x-8 sm:space-y-0 border-b border-gray-200">
               <button
                 onClick={() => setActiveTab('Comments')}
-                className={`pb-2 text-lg sm:text-xl font-normal ${
-                  activeTab === 'Comments' ? 'text-violet-600 border-b-2 border-violet-600' : 'text-violet-500'
+                className={`pb-[8px] text-[22px] md:text-[28px] text-purple font-[500] ${
+                  activeTab === 'Comments' ? 'border-b-[4px] border-purple' : ''
                 }`}
               >
                 Comments
               </button>
               <button
                 onClick={() => setActiveTab('Attachment')}
-                className={`pb-2 text-lg sm:text-xl font-normal ${
-                  activeTab === 'Attachment' ? 'text-violet-600 border-b-2 border-violet-600' : 'text-violet-500'
+                className={`pb-[8px] text-[22px] md:text-[28px] text-purple font-[500] ${
+                  activeTab === 'Attachment' ? 'border-b-[4px] border-purple' : ''
                 }`}
               >
                 Attachment
               </button>
               <button
                 onClick={() => setActiveTab('Video Explanation')}
-                className={`pb-2 text-lg sm:text-xl font-normal ${
-                  activeTab === 'Video Explanation' ? 'text-violet-600 border-b-2 border-violet-600' : 'text-violet-500'
+                className={`pb-[8px] text-[22px] md:text-[28px] text-purple font-[500] ${
+                  activeTab === 'Video Explanation' ? 'border-b-[4px] border-purple' : ''
                 }`}
               >
                 Video Explanation
@@ -290,18 +184,30 @@ const Assignment = () => {
             {renderContent()}
           </div>
 
-          <hr className="w-[95%]" />
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 my-8">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-[16px]">
             <button
-              className="w-full sm:!w-[15%] !rounded px-4 py-2 border-2 border-violet-600 !text-lg sm:!text-xl !font-normal !text-[#753CBD] !bg-[#F1ECF8]"
+              className="w-[178px] rounded-[8px] px-4 py-[14px] border-2 border-purple !text-lg sm:!text-xl !font-normal !text-purple !bg-[#F1ECF8]"
               onClick={() => {}}
+              style={{
+                boxShadow: `
+                  4px 4px 6px 0px #FFFFFF33 inset, 
+                  -4px -4px 6px 0px #FFFFFF29 inset, 
+                  4px 4px 6px 0px #00000029
+                `,
+              }}
             >
               Need Help
             </button>
             <button
-              className="w-full sm:!w-[15%] !rounded px-4 py-2.5 !text-lg sm:!text-xl !font-normal !text-[#fff] !bg-[#753CBD]"
+              className="w-[178px] rounded-[8px] px-4 py-[14px] !text-lg sm:!text-xl !font-normal !text-[#fff] !bg-purple"
               onClick={() => {}}
+              style={{
+                boxShadow: `
+                  4px 4px 6px 0px #FFFFFF33 inset, 
+                  -4px -4px 6px 0px #FFFFFF29 inset, 
+                  4px 4px 6px 0px #00000029
+                `,
+              }}
             >
               Subscribe
             </button>
@@ -313,6 +219,17 @@ const Assignment = () => {
 }
 
 export default Assignment
+
+const imageData = [
+  { src: '/assets/images/landing-page/avater-1.svg', alt: 'Image 1' },
+  { src: '/assets/images/landing-page/avater-2.svg', alt: 'Image 2' },
+  { src: '/assets/images/landing-page/avater-3.svg', alt: 'Image 3' },
+  { src: '/assets/images/landing-page/avater-3.svg', alt: 'Image 4' },
+  { src: '/assets/images/landing-page/avater-3.svg', alt: 'Image 5' },
+  { src: '/assets/images/landing-page/avater-3.svg', alt: 'Image 6' },
+  { src: '/assets/images/landing-page/avater-3.svg', alt: 'Image 7' },
+  { src: '/assets/images/landing-page/avater-3.svg', alt: 'Image 8' },
+]
 
 type FeatureType = {
   id: number
