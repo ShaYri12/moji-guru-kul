@@ -1,10 +1,12 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import CustomButton from '@/components/common/CustomButton'
 import CustomInput from '@/components/common/CustomInput'
 import { IconsEnum } from '@/utils/enum'
-import { MilestoneResponseTypes } from '@/utils/types'
+import { IoGameController } from 'react-icons/io5'
+import { IoMdArrowDropup } from 'react-icons/io'
+import Modal from './Modal'
 
 // Sample Data (Replace with your actual data source)
 const sampleStudents = new Array(24).fill({
@@ -30,6 +32,39 @@ const tabs = [
 const Management = () => {
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [activeTab, setActiveTab] = useState<string>('Games')
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+
+  // Toggle dropdown visibility
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev)
+  }
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
+  // Handle modal for 'Create Task'
+  const handleCreateTask = () => {
+    setIsDropdownOpen(false) // Close dropdown
+    setIsModalOpen(true) // Open modal
+  }
+
+  // Handle closing modal
+  const closeModal = () => {
+    setIsModalOpen(false)
+  }
 
   // Function to get paginated data
   const getPaginatedData = (data: typeof sampleStudents): typeof sampleStudents => {
@@ -73,8 +108,55 @@ const Management = () => {
               <CustomInput placeholder="Search here..." type="search" className="bg-white w-full sm:w-auto px-3" />
             </div>
 
-            <div className="w-10 h-10 border-[2px] border-[#753CBD] rounded-lg flex justify-center items-center hover:opacity-80 cursor-pointer">
-              <Image src="/assets/icons/plus.svg" alt="moji gurukul menu" width={24} height={24} />
+            <div className="relative" ref={dropdownRef}>
+              <div
+                className="w-10 h-10 border-[2px] border-[#753CBD] rounded-lg flex justify-center items-center hover:opacity-80 cursor-pointer"
+                onClick={toggleDropdown}
+              >
+                <Image src="/assets/icons/plus.svg" alt="moji gurukul menu" width={24} height={24} />
+              </div>
+
+              {/* Dropdown Menu */}
+              {isDropdownOpen && (
+                <div
+                  className="absolute mt-[20px] right-0 bg-white shadow-lg rounded-[8px] py-2 w-[240px] z-10"
+                  style={{ boxShadow: '0px 0px 16px 0px #00000014' }}
+                >
+                  <IoMdArrowDropup className="absolute top-[-28px] right-[-1px]" color="white" size={40} />
+                  <ul>
+                    <li
+                      onClick={handleCreateTask}
+                      className="flex gap-[12px] items-center w-full px-[16px] py-[12px] hover:text-[#753CBD] text-[18px] font-[500] text-[#B1AFB3] leading-[20px] hover:bg-[#F1ECF8] hover:border hover:border-l-2 hover:border-l-[#753CBD] cursor-pointer"
+                    >
+                      <span className="min-w-[16px] min-h-[16px]">
+                        <img className="w-[16px] h-[16px]" src="/assets/icons/task-icon.png" alt="Task Icon" />
+                      </span>
+                      Create Task
+                    </li>
+                    <li
+                      onClick={() => setIsDropdownOpen(false)}
+                      className="flex gap-[12px] items-center w-full px-[16px] py-[12px] hover:text-[#753CBD] text-[18px] font-[500] text-[#B1AFB3] leading-[20px] hover:bg-[#F1ECF8] hover:border hover:border-l-2 hover:border-l-[#753CBD] cursor-pointer"
+                    >
+                      <span className="min-w-[16px] min-h-[16px]">
+                        <IoGameController size={16} />
+                      </span>
+                      Create Game
+                    </li>
+                    <li
+                      onClick={() => setIsDropdownOpen(false)}
+                      className="flex gap-[12px] items-center w-full px-[16px] py-[12px] hover:text-[#753CBD] text-[18px] font-[500] text-[#B1AFB3] leading-[20px] hover:bg-[#F1ECF8] hover:border hover:border-l-2 hover:border-l-[#753CBD] cursor-pointer"
+                    >
+                      <span className="min-w-[16px] min-h-[16px]">
+                        <img className="w-[16px] h-[16px]" src="/assets/icons/material-icon.png" alt="Materials Icon" />
+                      </span>
+                      Create Materials
+                    </li>
+                  </ul>
+                </div>
+              )}
+
+              {/* Modal */}
+              {isModalOpen && <Modal isOpen={isModalOpen} closeModal={closeModal} />}
             </div>
           </div>
         </div>
