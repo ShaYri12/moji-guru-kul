@@ -1,5 +1,5 @@
 'use client'
-import CircularProgressBar from '@/components/CircularProgressBar'
+import CircularProgressBar from './CircularProgressBar'
 import CustomButton from '@/components/common/CustomButton'
 import CustomInput from '@/components/common/CustomInput'
 import ProgressBar from '@/components/common/ProgressBar'
