@@ -20,20 +20,36 @@ const Assignment = () => {
         return <AttachmentTab />
       case 'Video Explanation':
         return (
-          <div className="mt-4 p-4 bg-gray-100 rounded-lg">
+          <div className="my-[32px] rounded-lg">
             <div className="flex flex-wrap justify-center">
               {Videos.map((video, index) => (
-                <VideoCard
-                  key={index}
-                  title={''}
-                  role={''}
-                  thumbnail={''}
-                  videoPath={video.videoPath}
-                  selected={selected === index}
-                  onClick={() => {
-                    setSelected(index)
-                  }}
-                />
+                <div key={index} className="relative w-full h-[392px] rounded-[15px] overflow-hidden">
+                  {/* Video Element */}
+                  <video
+                    src={video.videoPath}
+                    className="w-full h-full object-cover"
+                    id={`video-${index}`}
+                    controls={false} // Initially hiding controls
+                  />
+
+                  {/* Play Icon */}
+                  <div
+                    id={`play-icon-${index}`}
+                    className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 cursor-pointer group-hover:bg-opacity-50"
+                    onClick={() => {
+                      const videoElement = document.getElementById(`video-${index}`) as HTMLVideoElement
+                      const playIcon = document.getElementById(`play-icon-${index}`)
+
+                      if (videoElement && playIcon) {
+                        videoElement.play() // Start playing the video
+                        videoElement.controls = true // Show the controls
+                        playIcon.style.display = 'none' // Hide the play button
+                      }
+                    }}
+                  >
+                    <img src="/assets/icons/video-play-btn.png" alt="Play" className="w-[56px] h-[56px] rounded-full" />
+                  </div>
+                </div>
               ))}
             </div>
           </div>
