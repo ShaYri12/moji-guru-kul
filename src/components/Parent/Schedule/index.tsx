@@ -52,7 +52,9 @@ const Schedule = () => {
               <button
                 key={tab}
                 onClick={() => handleTabClick(tab)}
-                className={`cursor-pointer text-[16px] font-[500] leading-[16.41px] border-b ${activeTab === tab ? 'text-purple border-b-purple border-b-[4px]' : 'text-[#B1AFB3] border-b-[#D7D7D7]'} pb-[13px] px-[13px]`}
+                className={`cursor-pointer text-[16px] font-[500] leading-[16.41px] border-b ${
+                  activeTab === tab ? 'text-purple border-b-purple border-b-[4px]' : 'text-[#B1AFB3] border-b-[#D7D7D7]'
+                } pb-[13px] px-[13px]`}
               >
                 {tab}
               </button>
@@ -88,7 +90,8 @@ const Schedule = () => {
       </header>
       <div className="min-h-screen flex mt-[30px] gap-[20px] lg:gap-[35px]">
         <Calendar />
-        <ScheduleGrid />
+        {/* Pass activeTab to ScheduleGrid */}
+        <ScheduleGrid activeTab={activeTab} />
       </div>
     </div>
   )
