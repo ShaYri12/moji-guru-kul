@@ -20,7 +20,7 @@ const Assignment = () => {
         return <AttachmentTab />
       case 'Video Explanation':
         return (
-          <div className="mt-4 p-4 bg-gray-100 rounded-lg">
+          <div className="my-[32px] rounded-lg">
             <div className="flex flex-wrap justify-center">
               {Videos.map((video, index) => (
                 <VideoCard
