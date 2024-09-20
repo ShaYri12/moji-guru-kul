@@ -52,19 +52,19 @@ const Videos = [
   {
     title: 'Rajeev Shenoy',
     role: 'Students',
-    thumbnail: '/assets/images/landing-page/story1-thumbnail.png',
+    thumbnail: '/assets/images/landing-page/student-one.jpg',
     videoPath: '/assets/videos/landing-page-demo.mp4',
   },
   {
     title: 'Mahita Kumari',
     role: 'Students',
-    thumbnail: '/assets/images/landing-page/thumbnail.svg',
+    thumbnail: '/assets/images/landing-page/student-two.jpeg',
     videoPath: '/assets/videos/landing-page-demo.mp4',
   },
   {
     title: 'Pooja Rani',
     role: 'Students',
-    thumbnail: '/assets/images/landing-page/thumbnail-2.svg',
+    thumbnail: '/assets/images/landing-page/student-three.jpg',
     videoPath: '/assets/videos/landing-page-demo.mp4',
   },
 ]

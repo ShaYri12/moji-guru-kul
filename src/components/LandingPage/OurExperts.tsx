@@ -133,7 +133,7 @@ const TutorsData = [
     reviews: '380',
     totalStudent: '1k',
     image: '/assets/images/landing-page/teacher1.svg',
-    thumbnail: '/assets/images/landing-page/tutor-image.svg',
+    thumbnail: '/assets/images/landing-page/female-tutor.jpg',
   },
   {
     title: 'Rohit Sharma',
@@ -142,7 +142,7 @@ const TutorsData = [
     reviews: '250',
     totalStudent: '2k',
     image: '/assets/images/landing-page/teacher2.svg',
-    thumbnail: '/assets/images/landing-page/tutor1.png',
+    thumbnail: '/assets/images/landing-page/male-tutor.jpg',
   },
   {
     title: 'Abhishek Chaudhary',
