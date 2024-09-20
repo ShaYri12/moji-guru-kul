@@ -10,6 +10,7 @@ import { IconsEnum } from '@/utils/enum'
 import { MilestoneResponseTypes } from '@/utils/types'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
+import { LuDot } from 'react-icons/lu'
 
 const Progress = () => {
   const user = useAuthStore((state) => state.user)
@@ -85,13 +86,28 @@ const Progress = () => {
     totalPoints: (Math.random() * 5).toFixed(2),
   }))
 
-  const sampleGroups = Array.from({ length: 20 }, (_, i) => ({
-    id: i + 1,
-    name: `Group ${i + 1}`,
-    class: `Class ${(i % 6) + 1}`,
-    progress: Math.floor(Math.random() * 200),
-    totalPoints: (Math.random() * 5).toFixed(2),
-  }))
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
+  const sampleGroups = Array.from({ length: 20 }, (_, i) => {
+    const randomDay = Math.floor(Math.random() * 28) + 1 // Random day between 1 and 28
+    const randomMonth = Math.floor(Math.random() * 12) // Random month (0-11)
+
+    return {
+      id: i + 1,
+      name: `Group ${i + 1}`,
+      class: `${(i % 6) + 1}`,
+      category: 'Category',
+      createdDate: `${randomDay} ${months[randomMonth]}`, // Formatted date like '20 May'
+      studentCount: Math.floor(Math.random() * 100) + 1, // Random number of students between 1 and 100
+      mentorCount: Math.floor(Math.random() * 20) + 1, // Random number of mentors between 1 and 20
+      status: Math.random() > 0.5 ? 'Active' : 'Inactive', // Random status
+      images: [
+        '/assets/images/landing-page/avater-1.svg',
+        '/assets/images/landing-page/avater-2.svg',
+        '/assets/images/landing-page/avater-3.svg',
+      ],
+    }
+  })
 
   const getPaginatedData = (data: any[]) => {
     const startIndex = (currentPage - 1) * itemsPerPage
@@ -186,7 +202,7 @@ const Progress = () => {
                       <h3 className="text-[18px] lg:text-[24px] font-[500] text-[#3D3842] tracking-[2%] leading-[28.8px]">
                         {student.name}
                       </h3>
-                      <p className="text-xs lg:text-lg w-max font-normal">
+                      <p className="text-xs lg:text-[14px] w-max font-normal">
                         <span className="px-[8.5px] w-max py-[4px] text-purple bg-[#F1ECF8] rounded-[4px]">{student.class}</span>
                       </p>
                     </div>
@@ -250,7 +266,7 @@ const Progress = () => {
                 <p className="text-gray-600 mb-4 md:mb-0">Total {sampleStudents.length} Students</p>
                 <div className="flex flex-wrap items-center justify-center md:justify-end">
                   <button
-                    className="mr-2 md:mr-4 px-[16px] py-[12px] border-[1.5px] border-purple text-[16px] lg:text-[18px] font-[500] text-purple rounded-[15px] w-fit hover:opacity-80 flex items-center justify-center"
+                    className="mr-2 md:mr-4 px-[16px] py-[7px] border-[1.5px] border-purple text-[16px] lg:text-[18px] font-[500] text-purple rounded-[15px] w-fit hover:opacity-80 flex items-center justify-center"
                     onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                   >
                     <img src="/assets/icons/prev-arrow.png" alt="Previous" className="mr-2" />
@@ -270,7 +286,7 @@ const Progress = () => {
                   </div>
 
                   <button
-                    className="ml-2 md:ml-4 px-[16px] py-[12px] border-[1.5px] border-purple text-[16px] lg:text-[18px] font-[500] text-purple rounded-[15px] hover:opacity-80 flex items-center justify-center"
+                    className="ml-2 md:ml-4 px-[16px] py-[7px] border-[1.5px] border-purple text-[16px] lg:text-[18px] font-[500] text-purple rounded-[15px] hover:opacity-80 flex items-center justify-center"
                     onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                   >
                     Next
@@ -284,8 +300,9 @@ const Progress = () => {
               {getPaginatedData(sampleGroups).map((group) => (
                 <div
                   key={group.id}
-                  className="flex flex-col md:flex-row items-center justify-between p-4 mb-4 border-2 border-off-green rounded-2xl bg-white space-y-4 md:space-y-0 md:space-x-4"
+                  className="flex flex-col md:flex-row items-center justify-between p-4 mb-4 border border-[#F1ECF8] rounded-[15px] bg-white space-y-4 md:space-y-0 md:space-x-4"
                 >
+                  {/* Group Information */}
                   <div className="flex items-center gap-[10px]">
                     <div className="mx-2 min-w-[48px] min-h-[48px] rounded-full">
                       <img
@@ -296,62 +313,61 @@ const Progress = () => {
                     </div>
                     <div>
                       <h3 className="text-[18px] lg:text-[24px] font-[500] text-[#3D3842] tracking-[2%] leading-[28.8px]">{group.name}</h3>
-                      <p className="text-xs lg:text-lg w-max font-normal">
-                        <span className="px-[8.5px] w-max py-[4px] text-purple bg-[#F1ECF8] rounded-[4px]">{group.class}</span>
+                      <p className="text-xs lg:text-[14px] w-max font-normal">
+                        <span className="px-[8.5px] w-max py-[4px] text-purple bg-[#F1ECF8] rounded-[4px]">{group.category}</span>
                       </p>
                     </div>
                   </div>
 
-                  <div className="w-full md:w-auto items-start md:items-center">
-                    <div className="flex lg:flex-row md:flex-col flex-row md:flex-nowrap flex-wrap lg:items-center md:items-start items-center lg:gap-2 md:gap-0 gap-2 mb-[8px]">
-                      <p className="text-xs lg:text-[14px] text-[#3D3842] font-[500]">Task Completed</p>
-                      <p className="text-xs lg:text-[14px] font-[500] text-[#B1AFB3]">{group.progress} / 200</p>
-                    </div>
-                    <div className="w-full md:w-auto">
-                      <ProgressBar progress={group.progress} total={200} color="#22CC9B" bgColor="#BAEFE0" />
-                    </div>
+                  {/* Class and Group Creation Date */}
+                  <div className="flex flex-col items-start text-left gap-[4px]">
+                    <p className="text-sm lg:text-[16px] text-[#3D3842] font-[500]">Class</p>
+                    <p className="text-xs lg:text-[14px] font-[500] text-[#B1AFB3]">{group.class}</p>
                   </div>
 
-                  <div className="w-full md:w-auto items-start md:items-center">
-                    <div className="flex lg:flex-row md:flex-col flex-row md:flex-nowrap flex-wrap lg:items-center md:items-start items-center lg:gap-2 md:gap-0 gap-2 mb-[8px]">
-                      <p className="text-xs lg:text-[14px] text-[#3D3842] font-[500]">Game Completed</p>
-                      <p className="text-xs lg:text-[14px] font-[500] text-[#B1AFB3]">{group.progress} / 200</p>
-                    </div>
-                    <div className="w-full md:w-auto">
-                      <ProgressBar progress={group.progress} total={200} color="#4D9EFA" bgColor="#C8E1FD" />
-                    </div>
+                  <div className="flex flex-col items-start text-left gap-[4px]">
+                    <p className="text-sm lg:text-[16px] text-[#3D3842] font-[500]">Group Created</p>
+                    <p className="text-xs lg:text-[14px] font-[500] text-[#B1AFB3]">{group.createdDate}</p>
                   </div>
 
-                  <div className="w-full md:w-auto items-start md:items-center">
-                    <div className="flex lg:flex-row md:flex-col flex-row md:flex-nowrap flex-wrap lg:items-center md:items-start items-center lg:gap-2 md:gap-0 gap-2 mb-[8px]">
-                      <p className="text-xs lg:text-[14px] text-[#3D3842] font-[500]">Join Live Lesson</p>
-                      <p className="text-xs lg:text-[14px] font-[500] text-[#B1AFB3]">{group.progress} / 200</p>
-                    </div>
-                    <div className="w-full md:w-auto">
-                      <ProgressBar progress={group.progress} total={200} color="#FBCC58" bgColor="#FEEFCB" />
-                    </div>
+                  {/* Status */}
+                  <div className="flex items-center mb-[6px]">
+                    <span className="px-3 py-[5px] flex items-center rounded-[4px] justify-center text-base tracking-[2%] font-normal bg-[#EDF5FF] text-[#4D9EFA]">
+                      <span className=" mr-[-2px]">
+                        <LuDot size={18} strokeWidth={5} />
+                      </span>{' '}
+                      Active
+                    </span>
                   </div>
 
-                  <div className="w-full md:w-auto flex flex-col items-start md:items-center">
-                    <div>
-                      <p className="text-sm lg:text-[16px] text-green-600 font-normal">Total Point</p>
-                    </div>
-                    <div className="flex items-center gap-[2px]">
-                      <Image src="/assets/icons/star-icon.svg" className="mb-0" alt="moji gurukul menu" width={20} height={20} />
-                      <p className="text-[18px] lg:text-[20px] lg:leading-[24px] tracking-[2%] text-[#110F24] font-normal">
-                        {group.totalPoints}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="w-full md:w-auto flex items-center gap-4">
-                    <div className="flex items-center justify-center max-h-[56px]">
-                      <CircularProgressBar progress={30} size={70} strokeWidth={2} />
+                  <div className="flex items-center gap-2">
+                    <div className="flex space-x-[-25px]">
+                      {group.images.map((src: string, index: number) => (
+                        <img key={index} src={src} className="w-[40px] h-[40px]" alt="Student" />
+                      ))}
                     </div>
                     <div>
-                      <p className="text-sm lg:text-[16px] text-[#3D3842] lg:leading-[17.66px] font-[400]">Total Progress</p>
-                      <p className="text-xs lg:text-[14px] font-[400] lg:leading-[15.4px] text-[#B1AFB3]">30 days</p>
+                      <p className="text-sm lg:text-[16px] text-[#3D3842] font-[400]">Total Student</p>
+                      <p className="text-xs lg:text-[14px] font-[400] text-[#6C6060]">{group.studentCount}+ Student</p>
                     </div>
+                  </div>
+
+                  {/* Total Mentors */}
+                  <div className="flex items-center gap-2">
+                    <div className="flex space-x-[-25px]">
+                      {group.images.map((src: string, index: number) => (
+                        <img key={index} src={src} className="w-[40px] h-[40px]" alt="Mentor" />
+                      ))}
+                    </div>
+                    <div>
+                      <p className="text-sm lg:text-[16px] text-[#3D3842] font-[400]">Total Mentor</p>
+                      <p className="text-xs lg:text-[14px] font-[400] text-[#B1AFB3]">{group.mentorCount}+ Mentor</p>
+                    </div>
+                  </div>
+
+                  {/* More Options */}
+                  <div className="flex items-center w-[20px]">
+                    <Image src="/assets/icons/threedots.svg" alt="moji gurukul menu" width={24} height={24} />
                   </div>
                 </div>
               ))}
@@ -359,36 +375,33 @@ const Progress = () => {
               <div className="flex flex-col md:flex-row justify-between items-center mt-6">
                 <p className="text-gray-600 mb-4 md:mb-0">Total {sampleGroups.length} Groups</p>
                 <div className="flex flex-wrap items-center justify-center md:justify-end">
-                  <CustomButton
-                    variant="outlined"
-                    color="white"
-                    className="mr-2 md:mr-4 px-4 md:px-[16px] !border-purple border-[1.5px] text-sm lg:text-base text-purple rounded-lg !w-[90px] md:!w-[100px] !h-8 md:!h-10 hover:opacity-80"
-                    iconName={IconsEnum.LeftIcon}
+                  <button
+                    className="mr-2 md:mr-4 px-[16px] py-[7px] border-[1.5px] border-purple text-[16px] lg:text-[18px] font-[500] text-purple rounded-[15px] w-fit hover:opacity-80 flex items-center justify-center"
                     onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                   >
+                    <img src="/assets/icons/prev-arrow.png" alt="Previous" className="mr-2" />
                     Previous
-                  </CustomButton>
+                  </button>
 
-                  {[...Array(totalPages)].map((_, index) => (
-                    <button
-                      key={index}
-                      className={`px-3 md:px-[20px] text-purple !w-[40px] md:!w-[50px] !h-8 md:!h-10 hover:opacity-80 ${index + 1 === currentPage ? '!bg-purple text-white rounded-l-lg' : '!bg-[#eeecfa] rounded-r-sm'}`}
-                      onClick={() => setCurrentPage(index + 1)}
-                    >
-                      {index + 1}
-                    </button>
-                  ))}
+                  <div className="rounded-[15px] overflow-hidden w-fit h-fit bg-[#F1ECF8]">
+                    {[...Array(totalPages)].map((_, index) => (
+                      <button
+                        key={index}
+                        className={`px-3 md:px-[20px] text-purple !w-[40px] md:!w-[50px] !h-8 md:!h-10 hover:opacity-80 ${index + 1 === currentPage ? '!bg-purple text-white rounded-[15px]' : '!bg-[#eeecfa] rounded-r-sm'}`}
+                        onClick={() => setCurrentPage(index + 1)}
+                      >
+                        {index + 1}
+                      </button>
+                    ))}
+                  </div>
 
-                  <CustomButton
-                    variant="outlined"
-                    color="white"
-                    className="ml-2 md:ml-4 px-4 md:px-6 !border-purple border-[1.5px] text-sm lg:text-base text-purple rounded-lg !w-[70px] md:!w-[100px] !h-8 md:!h-10 hover:opacity-80"
-                    iconName={IconsEnum.RightIcon}
-                    iconPosition="end"
+                  <button
+                    className="ml-2 md:ml-4 px-[16px] py-[7px] border-[1.5px] border-purple text-[16px] lg:text-[18px] font-[500] text-purple rounded-[15px] hover:opacity-80 flex items-center justify-center"
                     onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                   >
                     Next
-                  </CustomButton>
+                    <img src="/assets/icons/next-arrow.png" alt="Next" className="ml-2" />
+                  </button>
                 </div>
               </div>
             </div>
