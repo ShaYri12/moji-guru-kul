@@ -91,6 +91,8 @@ const config: Config = {
         'bright-grey': '#344054',
         'davy-grey': '#475467',
       },
+
+      
     },
   },
   plugins: [],

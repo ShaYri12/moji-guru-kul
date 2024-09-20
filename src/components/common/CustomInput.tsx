@@ -50,11 +50,11 @@ const CustomInput = ({
     <div className="w-full">
       {label && <label className="text-sm font-bold">{label}</label>}
       <div
-        className={classNames('border border-[#B1AFB3] w-full pl-[18px] pr-[14px] flex items-center justify-between mt-1', className, {
+        className={classNames('border border-[#B1AFB3] w-full pl-[18px] pr-[14px] flex items-center justify-between', className, {
           '!border-red-500': !value && error && isRequired,
-          'h-9 rounded-xl': size === 'small',
-          'h-11 rounded-2xl': size === 'medium',
-          'h-14 rounded-2xl': size === 'large',
+          'h-9 rounded-lg': size === 'small',
+          'h-10  rounded-lg': size === 'medium',
+          'h-14 rounded-lg': size === 'large',
         })}
       >
         <input

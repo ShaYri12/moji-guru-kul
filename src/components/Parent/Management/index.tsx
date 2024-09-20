@@ -11,32 +11,32 @@ const Management = () => {
     <div className="horizontal-spacing top-spacing">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-[#753CBD] text-4xl font-bold">Management</h1>
+          <h1 className="text-[#753CBD] text-[56px] font-bold leading-[67px] tracking-[2%]">Management</h1>
         </div>
-        <div className="bg-titan-white w-14 h-14 border-[1.5px] border-soft-blue rounded-lg flex justify-center items-center hover:opacity-80 cursor-pointer">
-          <Image src="/assets/icons/kebab-icon.svg" alt="moji gurukul menu" width={24} height={24} />
+        <div className="bg-[#F1ECF8] w-[64px] h-[64px] border-[1.5px] border-[#753CBD] rounded-lg flex justify-center items-center hover:opacity-80 cursor-pointer">
+          <Image src="/assets/icons/dots.svg" alt="moji gurukul menu" width={24} height={24} />
         </div>
       </div>
 
-      <div className="shadow-lg rounded-lg my-12">
-        <div className="flex flex-col sm:flex-row justify-between items-center px-4 sm:px-6 py-2 rounded-t-lg">
-          <h1 className="text-xl sm:text-2.5xl font-normal text-violet-700 flex-grow mb-4 sm:mb-0">Task Manage</h1>
-          <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
-            <div>
-              <CustomButton
-                variant="outlined"
-                color={'white'}
-                className="w-full sm:!w-[100px] !h-10 px-4 sm:px-6 !border-sliver border-[1.5px] text-sm sm:text-base text-sliver rounded-lg"
-                iconName={IconsEnum.FilterIcon}
-              >
-                Filter
-              </CustomButton>
+      <div className="shadow-lg rounded-lg my-12 border border-[#F1ECF8]">
+        <div className="flex flex-col sm:flex-row justify-between items-center px-4 sm:px-6 py-4 rounded-t-lg">
+          <h1 className="text-xl sm:text-[28px] tracking-[2%] font-medium text-[#753CBD]">Task Manage</h1>
+          <div className="flex flex-col sm:flex-row items-center gap-3 h-[40px]">
+            <CustomButton
+              variant="outlined"
+              color={'white'}
+              className="w-full sm:!w-[100px] !h-10 px-4 sm:px-6 !border-[#B1AFB3] border text-sm sm:text-base text-sliver rounded-lg"
+              iconName={IconsEnum.FilterIcon}
+            >
+              Filter
+            </CustomButton>
+
+            <div className="w-full sm:w-auto h-[40px]">
+              <CustomInput placeholder="Search here..." type="search" className="bg-white w-full sm:w-auto px-3" />
             </div>
-            <div className="w-full sm:w-auto">
-              <CustomInput placeholder="Search here..." type="search" className="bg-white w-full sm:w-auto px-3 py-2 sm:py-0" />
-            </div>
-            <div className="w-10 h-10 border-[2px] border-violet-700 rounded-xl flex justify-center items-center hover:opacity-80 cursor-pointer">
-              <Image src="/assets/icons/plus-icon.svg" alt="moji gurukul menu" width={24} height={24} />
+
+            <div className="w-10 h-10 border-[2px] border-[#753CBD] rounded-lg flex justify-center items-center hover:opacity-80 cursor-pointer">
+              <Image src="/assets/icons/plus.svg" alt="moji gurukul menu" width={24} height={24} />
             </div>
           </div>
         </div>
@@ -55,77 +55,79 @@ const Management = () => {
           {[...Array(24)].map((_, i) => (
             <div
               key={i}
-              className="flex flex-col md:flex-row items-center justify-between p-4 mb-4 border-2 border-off-green rounded-2xl bg-white space-y-4 md:space-y-0 md:space-x-4"
+              className="h-[80px] overflow-hidden flex flex-col md:flex-row items-center justify-between p-4 mb-4 border border-[#F1ECF8] hover:border-[#753CBD] rounded-xl space-y-4 md:space-y-0 md:space-x-4"
             >
-              <div className="flex items-center">
-                <div className="mx-2">
-                  <img src="/img/profile.png" alt="Profile" className="w-[50px] h-[50px] md:w-[60px] md:h-[60px]" />
-                </div>
-                <div>
-                  <h3 className="text-xl md:text-2xl font-normal">Task Name</h3>
-                  <p className="text-base font-normal text-gray-400">Personal task</p>
+              <div className="flex items-center gap-3">
+                <img src="/img/profile.png" alt="Profile" className="w-[50px] h-[50px] md:w-[60px] md:h-[60px]" />
+                <div className="flex flex-col gap-1">
+                  <h3 className="text-[14px] md:text-[20px] font-normal">Task Name</h3>
+                  <div className="text-sm font-normal text-[#B1AFB3] -mt-1 flex items-center gap-1">
+                    <div className="w-[6px] h-[6px] rounded-full bg-[#753CBD] -mt-0.5"></div>Personal task
+                  </div>
                 </div>
               </div>
 
               <div className="text-left md:text-center mt-2 md:mt-0">
                 <p className="text-lg text-green-600 font-normal">Class</p>
-                <p className="text-base font-normal text-gray-400">6</p>
+                <p className="text-base font-normal text-gray-400 -mt-1">6</p>
               </div>
 
               <div className="text-left md:text-center mt-2 md:mt-0">
                 <p className="text-lg text-green-600 font-normal">Send</p>
-                <p className="text-base font-normal text-gray-400">May 20</p>
+                <p className="text-base font-normal text-gray-400 -mt-1">May 20</p>
               </div>
 
               <div className="text-left md:text-center mt-2 md:mt-0">
                 <p className="text-lg text-green-600 font-normal">Deadline</p>
-                <p className="text-base font-normal text-gray-400">May 20</p>
+                <p className="text-base font-normal text-gray-400 -mt-1">May 20</p>
               </div>
 
               <div className="text-left md:text-center mt-2 md:mt-0">
                 <p className="text-lg text-green-600 font-normal">Submitted</p>
-                <p className="text-base font-normal text-gray-400">May 20</p>
+                <p className="text-base font-normal text-gray-400 -mt-1">May 20</p>
               </div>
               <div className="mt-2 md:mt-0">
-                <span className={'px-4 py-2 text-base font-normal bg-off-green text-lime-green bg-violet-100 text-violet-700 rounded-md'}>
+                <div className={'px-4 py-2 flex items-center gap-1.5 text-base font-medium text-[#22CC9B] bg-[#E9FAF5] rounded-md'}>
+                  <div className="w-[6px] h-[6px] rounded-full bg-[#22CC9B] -mt-0.5"></div>
                   Done
-                </span>
+                </div>
               </div>
 
               <div className="w-full md:w-auto flex flex-col items-start md:items-center">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1">
                   <Image src="/assets/icons/star-icon.svg" alt="moji gurukul menu" width={24} height={24} />
                   <p className="text-sm md:text-lg font-normal">2.55</p>
                 </div>
               </div>
 
               <div className="w-full md:w-auto flex items-center gap-4">
-                <div>
-                  <Image src="/img/profile.png" alt="moji gurukul menu" width={40} height={40} className="md:w-[50px] md:h-[50px]" />
-                </div>
-                <div>
-                  <p className="text-sm md:text-lg text-green-600 font-normal">Student Name</p>
-                  <p className="text-xs md:text-base font-normal text-gray-500">Student</p>
+                <Image src="/img/profile.png" alt="moji gurukul menu" width={40} height={40} className="md:w-[50px] md:h-[50px]" />
+                <div className="flex flex-col gap-1">
+                  <h3 className="text-[14px] md:text-[20px] font-normal">Student Name</h3>
+                  <div className="text-sm font-normal text-[#B1AFB3] -mt-1">Student</div>
                 </div>
               </div>
 
               <div className="flex items-center mt-2 md:mt-0">
-                <button className="text-gray-500 hover:opacity-80">•••</button>
+                <button className="text-gray-500 text-[20px] hover:opacity-80">
+                  <Image src="/assets/icons/more-v.svg" alt="icon" width={13} height={3} />
+                </button>
               </div>
             </div>
           ))}
 
           <div className="flex flex-col md:flex-row justify-between items-center mt-6">
-            <p className="text-gray-500 mb-4 md:mb-0">Total 5 Assignment</p>
+            <p className="text-[#B1AFB3] text-xl mb-4 md:mb-0">Total 5 Assignment</p>
             <div className="flex flex-wrap items-center justify-center md:justify-end">
               <CustomButton
                 variant="outlined"
                 color="white"
-                className="mr-2 md:mr-4 px-4 md:px-6 !border-violet-700 border-[1.5px] text-sm md:text-base text-violet-700 rounded-lg !w-[90px] md:!w-[100px] !h-8 md:!h-10 hover:opacity-80"
+                className="mr-2 md:mr-4  px-4 md:px-6 !border-[#753CBD] border-[1.5px] text-sm md:text-base text-violet-700 rounded-lg !w-[90px] md:!w-[100px] !h-8 md:!h-10 hover:opacity-80"
                 iconName={IconsEnum.LeftIcon}
               >
                 Previous
               </CustomButton>
+
 
               {[1, 2, 3, 4].map((page) => (
                 <button
