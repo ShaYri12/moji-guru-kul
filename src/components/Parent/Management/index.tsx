@@ -1,12 +1,50 @@
 'use client'
+import { useState } from 'react'
+import Image from 'next/image'
 import CustomButton from '@/components/common/CustomButton'
 import CustomInput from '@/components/common/CustomInput'
 import { IconsEnum } from '@/utils/enum'
 import { MilestoneResponseTypes } from '@/utils/types'
-import Image from 'next/image'
-import { useState } from 'react'
+
+// Sample Data (Replace with your actual data source)
+const sampleStudents = new Array(24).fill({
+  taskName: 'Task Name',
+  className: 'Class 6',
+  sendDate: 'May 20',
+  deadline: 'May 20',
+  submittedDate: 'May 20',
+  status: 'Done',
+  rating: 2.55,
+  studentName: 'Student Name',
+  studentRole: 'Student',
+})
+
+const itemsPerPage = 7
+
+const tabs = [
+  { label: 'Games', count: 2 },
+  { label: 'Personal Task', count: 2 },
+  { label: 'Material', count: 2 },
+]
 
 const Management = () => {
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [activeTab, setActiveTab] = useState<string>('Games')
+
+  // Function to get paginated data
+  const getPaginatedData = (data: typeof sampleStudents): typeof sampleStudents => {
+    const startIndex = (currentPage - 1) * itemsPerPage
+    const endIndex = startIndex + itemsPerPage
+    return data.slice(startIndex, endIndex)
+  }
+
+  // Calculate total pages
+  const totalDataLength = activeTab === 'All' ? sampleStudents.length : 0 // Adjust this logic as per your requirement
+  const totalPages = Math.ceil(totalDataLength / itemsPerPage)
+
+  // Get data for the current page
+  const paginatedData = getPaginatedData(sampleStudents)
+
   return (
     <div className="horizontal-spacing top-spacing">
       <div className="flex justify-between items-center">
@@ -19,9 +57,9 @@ const Management = () => {
       </div>
 
       <div className="shadow-lg rounded-lg my-12 border border-[#F1ECF8]">
-        <div className="flex flex-col sm:flex-row justify-between items-center px-4 sm:px-6 py-4 rounded-t-lg">
+        <div className="flex flex-wrap gap-4 justify-between items-center px-4 sm:px-6 py-4 rounded-t-lg">
           <h1 className="text-xl sm:text-[28px] tracking-[2%] font-medium text-[#753CBD]">Task Manage</h1>
-          <div className="flex flex-col sm:flex-row items-center gap-3 h-[40px]">
+          <div className="flex flex-wrap items-center gap-3 ">
             <CustomButton
               variant="outlined"
               color={'white'}
@@ -43,68 +81,79 @@ const Management = () => {
 
         <hr />
 
-        <div className="max-w-7xl mx-auto rounded-lg p-6">
+        <div className="max-w-7xl mx-auto rounded-lg px-2.5 py-6 sm:p-6">
+          {/* Tabs */}
           <div className="w-full flex flex-col md:flex-row md:space-x-6 mb-4">
-            <div className="flex items-center space-x-8">
-              <h3 className="text-base md:text-lg font-medium text-violet-600 border-b-4 border-violet-600 pb-2">All</h3>
-              <h3 className="text-base md:text-lg font-medium text-gray-400 pb-2">Games (2)</h3>
-              <h3 className="text-base md:text-lg font-medium text-gray-400 pb-2">Personal Task (2)</h3>
-              <h3 className="text-base md:text-lg font-medium text-gray-400 pb-2">Material (2)</h3>
+            <div className="flex items-center gap-10 border-b border-gray-300">
+              {tabs.map((tab) => (
+                <h3
+                  key={tab.label}
+                  onClick={() => setActiveTab(tab.label)}
+                  className={`text-sm sm:text-lg font-medium cursor-pointer pb-2 ${
+                    activeTab === tab.label ? 'text-violet-600 font-bold border-b-4 rounded border-violet-600' : 'text-gray-400'
+                  }`}
+                >
+                  {tab.label} {tab.count !== null && `(${tab.count})`}
+                </h3>
+              ))}
             </div>
           </div>
-          {[...Array(24)].map((_, i) => (
+
+          {paginatedData.map((task, i) => (
             <div
               key={i}
-              className="h-[80px] overflow-hidden flex flex-col md:flex-row items-center justify-between p-4 mb-4 border border-[#F1ECF8] hover:border-[#753CBD] rounded-xl space-y-4 md:space-y-0 md:space-x-4"
+              className="hide-scrollbar mb-5 overflow-x-scroll flex text-nowrap gap-16 items-center justify-between p-4 border border-[#F1ECF8] hover:border-[#753CBD] rounded-xl  "
             >
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 mt-1 sm:mt-2">
                 <img src="/img/profile.png" alt="Profile" className="w-[50px] h-[50px] md:w-[60px] md:h-[60px]" />
                 <div className="flex flex-col gap-1">
-                  <h3 className="text-[14px] md:text-[20px] font-normal">Task Name</h3>
-                  <div className="text-sm font-normal text-[#B1AFB3] -mt-1 flex items-center gap-1">
-                    <div className="w-[6px] h-[6px] rounded-full bg-[#753CBD] -mt-0.5"></div>Personal task
+                  <h3 className="text-lg font-normal">{task.taskName}</h3>
+                  <div className="text-base font-normal text-[#B1AFB3] -mt-1 flex items-center gap-1">
+                    <div className="w-[6px] h-[6px] rounded-full bg-[#753CBD] -mt-0.5"></div>
+                    {task.className}
                   </div>
                 </div>
               </div>
 
-              <div className="text-left md:text-center mt-2 md:mt-0">
-                <p className="text-lg text-green-600 font-normal">Class</p>
-                <p className="text-base font-normal text-gray-400 -mt-1">6</p>
+              <div className="text-left md:text-center ">
+                <p className="text-lg text-green-600 font-normal">{task.className}</p>
+                <p className="text-base font-normal text-gray-400 -mt-1">{task.sendDate}</p>
               </div>
 
-              <div className="text-left md:text-center mt-2 md:mt-0">
-                <p className="text-lg text-green-600 font-normal">Send</p>
-                <p className="text-base font-normal text-gray-400 -mt-1">May 20</p>
-              </div>
-
-              <div className="text-left md:text-center mt-2 md:mt-0">
+              <div className="text-left md:text-center ">
                 <p className="text-lg text-green-600 font-normal">Deadline</p>
-                <p className="text-base font-normal text-gray-400 -mt-1">May 20</p>
+                <p className="text-base font-normal text-gray-400 -mt-1">{task.deadline}</p>
               </div>
 
-              <div className="text-left md:text-center mt-2 md:mt-0">
+              <div className="text-left md:text-center ">
                 <p className="text-lg text-green-600 font-normal">Submitted</p>
-                <p className="text-base font-normal text-gray-400 -mt-1">May 20</p>
+                <p className="text-base font-normal text-gray-400 -mt-1">{task.submittedDate}</p>
               </div>
-              <div className="mt-2 md:mt-0">
+              <div className=" ">
                 <div className={'px-4 py-2 flex items-center gap-1.5 text-base font-medium text-[#22CC9B] bg-[#E9FAF5] rounded-md'}>
                   <div className="w-[6px] h-[6px] rounded-full bg-[#22CC9B] -mt-0.5"></div>
-                  Done
+                  {task.status}
                 </div>
               </div>
 
               <div className="w-full md:w-auto flex flex-col items-start md:items-center">
                 <div className="flex items-center gap-1">
                   <Image src="/assets/icons/star-icon.svg" alt="moji gurukul menu" width={24} height={24} />
-                  <p className="text-sm md:text-lg font-normal">2.55</p>
+                  <p className="text-sm md:text-lg font-normal">{task.rating}</p>
                 </div>
               </div>
 
               <div className="w-full md:w-auto flex items-center gap-4">
-                <Image src="/img/profile.png" alt="moji gurukul menu" width={40} height={40} className="md:w-[50px] md:h-[50px]" />
+                <Image
+                  src="/img/profile.png"
+                  alt="moji gurukul menu"
+                  width={40}
+                  height={40}
+                  className="min-w-[40px] min-h-[40px] md:w-[50px] md:h-[50px]"
+                />
                 <div className="flex flex-col gap-1">
-                  <h3 className="text-[14px] md:text-[20px] font-normal">Student Name</h3>
-                  <div className="text-sm font-normal text-[#B1AFB3] -mt-1">Student</div>
+                  <h3 className="text-lg font-normal">{task.studentName}</h3>
+                  <div className="text-base font-normal text-[#B1AFB3] -mt-1">{task.studentRole}</div>
                 </div>
               </div>
 
@@ -116,37 +165,41 @@ const Management = () => {
             </div>
           ))}
 
-          <div className="flex flex-col md:flex-row justify-between items-center mt-6">
-            <p className="text-[#B1AFB3] text-xl mb-4 md:mb-0">Total 5 Assignment</p>
-            <div className="flex flex-wrap items-center justify-center md:justify-end">
-              <CustomButton
-                variant="outlined"
-                color="white"
-                className="mr-2 md:mr-4  px-4 md:px-6 !border-[#753CBD] border-[1.5px] text-sm md:text-base text-violet-700 rounded-lg !w-[90px] md:!w-[100px] !h-8 md:!h-10 hover:opacity-80"
-                iconName={IconsEnum.LeftIcon}
+          <div className="flex w-full flex-col md:flex-row justify-between items-center mt-6">
+            <p className="text-[#B1AFB3] text-xl mb-4 md:mb-0 text-nowrap">Total {totalDataLength} Assignments</p>
+
+            <div className="w-full flex sm:flex-row gap-5 flex-col items-center justify-center md:justify-end">
+              <button
+                className="mr-2 md:mr-4 px-[16px] py-[7px] border-[1.5px] border-purple text-[16px] lg:text-[18px] font-[500] text-purple rounded-[15px] w-full sm:w-[150px] hover:opacity-80 flex items-center justify-center"
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
               >
+                <img src="/assets/icons/prev-arrow.png" alt="Previous" className="mr-2" />
                 Previous
-              </CustomButton>
+              </button>
 
+              <div className="w-full rounded-[15px] overflow-hidden flex items-center sm:w-fit h-fit bg-[#F1ECF8]">
+                {[...Array(totalPages)].map((_, index) => (
+                  <button
+                    key={index}
+                    className={`px-3 md:px-[20px] text-purple w-full flex text-nowrap items-center justify-center  md:!w-[50px] !h-8 md:!h-10 hover:opacity-80 ${
+                      index + 1 === currentPage ? '!bg-purple text-white rounded-[15px]' : '!bg-[#eeecfa] rounded-r-sm'
+                    }`}
+                    onClick={() => setCurrentPage(index + 1)}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+              </div>
 
-              {[1, 2, 3, 4].map((page) => (
-                <button
-                  key={page}
-                  className={`px-3 md:px-4 text-violet-500 !w-[40px] md:!w-[50px] !h-8 md:!h-10 hover:opacity-80 ${page === 1 ? '!bg-violet-600 text-white rounded-l-lg' : '!bg-[#eeecfa] rounded-r-sm'}`}
-                >
-                  {page}
-                </button>
-              ))}
-
-              <CustomButton
-                variant="outlined"
-                color="white"
-                className="ml-2 md:ml-4 px-4 md:px-6 !border-violet-700 border-[1.5px] text-sm md:text-base text-violet-700 rounded-lg !w-[70px] md:!w-[100px] !h-8 md:!h-10 hover:opacity-80"
-                iconName={IconsEnum.RightIcon}
-                iconPosition="end"
+              <button
+                className="ml-2 md:ml-4 px-[16px] py-[7px] border-[1.5px] border-purple text-[16px] lg:text-[18px] font-[500] text-purple rounded-[15px] hover:opacity-80 w-full sm:w-[150px] flex items-center justify-center"
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
               >
                 Next
-              </CustomButton>
+                <img src="/assets/icons/next-arrow.png" alt="Next" className="ml-2" />
+              </button>
             </div>
           </div>
         </div>
@@ -156,101 +209,3 @@ const Management = () => {
 }
 
 export default Management
-
-type FeatureType = {
-  id: number
-  title: string
-  content: string
-  icon: string
-  'title-te': string
-  'description-te': string
-}
-export const FEATURES: FeatureType[] = [
-  {
-    id: 1,
-    title: 'Assignments On Time',
-    content: 'Completed',
-    icon: '/assets/icons/assignment-progress.svg',
-    'title-te': 'గేమిఫైడ్ లెర్నింగ్',
-    'description-te': 'లెర్నింగ్ అనేది ఇంటరాక్టివ్ గేమ్‌లతో ఆడుకుంటున్నట్లు ఉండేలా మేము ఒక ప్రపంచాన్ని సృష్టించాము.',
-  },
-  {
-    id: 2,
-    title: 'Topics Completed',
-    content: 'Out of 50 Topic',
-    icon: '/assets/icons/assignment-progress.svg',
-    'title-te': 'పర్సనలైజ్డ్ లెర్నింగ్ మార్గాలు',
-    'description-te': 'ఏ రెండు కలలు ఒకేలా ఉండవు. అందుకే మా స్టూడెంట్స్ యొక్క కెరీర్ ఆశలకు అనుగుణంగా మా లెస్సన్ లను తీర్చిదిద్దుతాం.',
-  },
-  {
-    id: 3,
-    title: 'Improved  Numeracy',
-    content: 'Total',
-    icon: '/assets/icons/assignment-progress.svg',
-    'title-te': 'కార్యాచరణాత్మక ఇన్ సైట్ లు మరియు రిపోర్ట్ లు',
-    'description-te': 'మా సమగ్ర రిపోర్ట్ లు లెర్నింగ్ ప్రాసెస్ ను సులభతరం చేస్తాయి, ఖచ్చితమైన, ఆచరణాత్మక దశలను అందిస్తాయి.',
-  },
-  {
-    id: 4,
-    title: 'Improved Literacy',
-    content: 'Total',
-    icon: '/assets/icons/assignment-progress.svg',
-    'title-te': 'జీరో ప్రెషర్ అప్రోచ్',
-    'description-te': 'మా వినూత్నమైన 15 నిమిషాల రోజువారీ పాఠాలు లెర్నింగ్ ను గరిష్టంగా పెంచడానికి రూపొందించబడ్డాయి.',
-  },
-  {
-    id: 5,
-    title: 'Total Games Time',
-    content: '2 hour over the Limit',
-    icon: '/assets/icons/assignment-progress.svg',
-    'title-te': 'హోలిస్టిక్ గ్రోత్',
-    'description-te': 'స్టూడెంట్స్ ను లైఫ్ కోసం సిద్ధం చేసే స్కిల్స్ మరియు విలువలను పెంపొందించడానికి మేము విద్యకు మించి వెళ్తాము.',
-  },
-  {
-    id: 6,
-    title: 'Total Platform Time',
-    content: '1 Hour Bellow the Limit',
-    icon: '/assets/icons/assignment-progress.svg',
-    'title-te': 'షేర్డ్ లెర్నింగ్',
-    'description-te': 'మిమ్మల్ని వాళ్ళతో దగ్గర చేసే యాక్టివిటీ లు మరియు ఇన్ సైట్ లతో మీ పిల్లల విద్యా ప్రయాణంలో భాగం అవ్వండి.',
-  },
-]
-
-const options = [
-  {
-    name: 'Group',
-    value: '7',
-  },
-  {
-    name: 'Past 30 days',
-    value: '30',
-  },
-]
-
-const StudentStrength = [
-  {
-    id: '1',
-    name: 'Level 1',
-    image: '/assets/level-icon.svg',
-  },
-  {
-    id: '2',
-    name: 'Level 2',
-    image: '/assets/images/student/dashboard/game-2.svg',
-  },
-  {
-    id: '3',
-    name: 'Level 3',
-    image: '/assets/images/student/dashboard/game-1.svg',
-  },
-  {
-    id: '4',
-    name: 'Level 4',
-    image: '/assets/images/student/dashboard/game-2.svg',
-  },
-  {
-    id: '5',
-    name: 'Level 5',
-    image: '/assets/images/student/dashboard/game-1.svg',
-  },
-]
