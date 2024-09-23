@@ -1,4 +1,5 @@
-import React from 'react'
+import CustomInput from '@/components/common/CustomInput'
+import React, { useState } from 'react'
 import { TbClockHour3Filled } from 'react-icons/tb'
 
 interface Meeting {
@@ -13,146 +14,332 @@ interface ScheduleDay {
   meetings: Meeting[]
 }
 
-const allDays: ScheduleDay[] = [
-  { day: 'Sun', date: 'Jan 19', meetings: [] },
-  { day: 'Mon', date: 'Jan 20', meetings: [] },
-  { day: 'Tue', date: 'Jan 21', meetings: [] },
-  { day: 'Wed', date: 'Jan 22', meetings: [] },
-  { day: 'Thu', date: 'Jan 23', meetings: [] },
-  { day: 'Fri', date: 'Jan 24', meetings: [] },
-  { day: 'Sat', date: 'Jan 25', meetings: [] },
-]
-
 const sampleData: ScheduleDay[] = [
   {
-    day: 'Sun',
-    date: 'Jan 19',
-    meetings: [
-      { type: 'Meeting', time: '9.00-10.00', color: 'bg-[#E9FAF5] text-[#22CC9B]' },
-      { type: 'Meeting', time: '10.00-11.00', color: 'bg-[#EDF5FF] text-[#4D9EFA]' },
-    ],
-  },
-  {
     day: 'Mon',
-    date: 'Jan 20',
+    date: 'Jan 1',
     meetings: [
-      { type: 'Meeting', time: '9.00-10.00', color: 'bg-[#E9FAF5] text-[#22CC9B]' },
-      { type: 'Meeting', time: '10.00-11.00', color: 'bg-[#EDF5FF] text-[#4D9EFA]' },
+      { type: 'Project Review', time: '7.00-8.00', color: 'bg-[#EDF5FF] text-[#4D9EFA]' },
+      { type: 'Client Call', time: '9.00-10.00', color: 'bg-[#FFE1E1] text-[#FF4D4D]' },
     ],
   },
   {
     day: 'Tue',
-    date: 'Jan 21',
-    meetings: [
-      { type: 'Meeting', time: '9.00-10.00', color: 'bg-[#E9FAF5] text-[#22CC9B]' },
-      { type: 'Meeting', time: '10.00-11.00', color: 'bg-[#EDF5FF] text-[#4D9EFA]' },
-    ],
+    date: 'Jan 2',
+    meetings: [],
   },
   {
     day: 'Wed',
-    date: 'Jan 22',
-    meetings: [
-      { type: 'Meeting', time: '9.00-10.00', color: 'bg-[#E9FAF5] text-[#22CC9B]' },
-      { type: 'Meeting', time: '9.00-10.00', color: 'bg-[#EDF5FF] text-[#4D9EFA]' },
-    ],
+    date: 'Jan 3',
+    meetings: [{ type: 'Design Review', time: '7.00-8.00', color: 'bg-[#EDF5FF] text-[#4D9EFA]' }],
   },
   {
     day: 'Thu',
-    date: 'Jan 23',
-    meetings: [
-      { type: 'Meeting', time: '9.00-10.00', color: 'bg-[#E9FAF5] text-[#22CC9B]' },
-      { type: 'Meeting', time: '9.00-10.00', color: 'bg-[#EDF5FF] text-[#4D9EFA]' },
-    ],
+    date: 'Jan 4',
+    meetings: [],
   },
   {
     day: 'Fri',
-    date: 'Jan 24',
-    meetings: [
-      { type: 'Meeting', time: '9.00-10.00', color: 'bg-[#E9FAF5] text-[#22CC9B]' },
-      { type: 'Meeting', time: '9.00-10.00', color: 'bg-[#EDF5FF] text-[#4D9EFA]' },
-    ],
+    date: 'Jan 5',
+    meetings: [{ type: 'Client Call', time: '3.00-4.00', color: 'bg-[#FFE1E1] text-[#FF4D4D]' }],
   },
   {
     day: 'Sat',
-    date: 'Jan 25',
+    date: 'Jan 6',
+    meetings: [],
+  },
+  {
+    day: 'Sun',
+    date: 'Jan 7',
     meetings: [
-      { type: 'Meeting', time: '9.00-10.00', color: 'bg-[#E9FAF5] text-[#22CC9B]' },
-      { type: 'Meeting', time: '9.00-10.00', color: 'bg-[#EDF5FF] text-[#4D9EFA]' },
+      { type: 'Team Meeting', time: '9.00-10.00', color: 'bg-[#E9FAF5] text-[#22CC9B]' },
+      { type: 'Project Review', time: '10.00-11.00', color: 'bg-[#EDF5FF] text-[#4D9EFA]' },
     ],
+  },
+  {
+    day: 'Mon',
+    date: 'Jan 8',
+    meetings: [{ type: 'Client Call', time: '3.00-4.00', color: 'bg-[#FFE1E1] text-[#FF4D4D]' }],
+  },
+  {
+    day: 'Tue',
+    date: 'Jan 9',
+    meetings: [],
+  },
+  {
+    day: 'Wed',
+    date: 'Jan 10',
+    meetings: [],
+  },
+  {
+    day: 'Thu',
+    date: 'Jan 11',
+    meetings: [{ type: 'Team Sync', time: '10.00-11.00', color: 'bg-[#E9FAF5] text-[#22CC9B]' }],
+  },
+  {
+    day: 'Fri',
+    date: 'Jan 12',
+    meetings: [{ type: 'Client Meeting', time: '3.00-4.00', color: 'bg-[#FFE1E1] text-[#FF4D4D]' }],
+  },
+  {
+    day: 'Sat',
+    date: 'Jan 13',
+    meetings: [],
+  },
+  {
+    day: 'Sun',
+    date: 'Jan 14',
+    meetings: [{ type: 'Planning Session', time: '10.00-11.00', color: 'bg-[#E9FAF5] text-[#22CC9B]' }],
+  },
+  {
+    day: 'Mon',
+    date: 'Jan 15',
+    meetings: [],
+  },
+  {
+    day: 'Tue',
+    date: 'Jan 16',
+    meetings: [{ type: 'Client Call', time: '11.00-12.00', color: 'bg-[#FFE1E1] text-[#FF4D4D]' }],
+  },
+  {
+    day: 'Wed',
+    date: 'Jan 17',
+    meetings: [],
+  },
+  {
+    day: 'Thu',
+    date: 'Jan 18',
+    meetings: [],
+  },
+  {
+    day: 'Fri',
+    date: 'Jan 19',
+    meetings: [{ type: 'Meating', time: '3.00-4.00', color: 'bg-[#E9FAF5] text-[#22CC9B]' }],
+  },
+  {
+    day: 'Sat',
+    date: 'Jan 20',
+    meetings: [],
+  },
+  {
+    day: 'Sun',
+    date: 'Jan 21',
+    meetings: [{ type: 'Review Session', time: '10.00-11.00', color: 'bg-[#E9FAF5] text-[#22CC9B]' }],
+  },
+  {
+    day: 'Mon',
+    date: 'Jan 22',
+    meetings: [],
+  },
+  {
+    day: 'Tue',
+    date: 'Jan 23',
+    meetings: [],
+  },
+  {
+    day: 'Wed',
+    date: 'Jan 24',
+    meetings: [{ type: 'Planning Meeting', time: '10.00-11.00', color: 'bg-[#E9FAF5] text-[#22CC9B]' }],
+  },
+  {
+    day: 'Thu',
+    date: 'Jan 25',
+    meetings: [],
+  },
+  {
+    day: 'Fri',
+    date: 'Jan 26',
+    meetings: [{ type: 'Client Call', time: '3.00-4.00', color: 'bg-[#FFE1E1] text-[#FF4D4D]' }],
+  },
+  {
+    day: 'Sat',
+    date: 'Jan 27',
+    meetings: [],
+  },
+  {
+    day: 'Sun',
+    date: 'Jan 28',
+    meetings: [{ type: 'Weekly Sync', time: '10.00-11.00', color: 'bg-[#E9FAF5] text-[#22CC9B]' }],
+  },
+  {
+    day: 'Mon',
+    date: 'Jan 29',
+    meetings: [{ type: 'Final Review', time: '3.00-4.00', color: 'bg-[#FFE1E1] text-[#FF4D4D]' }],
+  },
+  {
+    day: 'Tue',
+    date: 'Jan 30',
+    meetings: [],
+  },
+  {
+    day: 'Wed',
+    date: 'Jan 31',
+    meetings: [],
   },
 ]
 
-const timeSlots = ['1.00-2.00', '2.00-3.00', '3.00-4.00'] // Time slots in GMT+06
-
-const convertToGMTPlus6 = (timeSlot: string): string => {
-  const [start, end] = timeSlot.split('-')
-  const [startHour, startMinute] = start.split('.').map(Number)
-  const [endHour, endMinute] = end.split('.').map(Number)
-
-  // Adjust the hours to GMT+06
-  const adjustHour = (hour: number) => (hour + 6) % 24
-
-  return `${adjustHour(startHour).toString().padStart(2, '0')}.${startMinute.toString().padStart(2, '0')}-${adjustHour(endHour).toString().padStart(2, '0')}.${endMinute.toString().padStart(2, '0')}`
-}
-
 const ScheduleGrid: React.FC = () => {
-  // Merge sampleData into allDays, ensuring all days are present
-  const mergedData = allDays.map((day) => {
-    const existingDay = sampleData.find((d) => d.day === day.day)
-    return existingDay || day
+  const [activeTab, setActiveTab] = useState<string>('Week')
+
+  const handleTabClick = (tab: string) => {
+    setActiveTab(tab)
+  }
+
+  const getDisplayedData = () => {
+    switch (activeTab) {
+      case 'Day':
+        return [sampleData[0]] // Show only the first day
+      case 'Week':
+        return sampleData.slice(0, 7) // Show the first week
+      case 'Month':
+        return sampleData // Show all days for the month
+      default:
+        return []
+    }
+  }
+
+  const displayedData = getDisplayedData()
+
+  const timeSlots = ['7.00-8.00', '8.00-9.00', '9.00-10.00', '10.00-11.00', '11.00-12.00', '3.00-4.00']
+
+  const groupedData = []
+  for (let i = 0; i < displayedData.length; i += 7) {
+    groupedData.push(displayedData.slice(i, i + 7))
+  }
+
+  const filledGroupedData = groupedData.map((week) => {
+    while (week.length < 7) {
+      week.push({ day: '', date: '', meetings: [] }) // Placeholder for empty cells
+    }
+    return week
   })
 
+  // Define the convertToGMTPlus6 function
+  const convertToGMTPlus6 = (timeSlot: string): string => {
+    const [start, end] = timeSlot.split('-')
+    const [startHour, startMinute] = start.split('.').map(Number)
+    const [endHour, endMinute] = end.split('.').map(Number)
+
+    const adjustHour = (hour: number) => (hour + 6) % 24
+
+    return `${adjustHour(startHour).toString().padStart(2, '0')}.${startMinute.toString().padStart(2, '0')}-${adjustHour(endHour).toString().padStart(2, '0')}.${endMinute.toString().padStart(2, '0')}`
+  }
+
   return (
-    <div className="w-full overflow-x-auto">
-      {/* Schedule grid container */}
-      <div className="grid grid-cols-8 border-collapse border border-[#F1ECF8] border-b-0">
-        {/* First row: GMT and Day labels */}
-        <div className="text-center py-[10px]">
-          <div className="text-gray-600 font-medium">GMT</div>
-          <div className="text-gray-400 text-sm">+06</div>
-        </div>
-        {mergedData.map((day, dayIndex) => (
-          <div key={dayIndex} className="text-center py-[10px] border border-b-0 border-[#F1ECF8]">
-            <div className="text-gray-600 font-medium">{day.day}</div>
-            <div className="text-gray-400 text-sm">{day.date}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* Time and Meeting rows */}
-      {timeSlots.map((timeSlot) => (
-        <div key={timeSlot} className="grid grid-cols-8 border-collapse border border-[#F1ECF8]">
-          {/* Time label */}
-          <div className="flex items-center justify-center py-8 border border-[#F1ECF8]">
-            <div className="text-gray-500 font-medium text-center">{convertToGMTPlus6(timeSlot)}</div>
-          </div>
-
-          {/* Meeting columns */}
-          {mergedData.map((day, dayIndex) => (
-            <div key={dayIndex} className="flex flex-col py-4 border border-[#F1ECF8]">
-              {/* Meetings */}
-              <div className="flex flex-col space-y-2">
-                {day.meetings.length > 0 ? (
-                  day.meetings.map((meeting, idx) => (
-                    <div key={idx} className={`p-[4px] rounded-[4px] text-left w-fit mx-auto ${meeting.color}`}>
-                      <span className="text-sm font-semibold">{meeting.type}</span>
-
-                      <div className="flex items-center justify-center gap-[4px]">
-                        <span className="min-w-[14px] min-h-[14px] h-[14px] w-[14px]">
-                          <TbClockHour3Filled size={14} />
-                        </span>
-                        <div className="text-xs font-[500] text-black">{meeting.time}</div>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="text-gray-400 text-sm text-center">No Meeting</div>
-                )}
-              </div>
-            </div>
+    <div className={`w-full ${activeTab === 'Month' ? 'overflow-x-auto' : ''}`}>
+      <div className="w-full flex justify-between flex-wrap lg:items-center gap-4 pb-[24px]">
+        <div className="flex items-center">
+          {['Day', 'Week', 'Month'].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => handleTabClick(tab)}
+              className={`cursor-pointer text-[16px] font-[500] leading-[16.41px] border-b ${activeTab === tab ? 'text-purple border-b-purple border-b-[4px]' : 'text-[#B1AFB3] border-b-[#D7D7D7]'} pb-[13px] px-[13px]`}
+            >
+              {tab}
+            </button>
           ))}
         </div>
-      ))}
+        <div className="w-full flex sm:w-fit items-center flex-wrap gap-[16px]">
+          <div className="w-full sm:w-auto">
+            <CustomInput
+              placeholder="Search here..."
+              type="search"
+              className="bg-white rounded-[8px] w-full sm:w-auto px-[12px] py-[11px] sm:py-0"
+            />
+          </div>
+          <button
+            className="bg-purple text-white px-[18px] py-[10px] rounded-[8px] uppercase w-full sm:w-fit text-[13px] tracking-[2%] leading-[20px]"
+            style={{
+              boxShadow: `
+                4px 4px 6px 0px #FFFFFF33 inset,
+                -4px -4px 6px 0px #FFFFFF29 inset,
+                4px 4px 6px 0px #00000029
+              `,
+            }}
+          >
+            CREATE SCHEDULE
+          </button>
+        </div>
+      </div>
+
+      <div className={`w-full flex ${activeTab === 'Month' ? 'overflow-x-auto' : ''}`}>
+        <div className="overflow-x-auto w-full">
+          <table
+            className={`${activeTab === 'Day' || activeTab === 'Week' ? 'min-w-[800px]' : 'min-w-[130px]'} border-collapse border border-[#F1ECF8]`}
+          >
+            <thead>
+              <tr>
+                {activeTab !== 'Month' && (
+                  <th className="py-[10px] min-w-[65px] border border-[#F1ECF8]">
+                    <div className="text-gray-600 font-medium">GMT</div>
+                    <div className="text-gray-400 text-sm">+06</div>
+                  </th>
+                )}
+                {filledGroupedData[0].map((day, index) => (
+                  <th key={index} className="min-w-[120px] py-[10px] border border-[#F1ECF8] text-center">
+                    <div className="text-gray-600 font-medium">{day.day}</div>
+                    <div className="text-gray-400 text-sm">{day.date}</div>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+
+            <tbody>
+              {/* Render for Day or Week tabs */}
+              {['Day', 'Week'].includes(activeTab)
+                ? timeSlots.map((timeSlot, slotIndex) => (
+                    <tr key={slotIndex} className="border border-t-0 border-[#F1ECF8]">
+                      <td className="min-w-[65px] py-8 border border-[#F1ECF8] text-center">
+                        <div className="text-gray-500 font-medium">{convertToGMTPlus6(timeSlot)}</div>
+                      </td>
+                      {filledGroupedData[0].map((day, dayIndex) => (
+                        <td key={dayIndex} className="min-w-[120px] border border-[#F1ECF8] py-4 px-2 text-center">
+                          {day.meetings.some((meeting) => meeting.time === timeSlot) ? (
+                            day.meetings
+                              .filter((meeting) => meeting.time === timeSlot)
+                              .map((meeting, idx) => (
+                                <div key={idx} className={`p-2 rounded-md w-fit mx-auto ${meeting.color}`}>
+                                  <span className="block text-sm font-semibold">{meeting.type}</span>
+                                  <div className="flex items-center justify-center gap-[4px]">
+                                    <TbClockHour3Filled size={14} />
+                                    <span className="text-xs font-[500] text-black">{meeting.time}</span>
+                                  </div>
+                                </div>
+                              ))
+                          ) : (
+                            <div className="text-gray-400 text-sm">{day.date ? 'No Meeting' : ''}</div>
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))
+                : /* Render for Month tab */
+                  filledGroupedData.map((week, weekIndex) => (
+                    <tr key={weekIndex} className="border border-t-0 border-[#F1ECF8]">
+                      {week.map((day, dayIndex) => (
+                        <td key={dayIndex} className="min-w-[120px] border border-[#F1ECF8] py-4 px-2 text-center">
+                          <div className="text-gray-400 text-sm">{day.date || ''}</div>
+                          {day.meetings.length > 0 ? (
+                            day.meetings.map((meeting, idx) => (
+                              <div key={idx} className={`p-2 rounded-md w-fit mx-auto ${meeting.color}`}>
+                                <span className="block text-sm font-semibold">{meeting.type}</span>
+                                <div className="flex items-center justify-center gap-[4px]">
+                                  <TbClockHour3Filled size={14} />
+                                  <span className="text-xs font-[500] text-black">{meeting.time}</span>
+                                </div>
+                              </div>
+                            ))
+                          ) : (
+                            <div className="text-gray-400 text-sm">{day.date ? 'No Meeting' : ''}</div>
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   )
 }

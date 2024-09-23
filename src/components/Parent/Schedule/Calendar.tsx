@@ -2,13 +2,43 @@
 import React, { useState } from 'react'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 
+// Helper function to get the number of days in a given month and year
+const getDaysInMonth = (month: number, year: number) => {
+  return new Date(year, month + 1, 0).getDate()
+}
+
 const Calendar = () => {
-  const [selectedDate, setSelectedDate] = useState<number | null>(null)
-  const daysInMonth = Array.from({ length: 31 }, (_, index) => index + 1)
+  const [selectedDate, setSelectedDate] = useState<number | null>(1)
+  const [currentMonth, setCurrentMonth] = useState<number>(0) // 0 = January, 11 = December
+  const [currentYear, setCurrentYear] = useState<number>(2024)
 
   const handleDateClick = (day: number) => {
     setSelectedDate(day)
   }
+
+  // Handle month/year change
+  const handleMonthChange = (direction: 'prev' | 'next') => {
+    if (direction === 'next') {
+      if (currentMonth === 11) {
+        setCurrentMonth(0)
+        setCurrentYear((prevYear) => prevYear + 1)
+      } else {
+        setCurrentMonth((prevMonth) => prevMonth + 1)
+      }
+    } else {
+      if (currentMonth === 0) {
+        setCurrentMonth(11)
+        setCurrentYear((prevYear) => prevYear - 1)
+      } else {
+        setCurrentMonth((prevMonth) => prevMonth - 1)
+      }
+    }
+    // Reset selected date when month changes
+    setSelectedDate(1)
+  }
+
+  const daysInMonth = getDaysInMonth(currentMonth, currentYear)
+  const daysArray = Array.from({ length: daysInMonth }, (_, index) => index + 1)
 
   // Array containing live session data
   const liveSessions = [
@@ -38,16 +68,33 @@ const Calendar = () => {
     },
   ]
 
+  const monthNames = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ]
+
   return (
-    <div className="p-[16px] lg:p-[24px] w-[30%] border border-[#E0E0E0] bg-white rounded-[8px]">
+    <div className="p-[16px] lg:p-[24px] w-full lg:w-[30%] border border-[#E0E0E0] bg-white rounded-[8px]">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-[18px] font-[500] text-[#0A0B26] leading-[19.87px] tracking-[2%]">January 2024</h2>
+        <h2 className="text-[18px] font-[500] text-[#0A0B26] leading-[19.87px] tracking-[2%]">
+          {monthNames[currentMonth]} {currentYear}
+        </h2>
         <div className="flex gap-[14px] text-purple-600">
-          <button className="text-purple">
+          <button className="text-purple" onClick={() => handleMonthChange('prev')}>
             <IoIosArrowBack size={16} />
           </button>
-          <button className="text-purple">
+          <button className="text-purple" onClick={() => handleMonthChange('next')}>
             <IoIosArrowForward size={16} />
           </button>
         </div>
@@ -61,12 +108,12 @@ const Calendar = () => {
       </div>
 
       {/* Dates */}
-      <div className="grid grid-cols-7 gap-2 text-center">
-        {daysInMonth.map((day) => (
+      <div className="grid grid-cols-7 gap-2 text-center justify-items-center">
+        {daysArray.map((day) => (
           <button
             key={day}
             onClick={() => handleDateClick(day)}
-            className={`pt-[5px] pb-[3px] text-[11px] w-full rounded-full transition ${
+            className={`min-w-[25px] max-w-[25px] flex max-h-[25px] min-h-[25px] text-xs flex items-center justify-center rounded-full transition ${
               selectedDate === day ? 'bg-purple text-white' : 'text-[#0A0B26] hover:bg-purple hover:bg-opacity-[0.6] hover:text-white'
             }`}
           >
