@@ -7,13 +7,12 @@ const getDaysInMonth = (month: number, year: number) => {
   return new Date(year, month + 1, 0).getDate()
 }
 
-const Calendar = () => {
-  const [selectedDate, setSelectedDate] = useState<number | null>(1)
+const Calendar = ({ selectedDay, setSelectedDay }: { selectedDay: number | null; setSelectedDay: (day: number) => void }) => {
   const [currentMonth, setCurrentMonth] = useState<number>(0) // 0 = January, 11 = December
   const [currentYear, setCurrentYear] = useState<number>(2024)
 
   const handleDateClick = (day: number) => {
-    setSelectedDate(day)
+    setSelectedDay(day)
   }
 
   // Handle month/year change
@@ -34,7 +33,7 @@ const Calendar = () => {
       }
     }
     // Reset selected date when month changes
-    setSelectedDate(1)
+    setSelectedDay(1)
   }
 
   const daysInMonth = getDaysInMonth(currentMonth, currentYear)
@@ -114,7 +113,7 @@ const Calendar = () => {
             key={day}
             onClick={() => handleDateClick(day)}
             className={`min-w-[25px] max-w-[25px] flex max-h-[25px] min-h-[25px] text-xs flex items-center justify-center rounded-full transition ${
-              selectedDate === day ? 'bg-purple text-white' : 'text-[#0A0B26] hover:bg-purple hover:bg-opacity-[0.6] hover:text-white'
+              selectedDay === day ? 'bg-purple text-white' : 'text-[#0A0B26] hover:bg-purple hover:bg-opacity-[0.6] hover:text-white'
             }`}
           >
             {day}
