@@ -280,15 +280,19 @@ const ScheduleGrid: React.FC<{
         </div>
       </div>
 
-      <div className={`w-full flex ${activeTab === 'Month' ? 'overflow-x-auto' : ''}`}>
+      <div
+        className={`w-full flex ${activeTab === 'Month' ? 'overflow-x-auto' : ''} ${activeTab === 'Week' ? 'overflow-y-auto md:h-[500px] h-[250px]' : ''}`}
+      >
         <div className={`w-full ${activeTab !== 'Week' ? (activeTab === 'Day' ? 'overflow-x-hidden' : 'overflow-x-auto') : ''}`}>
           <table
-            className={`${activeTab === 'Day' || activeTab === 'Week' ? 'min-w-[320px]' : 'min-w-[130px]'} w-full border-collapse border border-[#F1ECF8]`}
+            className={`${activeTab === 'Day' || activeTab === 'Week' ? 'min-w-[280px]' : 'min-w-[130px]'} w-full border-collapse border border-[#F1ECF8]`}
           >
             <thead>
               <tr>
                 {activeTab !== 'Month' && (
-                  <th className={`py-[10px] ${activeTab === 'Week' ? 'min-w-[10px]' : 'min-w-[65px]'} border border-[#F1ECF8]`}>
+                  <th
+                    className={`py-[10px] ${activeTab === 'Week' ? 'min-w-[10px]' : 'min-w-[65px] max-w-[65px]'} border border-[#F1ECF8]`}
+                  >
                     <div
                       className={`${activeTab === 'Week' ? 'xl:text-[16px] lg:text-[1.2vw] md:text-[1.6vw] sm:text-[1.4vw] text-[1.8vw]' : ''} text-gray-600 font-medium`}
                     >
@@ -301,23 +305,26 @@ const ScheduleGrid: React.FC<{
                     </div>
                   </th>
                 )}
-                {filledGroupedData[0].map((day, index) => (
-                  <th
-                    key={index}
-                    className={`${activeTab === 'Week' ? 'min-w-[10px]' : 'min-w-[120px]'} py-[10px] border border-[#F1ECF8] text-center`}
-                  >
-                    <div
-                      className={`${activeTab === 'Week' ? 'xl:text-[16px] lg:text-[1.2vw] md:text-[1.6vw] sm:text-[1.4vw] text-[1.8vw]' : ''} text-gray-600 font-medium`}
-                    >
-                      {day.day}
-                    </div>
-                    <div
-                      className={`${activeTab === 'Week' ? 'xl:text-sm lg:text-[1.2vw] md:text-[1.6vw] sm:text-[1.4vw] text-[1.8vw]' : 'text-sm'} text-gray-400`}
-                    >
-                      {day.date}
-                    </div>
-                  </th>
-                ))}
+                {filledGroupedData[0].map(
+                  (day, index) =>
+                    day.date ? ( // Check if day.date is available before rendering the <th>
+                      <th
+                        key={index}
+                        className={`${activeTab === 'Week' ? 'min-w-[10px]' : 'min-w-[120px]'} py-[10px] border border-[#F1ECF8] text-center`}
+                      >
+                        <div
+                          className={`${activeTab === 'Week' ? 'xl:text-[16px] lg:text-[1.2vw] md:text-[1.6vw] sm:text-[1.4vw] text-[1.8vw]' : ''} text-gray-600 font-medium`}
+                        >
+                          {day.day}
+                        </div>
+                        <div
+                          className={`${activeTab === 'Week' ? 'xl:text-sm lg:text-[1.2vw] md:text-[1.6vw] sm:text-[1.4vw] text-[1.8vw]' : 'text-sm'} text-gray-400`}
+                        >
+                          {day.date}
+                        </div>
+                      </th>
+                    ) : null // Don't render a <th> if day.date is not available
+                )}
               </tr>
             </thead>
 
@@ -327,74 +334,81 @@ const ScheduleGrid: React.FC<{
                 ? timeSlots.map((timeSlot, slotIndex) => (
                     <tr key={slotIndex} className="border border-t-0 border-[#F1ECF8]">
                       <td
-                        className={`${activeTab === 'Week' ? 'min-w-[10px] md:py-8 py-4' : 'min-w-[65px] py-8'} border border-[#F1ECF8] text-center`}
+                        className={`${activeTab === 'Week' ? 'min-w-[10px] md:py-8 py-4' : activeTab === 'Day' ? 'w-[120px] py-8' : 'min-w-[65px] py-8'} border border-[#F1ECF8] text-center`}
                       >
                         <div
-                          className={`${activeTab === 'Week' ? 'xl:text-[16px] lg:text-[1.2vw] md:text-[1.6vw] sm:text-[1.4vw] text-[1.8vw]' : ''} text-gray-500 font-medium`}
+                          className={`${activeTab === 'Week' ? 'xl:text-[16px] lg:text-[1.2vw] md:text-[1.6vw] sm:text-[1.4vw] text-[1.8vw] max-w-[50px]' : ''} text-gray-500 font-medium`}
                         >
                           {convertToGMTPlus6(timeSlot)}
                         </div>
                       </td>
-                      {filledGroupedData[0].map((day, dayIndex) => (
-                        <td
-                          key={dayIndex}
-                          className={`${activeTab === 'Week' ? 'min-w-[20px] sm:py-4 sm:px-2 py-0 px-0 min-h-[10px]' : 'min-w-[120px] py-4 px-2'} border border-[#F1ECF8] text-center`}
-                        >
-                          {day.meetings.some((meeting) => meeting.time === timeSlot) ? (
-                            day.meetings
-                              .filter((meeting) => meeting.time === timeSlot)
-                              .map((meeting, idx) => (
-                                <div
-                                  key={idx}
-                                  className={`${activeTab === 'Week' ? 'sm:p-2 p-1' : 'p-2'} rounded-md w-fit mx-auto ${meeting.color}`}
-                                >
-                                  <span
-                                    className={`block ${activeTab === 'Week' ? 'xl:text-sm lg:text-[1.2vw] md:text-[1.6vw] sm:text-[1.4vw] text-[1.8vw] min-w-[20px]' : ''} font-semibold`}
-                                  >
-                                    {meeting.type}
-                                  </span>
+                      {filledGroupedData[0].map((day, dayIndex) => {
+                        // Check if day.date is available before rendering the <td>
+                        return day.date ? (
+                          <td
+                            key={dayIndex}
+                            className={`${activeTab === 'Week' ? 'min-w-[20px] sm:py-4 sm:px-2 py-0 px-0 min-h-[10px]' : 'min-w-[120px] py-4 px-2'} border border-[#F1ECF8] text-center`}
+                          >
+                            {day.meetings.some((meeting) => meeting.time === timeSlot) ? (
+                              day.meetings
+                                .filter((meeting) => meeting.time === timeSlot)
+                                .map((meeting, idx) => (
                                   <div
-                                    className={`flex items-center justify-center ${activeTab === 'Week' ? 'xl:text-xs lg:text-[1.2vw] md:text-[1.6vw] sm:text-[1.4vw] text-[1.8vw] min-w-[20px] sm:gap-[4px]' : 'gap-[4px]'}`}
+                                    key={idx}
+                                    className={`${activeTab === 'Week' ? 'sm:p-2 p-1' : 'p-2'} rounded-md w-fit mx-auto ${meeting.color}`}
                                   >
-                                    <TbClockHour3Filled
-                                      className={`${activeTab === 'Week' ? 'xl:text-xs lg:text-[1.2vw] md:text-[1.6vw] sm:text-[1.4vw] text-[1.8vw] xl:mt-[-1px] sm:mt-[-2px] mt-[-1px]' : ''}`}
-                                    />
-                                    <span className="font-[500] text-black">{meeting.time}</span>
+                                    <span
+                                      className={`block ${activeTab === 'Week' ? 'xl:text-sm lg:text-[1.2vw] md:text-[1.6vw] sm:text-[1.4vw] text-[1.8vw] min-w-[20px]' : ''} font-semibold`}
+                                    >
+                                      {meeting.type}
+                                    </span>
+                                    <div
+                                      className={`flex items-center justify-center ${activeTab === 'Week' ? 'xl:text-xs lg:text-[1.2vw] md:text-[1.6vw] sm:text-[1.4vw] text-[1.8vw] min-w-[20px] sm:gap-[4px]' : 'gap-[4px]'}`}
+                                    >
+                                      <TbClockHour3Filled
+                                        className={`${activeTab === 'Week' ? 'xl:text-xs lg:text-[1.2vw] md:text-[1.6vw] sm:text-[1.4vw] text-[1.8vw] xl:mt-[-1px] sm:mt-[-2px] mt-[-1px]' : ''}`}
+                                      />
+                                      <span className="font-[500] text-black">{meeting.time}</span>
+                                    </div>
                                   </div>
-                                </div>
-                              ))
-                          ) : (
-                            <div
-                              className={`text-gray-400 ${activeTab === 'Week' ? 'xl:text-sm lg:text-[1.2vw] md:text-[1.6vw] sm:text-[1.4vw] text-[1.8vw] min-w-[20px]' : ''}`}
-                            >
-                              {day.date ? 'No Meeting' : ''}
-                            </div>
-                          )}
-                        </td>
-                      ))}
+                                ))
+                            ) : (
+                              <div
+                                className={`text-gray-400 ${activeTab === 'Week' ? 'xl:text-sm lg:text-[1.2vw] md:text-[1.6vw] sm:text-[1.4vw] text-[1.8vw] min-w-[20px]' : ''}`}
+                              >
+                                {day.date ? 'No Meeting' : ''}
+                              </div>
+                            )}
+                          </td>
+                        ) : null // Don't render a <td> if day.date is not available
+                      })}
                     </tr>
                   ))
                 : /* Render for Month tab */
                   filledGroupedData.map((week, weekIndex) => (
                     <tr key={weekIndex} className="border border-t-0 border-[#F1ECF8]">
-                      {week.map((day, dayIndex) => (
-                        <td key={dayIndex} className="min-w-[120px] border border-[#F1ECF8] py-4 px-2 text-center">
-                          <div className="text-gray-400 text-sm">{day.date || ''}</div>
-                          {day.meetings.length > 0 ? (
-                            day.meetings.map((meeting, idx) => (
-                              <div key={idx} className={`p-2 rounded-md w-fit mx-auto ${meeting.color}`}>
-                                <span className="block text-sm font-semibold">{meeting.type}</span>
-                                <div className="flex items-center justify-center gap-[4px]">
-                                  <TbClockHour3Filled size={14} />
-                                  <span className="text-xs font-[500] text-black">{meeting.time}</span>
-                                </div>
-                              </div>
-                            ))
-                          ) : (
-                            <div className="text-gray-400 text-sm">{day.date ? 'No Meeting' : ''}</div>
-                          )}
-                        </td>
-                      ))}
+                      {week.map(
+                        (day, dayIndex) =>
+                          // Check if day.date is available before rendering the <td>
+                          day.date ? (
+                            <td key={dayIndex} className="min-w-[120px] border border-[#F1ECF8] py-4 px-2 text-center">
+                              <div className="text-gray-400 text-sm">{day.date || ''}</div>
+                              {day.meetings.length > 0 ? (
+                                day.meetings.map((meeting, idx) => (
+                                  <div key={idx} className={`p-2 rounded-md w-fit mx-auto ${meeting.color}`}>
+                                    <span className="block text-sm font-semibold">{meeting.type}</span>
+                                    <div className="flex items-center justify-center gap-[4px]">
+                                      <TbClockHour3Filled size={14} />
+                                      <span className="text-xs font-[500] text-black">{meeting.time}</span>
+                                    </div>
+                                  </div>
+                                ))
+                              ) : (
+                                <div className="text-gray-400 text-sm">{day.date ? 'No Meeting' : ''}</div>
+                              )}
+                            </td>
+                          ) : null // Don't render a <td> if day.date is not available
+                      )}
                     </tr>
                   ))}
             </tbody>

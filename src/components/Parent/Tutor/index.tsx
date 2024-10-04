@@ -20,9 +20,18 @@ const Tutor = () => {
 
           <p className="text-regent-gray text-2xl leading-[120%] tracking-[0.45px]">Welcome back, nice to see you again!</p>
         </div>
-        <div className="bg-titan-white w-14 h-14 border-[1.5px] border-soft-blue rounded-lg flex justify-center items-center hover:opacity-80 cursor-pointer">
-          <Image src="/assets/icons/kebab-icon.svg" alt="moji gurukul menu" width={24} height={24} />
-        </div>
+        <button className="flex items-center bg-[#F1ECF8] justify-center md:min-w-[58px] md:min-h-[58px] min-h-[45px] min-w-[45px] md:w-[58px] w-[45px] md:h-[58px] h-[45px] rounded-lg border-[1.6px] border-purple text-purple hover:bg-purple-100">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="3.3"
+            className="md:w-[28px] w-[24px] md:h-[28px] h-[24px]"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v.01M12 12v.01M12 18v.01" />
+          </svg>
+        </button>
       </div>
 
       <div className="p-4 rounded-xl bg-white shadow-lg flex items-center justify-between w-full ">
