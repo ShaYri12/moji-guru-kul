@@ -1,5 +1,6 @@
 import React from 'react'
 import { RiSaveFill } from 'react-icons/ri'
+import './styles.css'
 
 const GameFlow = () => {
   const gameCards = [
@@ -43,7 +44,7 @@ const GameFlow = () => {
       </div>
 
       <div className="w-full bg-white p-[24px] flex flex-col lg:flex-row">
-        <div className="relative flex-grow flex flex-col lg:flex-row items-center justify-between relative mb-8 lg:mb-0">
+        <div className="relative flex-grow flex flex-col lg:flex-row items-center justify-between relative mb-0">
           <div className="absolute lg:left-0 left-1/2 lg:top-1/2  lg:w-full w-[2px] lg:h-[2px] h-full bg-[#D6D5D7] z-[1]"></div>
           {gameCards.map((game, index) => (
             <div key={index} className="relative">
@@ -78,22 +79,23 @@ const GameFlow = () => {
           ))}
         </div>
         <div className="w-full lg:max-w-[170px] lg:ml-[25px] flex-shrink-0">
-          <div className="p-[20px] border border-purple rounded-[7.46px]">
-            <div className="xl:px-[14px] flex flex-col items-center justify-center">
-              <h2 className="text-[16px] font-[600] text-blackish mb-[12px] text-center">4 Game In Flow</h2>
+          <div className="p-[20px] border border-purple rounded-[7.46px] relative">
+            <h2 className="text-[16px] font-[600] text-blackish mb-[12px] text-center">4 Game In Flow</h2>
+            <div className="xl:px-[14px] flex flex-col items-center justify-center relative z-[2]">
+              <div className="absolute left-1/2 w-[2px] h-full border-[1.7px] border-[#D6D5D7] border-dashed z-[1]"></div>
               {Array(4)
                 .fill(null)
                 .map((_, index) => (
                   <button
                     key={index}
-                    className="w-full mb-[22px] text-[16px] font-[500] w-max bg-white border border-purple text-purple px-[12px] py-[4px] rounded-[4px]"
+                    className="w-full mb-[22px] text-[16px] font-[500] w-max bg-white border border-purple text-purple px-[12px] py-[4px] rounded-[4px] relative z-[2]"
                   >
                     1 Word Search
                   </button>
                 ))}
-            </div>
-            <div className="text-center p-[4px] bg-[#F1ECF8] w-full rounded-[4.69px]">
-              <p className="text-[14px] font-[600] text-purple tracking-[2%]">Total Point 1200</p>
+              <div className="text-center p-[4px] bg-[#F1ECF8] w-full lg:max-w-[170px] max-w-[160px] mx-auto rounded-[4.69px] relative z-[2]">
+                <p className="text-[14px] font-[600] text-purple tracking-[2%]">Total Point 1200</p>
+              </div>
             </div>
           </div>
         </div>

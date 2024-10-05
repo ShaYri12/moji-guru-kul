@@ -1,0 +1,63 @@
+.game-small-icon {
+  width: 40px;
+  height: 40px;
+  left: calc(100% + 12%);
+}
+
+/* xl:left-[calc(100%+15%)] left-[calc(100%+1.5vw)] */
+@media screen and (max-width: 1279px) {
+  .game-small-icon {
+    left: calc(100% + 2.6vw);
+  }
+}
+
+@media screen and (max-width: 1248px) {
+  .game-small-icon {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media screen and (max-width: 1219px) {
+  .game-small-icon {
+    left: calc(100% + 2.2vw);
+  }
+}
+
+@media screen and (max-width: 1188px) {
+  .game-small-icon {
+    left: calc(100% + 2vw);
+  }
+}
+
+@media screen and (max-width: 1169px) {
+  .game-small-icon {
+    left: calc(100% + 1.6vw);
+  }
+}
+
+@media screen and (max-width: 1140px) {
+  .game-small-icon {
+    left: calc(100% + 1.2vw);
+  }
+}
+
+@media screen and (max-width: 1110px) {
+  .game-small-icon {
+    left: calc(100% + 0.8vw);
+  }
+}
+
+@media screen and (max-width: 1085px) {
+  .game-small-icon {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .game-small-icon {
+    display: flex;
+    left: 50.6%;
+    top: calc(100% - 38.8px);
+  }
+}

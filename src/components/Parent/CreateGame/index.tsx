@@ -72,12 +72,12 @@ const CreateGame = () => {
                 <h3
                   key={tab.label}
                   onClick={() => setActiveTab(tab.label)}
-                  className={`text-sm sm:text-lg font-medium cursor-pointer pb-2 border-b-4 ${
+                  className={`text-[11px] sm:text-normal md:text-lg font-medium cursor-pointer pb-2 border-b-4 w-max flex gap-1 ${
                     activeTab === tab.label ? 'text-[#2E2E2E] font-bold border-[#2E2E2E]' : 'text-[#737B8B] border-white'
                   }
-                  ${tab.label === 'All' ? 'px-[40px]' : 'px-[26px]'}`}
+                  ${tab.label === 'All' ? 'md:px-[40px] px-[5px]' : 'md:px-[26px] px-[6px]'}`}
                 >
-                  {tab.label} {tab.count && `(${tab.count})`}
+                  {tab.label} <span className="sm:flex hidden">{tab.count && `(${tab.count})`}</span>
                 </h3>
               ))}
             </div>
@@ -85,23 +85,23 @@ const CreateGame = () => {
 
           <div className="px-[24px] pb-[24px] space-y-[24px]">
             {/* Categories and Search */}
-            <div className="flex items-center gap-[16px] h-[56px]">
+            <div className="flex items-center flex-wrap gap-[16px] sm:h-[56px]">
               {/* Dropdown */}
               <div className="relative h-full">
                 <button
                   onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className="flex items-center justify-between w-[256px] h-full text-lite-black rounded-[8px] px-[14px] py-[10px] border border-[#F3F3F3] bg-[#F9F6FD]"
+                  className="flex items-center justify-between md:w-[256px] w-[190px] h-full text-lite-black rounded-[8px] px-[14px] sm:py-[10px] py-[4px] border border-[#F3F3F3] bg-[#F9F6FD]"
                 >
                   <div className="flex gap-[16px] items-center">
-                    <span className="min-w-[36px] min-h-[36px] flex items-center justify-center rounded-full bg-[#F1ECF8]">
-                      <img className="w-[20px] h-[20px]" src="/assets/icons/filter-icon.png" />
+                    <span className="md:min-w-[36px] min-w-[30px] md:min-h-[36px] min-h-[30px] flex items-center justify-center rounded-full bg-[#F1ECF8]">
+                      <img className="md:w-[20px] w-[16px] md:h-[20px] h-[16px]" src="/assets/icons/filter-icon.png" />
                     </span>
                     <div className="flex flex-col items-start space-y-[-3px]">
-                      <span className="text-[18px] font-[500] tracking-[0.7px]">Categories</span>
-                      <span className="text-[16px] text-[#928F95]">{selectedCategory}</span>
+                      <span className="md:text-[18px] sm:text-[16px] text-[13px] font-[500] tracking-[0.7px]">Categories</span>
+                      <span className="md:text-[16px] sm:text-[13px] text-[12px] text-[#928F95]">{selectedCategory}</span>
                     </div>
                   </div>
-                  <SlArrowDown size={14} className="text-purple" />
+                  <SlArrowDown size={14} className="text-purple md:w-[14px] w-[10px] md:h-[14px] h-[10px]" />
                 </button>
                 {dropdownOpen && (
                   <div className="absolute left-0 mt-2 w-[256px] bg-white rounded-lg shadow-lg border border-gray-200 z-[50]">
@@ -119,7 +119,7 @@ const CreateGame = () => {
               </div>
 
               {/* Search */}
-              <div className="flex-grow h-full">
+              <div className="flex-grow h-full min-w-[200px]">
                 <input
                   type="text"
                   placeholder="Search items"
@@ -135,7 +135,7 @@ const CreateGame = () => {
               {currentGames.map((game) => (
                 <div
                   key={game.id}
-                  className="flex flex-col items-center p-[16px] mb-12 lg:mb-0 relative z-10 rounded-[16px] gap-[16px]"
+                  className="flex flex-col items-center p-[16px] relative z-10 rounded-[16px] gap-[16px]"
                   style={{ boxShadow: '0px 0px 35.16px 0px #00000014' }}
                 >
                   <div className="relative h-[224px] rounded-[16px] overflow-hidden flex flex-col justify-center items-center">
@@ -169,11 +169,11 @@ const CreateGame = () => {
                     Previous
                   </button>
 
-                  <div className="rounded-[15px] overflow-hidden w-fit h-fit bg-[#F1ECF8]">
+                  <div className="md:rounded-[15px] rounded-[10px] overflow-hidden w-fit h-fit bg-[#F1ECF8]">
                     {[...Array(totalPages)].map((_, index) => (
                       <button
                         key={index}
-                        className={`px-3 md:px-[20px] text-purple !w-[40px] md:!w-[50px] !h-8 md:!h-10 hover:opacity-80 ${index + 1 === currentPage ? '!bg-purple text-white rounded-[15px]' : '!bg-[#eeecfa] rounded-r-sm'}`}
+                        className={`px-3 md:px-[20px] text-purple !w-[40px] md:!w-[50px] !h-8 md:!h-10 hover:opacity-80 ${index + 1 === currentPage ? '!bg-purple text-white md:rounded-[15px] rounded-[10px]' : '!bg-[#eeecfa] rounded-r-sm'}`}
                         onClick={() => setCurrentPage(index + 1)}
                       >
                         {index + 1}
