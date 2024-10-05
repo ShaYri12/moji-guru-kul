@@ -3,6 +3,7 @@ import React, { useState, ChangeEvent } from 'react'
 import GameFlow from './GameFlow'
 import { LuPlus } from 'react-icons/lu'
 import { SlArrowDown } from 'react-icons/sl'
+import Notes from './Notes'
 
 const CreateGame = () => {
   const tabs = [{ label: 'All' }, { label: 'Templet Flow', count: 2 }, { label: 'Saved Flow', count: 2 }, { label: 'Material', count: 2 }]
@@ -158,7 +159,7 @@ const CreateGame = () => {
             {/* Pagination */}
             {currentGames.length ? (
               <div className="flex flex-col md:flex-row justify-between items-center mt-6">
-                <p className="text-gray-600 mb-4 md:mb-0">Total {gamesData.length} Games</p>
+                <p className="text-gray-600 mb-4 md:mb-0 md:ps-[20px]">Total {gamesData.length} Games</p>
                 <div className="flex flex-wrap items-center justify-center md:justify-end">
                   <button
                     className="mr-2 md:mr-4 px-[16px] py-[7px] border-[1.5px] border-purple text-[16px] lg:text-[18px] font-[500] text-purple rounded-[15px] w-fit hover:opacity-80 flex items-center justify-center"
@@ -192,6 +193,8 @@ const CreateGame = () => {
             ) : (
               <h2 className="text-[18px]">No Game Found</h2>
             )}
+
+            <Notes />
           </div>
         </div>
       </div>
