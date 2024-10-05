@@ -30,6 +30,7 @@ const RegisterEducatorLayout = ({ children }: RegisterEducatorLayoutProps) => {
   const errorState = useErrorStore((state) => state)
   const setAlert = useErrorStore((state) => state.setAlert)
   const loading = useEducatorStore((state) => state.loading)
+  const { setInvalidEmail } = useErrorStore()
 
   //! Handle error
   const handleError = () => {
@@ -41,6 +42,14 @@ const RegisterEducatorLayout = ({ children }: RegisterEducatorLayoutProps) => {
       if (!educator.email) {
         errorState.setRequired(true)
         return false
+      }
+      if (educator.email) {
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+        if (!emailRegex.test(educator.email)) {
+          errorState.setRequired(true)
+          setInvalidEmail(true)
+          return false
+        }
       }
       if (educator.phoneNumber.length < 10) {
         errorState.setRequired(true)
@@ -140,7 +149,7 @@ const RegisterEducatorLayout = ({ children }: RegisterEducatorLayoutProps) => {
       case RegisterEducatorSteps.PasswordScreen:
         return "Set your account's password"
       case RegisterEducatorSteps.AgeScreen:
-        return 'Set Your Age'
+        return ''
       case RegisterEducatorSteps.AddressScreen:
         return 'Set Your Address'
       case RegisterEducatorSteps.ExperienceScreen:
@@ -152,7 +161,7 @@ const RegisterEducatorLayout = ({ children }: RegisterEducatorLayoutProps) => {
 
   return (
     <div className="flex flex-col items-center w-full p-6 h-full">
-      <div className="flex relative">
+      <div className="flex relative h-14">
         <h5 className={classNames(raleway.className, 'heading pb-6 text-primary')}>{heading(currentStep)}</h5>
       </div>
       <div className="w-[80%] relative">
@@ -166,6 +175,7 @@ const RegisterEducatorLayout = ({ children }: RegisterEducatorLayoutProps) => {
           <StepBar />
         </div>
         <div className="w-full flex flex-col items-center">{children}</div>
+        {currentStep === RegisterEducatorSteps.AgeScreen && <h5 className="heading pb-6 text-primary text-center">Set Your Age</h5>}
         <CustomButton onClick={() => handleStepNext(currentStep)} className="!w-[200px]" loading={loading}>
           {RegisterEducatorSteps.ExperienceScreen === currentStep ? 'Done' : 'Next'}
         </CustomButton>

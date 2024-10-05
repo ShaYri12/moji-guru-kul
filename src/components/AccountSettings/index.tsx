@@ -12,8 +12,10 @@ import { useErrorStore } from '@/store/errorStore'
 import LanguagePreference from './LanguagePreference'
 import { useLocationStore } from '@/store/locationStore'
 import { CityTypes, CountryTypes, ProfileTypes } from '@/utils/types'
+import { useRouter } from 'next/navigation'
 
 const AccountSettings = () => {
+  const router = useRouter()
   const user = useAuthStore((state) => state.user)
   const { activeAccountSetting, profileState, setProfileDetails, setActiveAccountSetting, getProfileDetails } = useAccountStore()
   const getCountries = useLocationStore((state) => state.getCountries)
@@ -89,6 +91,7 @@ const AccountSettings = () => {
                 key={item.id}
                 className="underline underline-offset-4 text-base font-light cursor-pointer"
                 onClick={() => {
+                  if ((item.id === AccountSettingsEnum.Subscription)) return router.push('/subscription')
                   setActiveAccountSetting(item.id)
                 }}
               >

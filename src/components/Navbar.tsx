@@ -54,12 +54,16 @@ const Navbar = () => {
             alt="moji gurukul"
             width={183}
             height={44}
-            className="w-24 h-7 md:w-auto md:h-auto cursor-pointer"
-            onClick={() => router.push('/')}
+            className={classNames('w-24 h-7 md:w-auto md:h-auto cursor-pointer', {
+              '!cursor-default': token,
+            })}
+            onClick={() => {
+              if (token) return
+              router.push('/')
+            }}
           />
           <div className="hidden cursor-pointer lg:flex gap-12 items-center">
             <>
-              {/* ROUTES have isProtected true and false if token is available then show isProtected routes other wise show false ones */}
               {ROUTES.filter((route) => route.isProtected === !!token && user?.role.toLocaleLowerCase() !== RolesEnum.Ambassador).map(
                 (route) => (
                   <Link

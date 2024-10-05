@@ -29,6 +29,7 @@ const RegisterStudentLayout = ({ children }: RegisterStudentLayoutProps) => {
   const errorState = useErrorStore((state) => state)
   const loading = useStudentStore((state) => state.loading)
   const setAlert = useErrorStore((state) => state.setAlert)
+  const { notify, setNotify, setInvalidEmail } = useErrorStore()
 
   //! Handle error
   const handleError = () => {
@@ -44,6 +45,14 @@ const RegisterStudentLayout = ({ children }: RegisterStudentLayoutProps) => {
       if (!student.email) {
         errorState.setRequired(true)
         return false
+      }
+      if (student.email) {
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+        if (!emailRegex.test(student.email)) {
+          errorState.setRequired(true)
+          setInvalidEmail(true)
+          return false
+        }
       }
       if (student.phoneNumber.length < 10) {
         errorState.setRequired(true)
@@ -77,13 +86,22 @@ const RegisterStudentLayout = ({ children }: RegisterStudentLayoutProps) => {
         errorState.setRequired(true)
         return false
       }
+      if (student.password) {
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/
+        if (!passwordRegex.test(student.password)) {
+          errorState.setRequired(true)
+          setNotify(true)
+          return false
+        }
+      }
       if (!student.confirmPassword) {
         errorState.setRequired(true)
         return false
       }
       if (student.password !== student.confirmPassword) {
         errorState.setRequired(true)
-        setStudent({ ...student, confirmPassword: '' })
+        setNotify(true)
+        // setStudent({ ...student, confirmPassword: '' })
         return false
       }
     }
@@ -154,7 +172,7 @@ const RegisterStudentLayout = ({ children }: RegisterStudentLayoutProps) => {
       case RegisterStudentSteps.GradeScreen:
         return 'What grade are you in?'
       case RegisterStudentSteps.AgeScreen:
-        return 'Set Your Age'
+        return ''
       case RegisterStudentSteps.AddressScreen:
         return 'What’s your current destination?'
       default:
@@ -164,8 +182,8 @@ const RegisterStudentLayout = ({ children }: RegisterStudentLayoutProps) => {
 
   return (
     <div className="flex flex-col items-center w-full p-6 h-full">
-      <div className="flex relative">
-        <h5 className={classNames(raleway.className, 'heading pb-6 text-primary')}>{heading(currentStep)}</h5>
+      <div className="flex relative min-h-14">
+        <h5 className="heading pb-6 text-primary">{heading(currentStep)}</h5>
       </div>
       <div className="w-[80%] relative">
         <div className="absolute -left-11 md:left-2 -top-14 cursor-pointer">
@@ -178,6 +196,7 @@ const RegisterStudentLayout = ({ children }: RegisterStudentLayoutProps) => {
           <StepBar />
         </div>
         <div className="w-full flex flex-col items-center">{children}</div>
+        {currentStep === RegisterStudentSteps.AgeScreen && <h5 className="heading pb-6 text-primary text-center">Set Your Age</h5>}
         <CustomButton onClick={() => handleStepNext(currentStep)} className="!w-[200px]" loading={loading}>
           {RegisterStudentSteps.AddressScreen === currentStep ? 'Done' : 'Next'}
         </CustomButton>

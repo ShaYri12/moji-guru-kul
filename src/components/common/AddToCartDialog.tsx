@@ -12,6 +12,7 @@ interface AddToCartDialogProps {
     price: number;
     image?: string;
     quantity: number;
+    categoryId:number;
   };
 }
 
@@ -27,6 +28,7 @@ const AddToCartDialog: React.FC<AddToCartDialogProps> = ({ open, onClose, produc
       quantity: quantity,
       image: product.image,
       maxQuantity: product.quantity,  
+      categoryId:product.categoryId
     });
     onClose(true);
   };

@@ -8,6 +8,7 @@ import { useStudentStore } from '@/store/studentStore'
 import { useErrorStore } from '@/store/errorStore'
 import { GENDER } from '@/utils/constants'
 import classNames from 'classnames'
+import SelectOption from '@/components/common/SelectOption'
 
 const InitialStudentInfo = () => {
   const [countryCode, setCountryCode] = React.useState('+91')
@@ -17,7 +18,7 @@ const InitialStudentInfo = () => {
   const setStudent = useStudentStore((state) => state.setStudent)
   const setRequired = useErrorStore((state) => state.setRequired)
   const getSyllabuses = useStudentStore((state) => state.getSyllabuses)
-  const isRequired = useErrorStore((state) => state.isRequired)
+  const { isRequired, invalidEmail, setInvalidEmail } = useErrorStore()
 
   useEffect(() => {
     setRequired(false)
@@ -33,6 +34,7 @@ const InitialStudentInfo = () => {
           label="First Name"
           value={student.firstName}
           onChange={(e) => {
+            if (!/^[a-zA-Z]*$/.test(e.target.value)) return
             setStudent({ ...student, firstName: e.target.value })
           }}
           placeholder="Enter your first name"
@@ -42,6 +44,7 @@ const InitialStudentInfo = () => {
           label="Last Name"
           value={student.lastName}
           onChange={(e) => {
+            if (!/^[a-zA-Z]*$/.test(e.target.value)) return
             setStudent({ ...student, lastName: e.target.value })
           }}
           placeholder="Enter your last name"
@@ -51,21 +54,32 @@ const InitialStudentInfo = () => {
           label="Email"
           value={student.email}
           onChange={(e) => {
+            const email = e.target.value
+            if (email.split('@').length > 2) return
+            if (email.split('@').length > 1 && email.split('@')[1].split('.').length > 2) return
+            if (email.length > 50) return
+            const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+            if (emailRegex.test(email)) {
+              setInvalidEmail(false)
+              setRequired(false)
+            }
             setStudent({ ...student, email: e.target.value })
           }}
           placeholder="Enter your email"
           type="email"
           error="Email is required"
+          invalidEmail={invalidEmail ? 'Invalid Email Format' : ''}
         />
         <div className="w-full">
           <label className="text-sm font-bold">Phone Number</label>
           <div
-            className={classNames('border border-sliver w-full pl-[18px] pr-[14px] flex items-center mt-1 h-11 rounded-2xl', {
+            className={classNames('border border-sliver w-full pl-[18px] pr-[14px] flex items-center mt-1 h-11 rounded-lg', {
               '!border-red-500': !student.phoneNumber && isRequired,
             })}
           >
             <input
               value={countryCode}
+              onChange={(e) => {}}
               className="bg-transparent border-none outline-none text-lg font-normal tracking-[-0.15px] leading-5 input-unset text-lite-black w-8"
             />
 
@@ -88,30 +102,15 @@ const InitialStudentInfo = () => {
             <p className={classNames('text-xs text-red-500 mt-1')}>Phone number must be 10</p>
           )}
         </div>
-        {/* <CustomInput
-          label="Phone Number"
-          value={student.phoneNumber}
-          onChange={(e) => {
-            //  add limit to 10 digit number
-            if (e.target.value.length > 10) return
-            setStudent({ ...student, phoneNumber: e.target.value })
-            // set +91 as default
-            // if (e.target.value.length === 0) {
-            //   setStudent({ ...student, phoneNumber: '+91' })
-            //   return
-            // }
-            // setStudent({ ...student, phoneNumber: e.target.value })
-          }}
-          placeholder="Enter your phone number"
-          type="tel"
-          error="Phone number is required"
-        /> */}
-        <CustomAutoComplete
+        <SelectOption
           label="Gender"
+          options={GENDER.map((x) => ({
+            name: x.name,
+            value: x.id.toString(),
+          }))}
+          value={student?.genderId?.toString() || ''}
+          handleChange={(val) => setStudent({ ...student, genderId: Number(val) })}
           placeholder="Select your gender"
-          options={GENDER}
-          value={student.genderId}
-          onChange={(e, value) => setStudent({ ...student, genderId: Number(value) })}
           error="Gender is required"
         />
         <CustomAutoComplete

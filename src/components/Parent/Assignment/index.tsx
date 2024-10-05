@@ -20,36 +20,20 @@ const Assignment = () => {
         return <AttachmentTab />
       case 'Video Explanation':
         return (
-          <div className="my-[32px] rounded-lg">
+          <div className="mt-4 p-4 bg-gray-100 rounded-lg">
             <div className="flex flex-wrap justify-center">
               {Videos.map((video, index) => (
-                <div key={index} className="relative w-full h-[392px] rounded-[15px] overflow-hidden">
-                  {/* Video Element */}
-                  <video
-                    src={video.videoPath}
-                    className="w-full h-full object-cover"
-                    id={`video-${index}`}
-                    controls={false} // Initially hiding controls
-                  />
-
-                  {/* Play Icon */}
-                  <div
-                    id={`play-icon-${index}`}
-                    className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 cursor-pointer group-hover:bg-opacity-50"
-                    onClick={() => {
-                      const videoElement = document.getElementById(`video-${index}`) as HTMLVideoElement
-                      const playIcon = document.getElementById(`play-icon-${index}`)
-
-                      if (videoElement && playIcon) {
-                        videoElement.play() // Start playing the video
-                        videoElement.controls = true // Show the controls
-                        playIcon.style.display = 'none' // Hide the play button
-                      }
-                    }}
-                  >
-                    <img src="/assets/icons/video-play-btn.png" alt="Play" className="w-[56px] h-[56px] rounded-full" />
-                  </div>
-                </div>
+                <VideoCard
+                  key={index}
+                  title={''}
+                  role={''}
+                  thumbnail={''}
+                  videoPath={video.videoPath}
+                  selected={selected === index}
+                  onClick={() => {
+                    setSelected(index)
+                  }}
+                />
               ))}
             </div>
           </div>
@@ -64,7 +48,10 @@ const Assignment = () => {
 
   return (
     <div className="flex justify-center horizontal-spacing top-spacing">
-      <div className="rounded-[15px] overflow-hidden lg:mb-[100px] mb-[50px] w-9/12" style={{ boxShadow: '0px 0px 16px 0px #00000014' }}>
+      <div
+        className="rounded-[15px] overflow-hidden lg:mb-[100px] mb-[50px] w-full lg:w-9/12"
+        style={{ boxShadow: '0px 0px 16px 0px #00000014' }}
+      >
         <div className="flex justify-between items-center p-[24px] border-b-[#EEEEEE] border-b">
           <h1 className="text-[36px] font-[500] text-purple leading-[48px] tracking-[2%] flex-grow">Assignment</h1>
           <div className="w-[40] h-[40] rounded-xl flex justify-center items-center transition hover:opacity-80 cursor-pointer">
@@ -72,7 +59,7 @@ const Assignment = () => {
           </div>
         </div>
 
-        <div className="max-w-6xl mx-auto rounded-lg lg:py-[32px] py-[26px] lg:px-[40px] px-[20px]">
+        <div className="max-w-6xl mx-auto rounded-lg lg:py-[32px] py-[26px] lg:px-[40px] px-[14px]">
           {/* "New" badge */}
           <div className="flex items-center mb-[6px]">
             <span className="px-3 py-[5px] flex items-center rounded-[4px] justify-center text-base tracking-[2%] font-normal bg-[#EDF5FF] text-[#4D9EFA]">
@@ -101,8 +88,8 @@ const Assignment = () => {
             </div>
           </div>
 
-          <div className="flex flex-wrap lg:gap-[40px] md:gap-[30px] gap-[16px] w-full items-start justify-start py-[32px] border-b border-b-[#D3D2D2] bg-white space-y-4 md:space-y-0 md:space-x-4">
-            <div className="w-full md:w-auto flex flex-col items-start">
+          <div className="text-nowrap flex lg:gap-[40px] flex-wrap md:gap-[30px] gap-[16px] w-full items-start justify-between py-[32px] border-b border-b-[#D3D2D2] bg-white ">
+            <div className="w-auto flex flex-col items-start">
               <p className="text-[16px] md:text-[21px] md:leading-[36px] text-[#3D3842] font-[500] w-max">Created</p>
               <div className="flex items-center gap-[8px]">
                 <Image src="/assets/icons/calender-icon.png" alt="moji gurukul menu" width={20} height={20} />
@@ -110,7 +97,7 @@ const Assignment = () => {
               </div>
             </div>
 
-            <div className="w-full md:w-auto flex flex-col items-start">
+            <div className="w-auto flex flex-col items-start">
               <p className="text-[16px] md:text-[21px] md:leading-[36px] text-[#3D3842] font-[500] w-max">Deadline</p>
               <div className="flex items-center gap-[8px]">
                 <Image src="/assets/icons/calender-icon.png" alt="moji gurukul menu" width={24} height={24} />
@@ -118,7 +105,7 @@ const Assignment = () => {
               </div>
             </div>
 
-            <div className="w-full md:w-auto flex flex-col items-start">
+            <div className="w-auto flex flex-col items-start">
               <p className="text-[16px] md:text-[21px] md:leading-[36px] text-[#3D3842] font-[500] w-max">Total Point</p>
               <div className="flex items-center gap-[8px]">
                 <Image src="/assets/icons/star-icon.png" alt="moji gurukul menu" width={22} height={22} />
@@ -126,7 +113,7 @@ const Assignment = () => {
               </div>
             </div>
 
-            <div className="w-full md:w-auto flex flex-col items-start">
+            <div className="w-auto flex flex-col items-start">
               <p className="text-[16px] md:text-[21px] md:leading-[36px] text-[#3D3842] font-[500] w-max">Total Point</p>
               <div className="flex items-center gap-[8px]">
                 <Image src="/assets/icons/star-icon.png" alt="moji gurukul menu" width={22} height={22} />
@@ -134,7 +121,7 @@ const Assignment = () => {
               </div>
             </div>
 
-            <div className="w-full md:w-auto flex flex-col items-start">
+            <div className="w-auto flex flex-col items-start">
               <p className="text-[16px] md:text-[21px] md:leading-[36px] text-[#3D3842] font-[500] w-max">Group</p>
               <div className="relative flex space-x-[-11px]">
                 {imageData.slice(0, maxImagesToShow).map((image, index) => (
@@ -162,34 +149,34 @@ const Assignment = () => {
           <div className="md:my-[32px] my-[20px]">
             <label className="text-[22px] md:text-[32px] md:leading-[38.4px] font-[500] text-purple flex-grow">Description</label>
             <div className="w-full md:text-[20px] rounded-[15px] text-[16px] lg:p-[24px] p-[20px] text-[#928F95] bg-[#FAF8FC] mt-[16px]">
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy
-              text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&apos;s standard
+              dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
             </div>
           </div>
 
           <div className="my-[20px] md:my-[32px] border-b border-b-[#D3D2D2]">
             {/* Tab Menu */}
-            <div className="flex flex-col space-y-4 sm:flex-row sm:space-x-8 sm:space-y-0 border-b border-gray-200">
+            <div className="flex gap-4 sm:space-x-8 sm:space-y-0 border-b border-gray-200">
               <button
                 onClick={() => setActiveTab('Comments')}
-                className={`pb-[8px] text-[22px] md:text-[28px] text-purple font-[500] ${
-                  activeTab === 'Comments' ? 'border-b-[4px] border-purple' : ''
+                className={` text-base sm:text-[22px] md:text-[28px] text-purple font-[500] ${
+                  activeTab === 'Comments' ? 'border-b-[4px] border-purple pb-1' : 'pb-1.5'
                 }`}
               >
                 Comments
               </button>
               <button
                 onClick={() => setActiveTab('Attachment')}
-                className={`pb-[8px] text-[22px] md:text-[28px] text-purple font-[500] ${
-                  activeTab === 'Attachment' ? 'border-b-[4px] border-purple' : ''
+                className={`text-base sm:text-[22px] md:text-[28px] text-purple font-[500] ${
+                  activeTab === 'Attachment' ? 'border-b-[4px] border-purple pb-1' : 'pb-1.5'
                 }`}
               >
                 Attachment
               </button>
               <button
                 onClick={() => setActiveTab('Video Explanation')}
-                className={`pb-[8px] text-[22px] md:text-[28px] text-purple font-[500] ${
-                  activeTab === 'Video Explanation' ? 'border-b-[4px] border-purple' : ''
+                className={`text-base sm:text-[22px] md:text-[28px] text-purple font-[500] ${
+                  activeTab === 'Video Explanation' ? 'border-b-[4px] border-purple pb-1' : 'pb-1.5'
                 }`}
               >
                 Video Explanation

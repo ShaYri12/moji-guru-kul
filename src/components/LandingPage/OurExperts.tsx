@@ -86,7 +86,7 @@ const OurExperts = () => {
               }}
             >
               <div className="flex gap-4 items-center">
-                <Image src={tutor.image} alt={tutor.title} width={56} height={56} />
+                <Image src={tutor.image} alt={tutor.title} width={56} height={56} className='rounded-full w-[56px] h-[56px] object-cover' />
                 <div>
                   <p className="text-lite-black text-lg md:text-2xl font-normal leading-[150%] tracking-[0.48px]">{tutor.title}</p>
                   <p className="text-slate text-sm md:text-xl font-normal leading-[150%] tracking-[0.4px]">{tutor.role}</p>
@@ -132,7 +132,7 @@ const TutorsData = [
     rating: 4.8,
     reviews: '380',
     totalStudent: '1k',
-    image: '/assets/images/landing-page/teacher1.svg',
+    image: '/assets/images/landing-page/female-tutor.jpg',
     thumbnail: '/assets/images/landing-page/female-tutor.jpg',
   },
   {
@@ -141,7 +141,7 @@ const TutorsData = [
     rating: 4.9,
     reviews: '250',
     totalStudent: '2k',
-    image: '/assets/images/landing-page/teacher2.svg',
+    image: '/assets/images/landing-page/male-tutor.jpg',
     thumbnail: '/assets/images/landing-page/male-tutor.jpg',
   },
   {
@@ -150,7 +150,7 @@ const TutorsData = [
     rating: 4.8,
     reviews: '180',
     totalStudent: '1k',
-    image: '/assets/images/landing-page/teacher3.svg',
+    image: '/assets/images/landing-page/story1-thumbnail.png',
     thumbnail: '/assets/images/landing-page/story1-thumbnail.png',
   },
 ]

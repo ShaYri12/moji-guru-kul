@@ -40,8 +40,8 @@ const GameFlow = ({ tutors, tutorGames }: GameFlowProps) => {
   const isScienceSubjectCompleted = useGameStore((state) => state.isScienceSubjectCompleted)
   const points = usePointStore((state) => state.points)
   const getPoints = usePointStore((state) => state.getPoints)
-  const milestones = useMilestoneStore((state) => state.milestones)
-  const getMilestones = useMilestoneStore((state) => state.getMilestones)
+  // const milestones = useMilestoneStore((state) => state.milestones)
+  // const getMilestones = useMilestoneStore((state) => state.getMilestones)
   const setIsBasic = useGameStore((state) => state.setIsBasic)
   const unlockMilestone = useMilestoneStore((state) => state.unlockMilestone)
   // const activeMilestone = useMilestoneStore((state) => state.activeMilestone)
@@ -61,7 +61,6 @@ const GameFlow = ({ tutors, tutorGames }: GameFlowProps) => {
     getSubscriptions()
     getPoints()
     getGameRewards()
-    getMilestones()
     getPersonalMilestones(user.id)
   }, [user])
 

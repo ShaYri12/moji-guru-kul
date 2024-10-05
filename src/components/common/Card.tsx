@@ -21,7 +21,7 @@ const Card: React.FC<CardProps> = ({ points, price }) => {
       </div>
       <Link href="/cart" className='w-full'>
         <button className="text-white w-full py-2 rounded-lg text-[14px] flex justify-between items-center px-4 bg-purple shadow-lg">
-          Add to cart <span>${price}</span>
+          Add to cart <span> ${price}</span>
         </button>
       </Link>
     </div>

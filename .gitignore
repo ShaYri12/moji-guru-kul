@@ -4,5 +4,3 @@ out
 public/buildUnity
 src/app/[locale]/test.ts
 .env
-
-.vercel

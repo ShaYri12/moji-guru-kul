@@ -10,6 +10,7 @@ import { useAuthStore } from '@/store/authStore'
 import { GENDER, GRADES } from '@/utils/constants'
 import { useErrorStore } from '@/store/errorStore'
 import { AccountSettingsEnum } from '@/utils/enum'
+import SelectOption from '../common/SelectOption'
 
 const StudentProfile = () => {
   const { user } = useAuthStore()
@@ -65,6 +66,7 @@ const StudentProfile = () => {
           label="First Name"
           value={profileState.firstName}
           onChange={(e) => {
+            if (!/^[a-zA-Z]*$/.test(e.target.value)) return
             setProfileDetails({ ...profileState, firstName: e.target.value })
           }}
         />
@@ -72,6 +74,7 @@ const StudentProfile = () => {
           label="Last Name"
           value={profileState.lastName}
           onChange={(e) => {
+            if (!/^[a-zA-Z]*$/.test(e.target.value)) return
             setProfileDetails({ ...profileState, lastName: e.target.value })
           }}
         />
@@ -109,12 +112,23 @@ const StudentProfile = () => {
             !countries?.find((country) => country.name.toLocaleLowerCase() === profileDetails.country.toString().toLocaleLowerCase())
           }
         />
-        <CustomAutoComplete
+        {/* <CustomAutoComplete
           label="Gender"
           placeholder="Select your gender"
           options={GENDER}
           value={profileState.genderId}
           onChange={(e, value) => setProfileDetails({ ...profileState, genderId: Number(value) })}
+          error="Gender is required"
+        /> */}
+        <SelectOption
+          label="Gender"
+          options={GENDER.map((x) => ({
+            name: x.name,
+            value: x.id.toString(),
+          }))}
+          value={profileState?.genderId?.toString() || ''}
+          handleChange={(val) => setProfileDetails({ ...profileState, genderId: Number(val) })}
+          placeholder="Select your gender"
           error="Gender is required"
         />
         <CustomAutoComplete

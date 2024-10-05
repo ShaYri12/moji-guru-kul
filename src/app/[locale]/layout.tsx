@@ -8,7 +8,6 @@ import Footer from '@/components/common/Footer'
 import { GoogleTagManager } from '@next/third-parties/google'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import { cookies } from 'next/headers'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import Script from 'next/script'
@@ -27,15 +26,7 @@ export default async function RootLayout({
   children: React.ReactNode
   params: { locale: string }
 }>) {
-  const token = cookies().get('token')?.value
-
   const host = process.env.NEXT_PUBLIC_ENV
-
-
-  console.log("NEXT_PUBLIC_ENV--------!!!!!!!!!!!!!", process.env.NEXT_PUBLIC_ENV)
-
-  console.log('host in layout-------notoSansTelugu----', host)
-
 
   const messages = await getMessages()
 

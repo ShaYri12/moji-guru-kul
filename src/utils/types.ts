@@ -175,6 +175,7 @@ export type UserTypes = {
   razorPlanIds: []
   highestStreak: number
   isPermanent: boolean
+  points?: number;
 }
 
 export type TopicsResponseTypes = {

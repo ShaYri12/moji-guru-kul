@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import axios from 'axios'
 import { useErrorStore } from './errorStore'
+import { networkService } from '@/network/NetworkService'
 
 export interface CartItem {
   id: number
@@ -10,6 +11,7 @@ export interface CartItem {
   quantity: number
   image?: string
   maxQuantity: number
+  categoryId: number
 }
 
 export interface Address {
@@ -35,6 +37,7 @@ interface City {
 }
 
 interface CartStore {
+  userId: number | null
   items: CartItem[]
   addresses: Address[]
   currentAddress: Address
@@ -42,9 +45,10 @@ interface CartStore {
   cities: City[]
   isLoadingStates: boolean
   isLoadingCities: boolean
+  setUserId: (userId: number) => void
   fetchStates: () => Promise<void>
   fetchCities: (stateId: number) => Promise<void>
-  addItem: (item: CartItem) => void
+  addItem: (item: CartItem) => Promise<void>
   removeItem: (id: number) => void
   updateItemQuantity: (id: number, quantity: number) => void
   setCurrentAddress: (address: Address) => void
@@ -53,11 +57,13 @@ interface CartStore {
   clearCart: () => void
   getTotalPrice: () => number
   getTotalItems: () => number
+  validateCoupon: (couponCode: string) => Promise<any>
 }
 
 export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
+      userId: null,
       items: [],
       addresses: [],
       currentAddress: {
@@ -75,7 +81,8 @@ export const useCartStore = create<CartStore>()(
       cities: [],
       isLoadingStates: false,
       isLoadingCities: false,
-      addItem: (item) =>
+      setUserId: (userId) => set({ userId }),
+      addItem: async (item) => {
         set((state) => {
           const existingItem = state.items.find((i) => i.id === item.id)
           if (existingItem) {
@@ -86,17 +93,79 @@ export const useCartStore = create<CartStore>()(
             }
           }
           return { items: [...state.items, item] }
-        }),
-      updateItemQuantity: (id, quantity) =>
-        set((state) => ({
-          items: state.items
-            .map((item) => (item.id === id ? { ...item, quantity: Math.min(Math.max(quantity, 0), item.maxQuantity) } : item))
-            .filter((item) => item.quantity > 0),
-        })),
+        })
+
+        // Call the API to add the order
+        try {
+          const response = await networkService.post({
+            url: 'https://devapi.nukulum.com/api/shop/add-order',
+            data: {
+              id: 0,
+              extraName: item.name,
+              isCompleted: false,
+              quantity: item.quantity,
+              price: item.price,
+              itemId: item.id,
+              itemCategoryId: item.categoryId,
+            },
+          })
+
+          if (response.status !== 200) {
+            throw new Error('Failed to add order to API')
+          }
+
+          // You can handle the API response here if needed
+          console.log('Order added successfully:', response.data)
+        } catch (error) {
+          console.error('Error adding order to API:', error)
+          // You may want to handle this error, perhaps by showing a notification to the user
+        }
+      },
       removeItem: (id) =>
         set((state) => ({
           items: state.items.filter((item) => item.id !== id),
         })),
+      updateItemQuantity: async (id, quantity) => {
+        console.log('Updating item quantity:', id, quantity)
+        try {
+          const item = get().items.find((i) => i.id === id)
+          if (!item) throw new Error('Item not found')
+
+          // Update item quantity in the cart
+          set((state) => ({
+            items: state.items.map((i) => (i.id === id ? { ...i, quantity: Math.min(quantity, i.maxQuantity) } : i)),
+          }))
+
+          const response = await networkService.post({
+            url: 'https://devapi.nukulum.com/api/shop/add-order',
+            data: {
+              id: 0,
+              extraName: item.name,
+              isCompleted: false,
+              quantity: quantity,
+              price: item.price,
+              itemId: item.id,
+              itemCategoryId: item.categoryId,
+            },
+          })
+
+          if (response.status !== 200) {
+            throw new Error('Failed to update order quantity')
+          }
+
+          console.log('Order quantity updated successfully:', response.data)
+        } catch (error) {
+          console.error('Error updating item quantity:', error)
+          // Revert the cart update if the API call fails
+          const originalItem = get().items.find((i) => i.id === id)
+          if (originalItem) {
+            set((state) => ({
+              items: state.items.map((i) => (i.id === id ? { ...i, quantity: originalItem.quantity } : i)),
+            }))
+          }
+          throw error
+        }
+      },
       setCurrentAddress: (address) => set({ currentAddress: address }),
       saveAddress: async (address) => {
         try {
@@ -157,10 +226,33 @@ export const useCartStore = create<CartStore>()(
           set({ isLoadingCities: false })
         }
       },
+      validateCoupon: async (couponCode: string) => {
+        const userId = get().userId
+        if (!userId) {
+          useErrorStore.getState().setAlert({ message: 'User not logged in', type: 'error' })
+          return null
+        }
+        try {
+          const response = await networkService.get({
+            url: `/discount/validate-coupon/${userId}/${couponCode}`,
+          })
+          if (response.isSuccess) {
+            return response.returnObject
+          } else {
+            useErrorStore.getState().setAlert({ message: response.message || 'Invalid coupon', type: 'error' })
+            return null
+          }
+        } catch (error) {
+          console.error('Error validating coupon:', error)
+          useErrorStore.getState().setAlert({ message: 'Error validating coupon', type: 'error' })
+          return null
+        }
+      },
     }),
     {
       name: 'cart-storage',
       partialize: (state) => ({
+        userId: state.userId,
         items: state.items,
         addresses: state.addresses,
         currentAddress: state.currentAddress,

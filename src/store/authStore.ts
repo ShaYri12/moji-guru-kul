@@ -10,10 +10,11 @@ type AuthStore = {
   user: UserTypes | null
   loading: boolean
   token: string
+  
   handleLogin: ({ email, password }: { email: string; password: string }) => Promise<SuccessResponse>
   googleLogin: (idToken: string) => void
   handleLogout: () => void
-  resetPasswordLink: ({ email, phoneNumber }: { email: string; phoneNumber: string }) => void
+  resetPasswordLink: ({ email }: { email: string }) => void
   getStreak: (userId: number) => Promise<SuccessResponse>
   addStreak: ({ id, userId, points }: { id: number; userId: number; points: number }) => Promise<SuccessResponse>
   streakList: StreakTypes[]
@@ -92,9 +93,9 @@ export const useAuthStore = create<AuthStore>()(
         return response
       },
       //  get reset password link
-      resetPasswordLink: async ({ email, phoneNumber }) => {
+      resetPasswordLink: async ({ email }) => {
         set({ loading: true })
-        const response = await networkService.post({ url: '/auth/reset-link', data: { email, phoneNumber } })
+        const response = await networkService.post({ url: '/auth/reset-link', data: { email } })
         if (!response.isSuccess) {
           useErrorStore.getState().setAlert({ message: response.message, type: 'error' })
           set({ loading: false })

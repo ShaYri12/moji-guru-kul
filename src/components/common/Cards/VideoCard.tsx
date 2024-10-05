@@ -58,7 +58,7 @@ const VideoCard = ({ title, role, thumbnail, videoPath, selected, onClick }: Vid
             <p className="text-vista-white text-xl font-normal leading-[150%] tracking-[0.4px]">{role}</p>
           </div>
           <button
-            className="shadow-play-button bg-white rounded w-14 h-14 backdrop-blur-md flex justify-center items-center"
+            className="shadow-play-button hidden bg-white rounded w-14 h-14 backdrop-blur-md flex justify-center items-center"
             onClick={() => {
               handlePlay()
               onClick()

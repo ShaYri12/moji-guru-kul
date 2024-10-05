@@ -15,24 +15,48 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { CartItem, useCartStore } from '@/store/cartStore'
 import { Item } from '@/utils/types'
+import axios from 'axios'
+import { networkService } from '@/network/NetworkService'
+import { useErrorStore } from '../../store/errorStore'
+import { useDiscountStore } from '@/store/discountStore'
+
+
 
 const StudentShop = () => {
   const router = useRouter();
   const getCardList = useCardStore((state) => state.getCardList);
+  const getDiscountList = useDiscountStore((state) => state.getDiscount);
+  const discount = useDiscountStore((state) => state.discount); // Get discount from store
+  const [dis, setDis] = useState(0);
   const cardList = useCardStore((state) => state.cardList);
   const [search, setSearch] = useState('');
   const user = useAuthStore((state) => state.user);
   const cartItems = useCartStore((state) => state.items);
   const getTotalItems = useCartStore((state) => state.getTotalItems);
+  const setUserId = useCartStore((state) => state.setUserId);
   const [selectedCategory, setSelectedCategory] = useState<{ label: string; value: string }>({ label: 'All', value: 'all' });
   const [sort, setSort] = useState('new' as 'new' | 'old');
   const [open, setOpen] = React.useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   
   const addToCart = useCartStore((state) => state.addItem);
   const removeFromCart = useCartStore((state) => state.removeItem);
   
   const handleAddToCart = (product: Item, quantity: number) => {
+    if (!user) {
+      setErrorMessage('Please log in to add items to your cart.');
+      setSnackbarOpen(true);
+      return;
+    }
+
+    const cartUserId = useCartStore.getState().userId;
+    if (cartUserId !== user.id) {
+      setErrorMessage('User ID mismatch. Please log out and log in again.');
+      setSnackbarOpen(true);
+      return;
+    }
+
     if (quantity > 0) {
       addToCart({
         id: product.id,
@@ -40,23 +64,50 @@ const StudentShop = () => {
         price: product.price,
         quantity: quantity,
         image: product.image,
-        maxQuantity: product.quantity
+        maxQuantity: product.quantity,
+        categoryId: product.categoryId
       });
+      setErrorMessage('');
       setSnackbarOpen(true);
     } else {
       removeFromCart(product.id);
     }
   };
+  console.log("Discount:", discount);
 
-useEffect(() => {
-  const totalItems = getTotalItems();
-  setSnackbarOpen(totalItems > 0);
-}, [cartItems, getTotalItems]);
+  useEffect(() => {
+    const totalItems = getTotalItems();
+    setSnackbarOpen(totalItems > 0);
+  }, [cartItems, getTotalItems]);
   
+  useEffect(() => {
+    if (user) {
+      setUserId(user.id);
+      if (user.role.toLowerCase() === RolesEnum.Student) {
+        getCardList('5');
+      } else if (user.role.toLowerCase() === RolesEnum.Parent) {
+        getCardList('4');
+      }
+    }
+    //console.log("Discount123:test");
+
+     //getDiscountList(5); // Fetch discounts
+
+    //console.log("Discount123:", discount);
+
+  }, [user, getCardList, setUserId,getDiscountList]);
+  useEffect(() => {
+    const fetchDiscount = async () => {
+      await getDiscountList(5);
+      console.log("Discount1234:", discount);
+    };
+  
+    fetchDiscount();
+  }, [getDiscountList]);
+
   const handleViewCart = () => {
     router.push('/cart');
   };
-
   useEffect(() => {
     if (user && user.role.toLowerCase() === RolesEnum.Student) {
       getCardList('5');
@@ -112,6 +163,11 @@ useEffect(() => {
     // is controlled by the cart items
   };
   
+  
+  
+  
+  
+  
   return (
     <Container maxWidth="lg" className="py-8">
       <h1 className="text-indigo text-5xl font-bold">Online Store</h1>
@@ -130,7 +186,7 @@ useEffect(() => {
                     name={product.name}
                     description={product.description}
                     price={product.price}
-                    quantity={product.quantity}
+                    quantity= {product.quantity}
                     image={product.image}
                     type={product.type}
                     categoryId={product.categoryId}
@@ -140,6 +196,7 @@ useEffect(() => {
                     isStudent={user?.role.toLowerCase() === RolesEnum.Student}
                     isOutOfStock={product.quantity === 0}
                     onViewCart={handleViewCart}
+                    discountPercentage = {discount ? discount : 0}
                   />
                 </Grid>
               ))}
@@ -150,16 +207,14 @@ useEffect(() => {
       <Snackbar 
         open={snackbarOpen} 
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        sx={{
-          bottom: '24px',
-        }}
+        sx={{ bottom: '24px' }}
       >
         <Paper 
           elevation={6}
           sx={{
             display: 'flex',
             alignItems: 'center',
-            backgroundColor: '#4CAF50',
+            backgroundColor: errorMessage ? '#f44336' : '#4CAF50',
             color: 'white',
             padding: '12px 24px',
             borderRadius: '8px',
@@ -167,18 +222,24 @@ useEffect(() => {
             maxWidth: '400px',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', marginRight: '16px' }}>
-            <CheckCircleIcon sx={{ marginRight: '8px' }} />
-            <span style={{ fontWeight: 'bold' }}>
-  {getTotalItems()} {getTotalItems() === 1 ? 'item' : 'items'} in cart
-</span>
-          </div>
-          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-            <button style={{ marginRight: '4px' }}
-            onClick={() => router.push('/cart')}
-            >View Cart</button>
-            <ArrowForwardIcon fontSize="small" />
-          </div>
+          {errorMessage ? (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <span style={{ fontWeight: 'bold' }}>{errorMessage}</span>
+            </div>
+          ) : (
+            <>
+              <div style={{ display: 'flex', alignItems: 'center', marginRight: '16px' }}>
+                <CheckCircleIcon sx={{ marginRight: '8px' }} />
+                <span style={{ fontWeight: 'bold' }}>
+                  {getTotalItems()} {getTotalItems() === 1 ? 'item' : 'items'} in cart
+                </span>
+              </div>
+              <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                <button style={{ marginRight: '4px' }} onClick={() => router.push('/cart')}>View Cart</button>
+                <ArrowForwardIcon fontSize="small" />
+              </div>
+            </>
+          )}
         </Paper>
       </Snackbar>
     </Container>
