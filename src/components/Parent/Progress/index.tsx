@@ -9,8 +9,11 @@ import { useMilestoneStore } from '@/store/milestoneStore'
 import { IconsEnum } from '@/utils/enum'
 import { MilestoneResponseTypes } from '@/utils/types'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { IoMdArrowDropup } from 'react-icons/io'
+import { IoGameController } from 'react-icons/io5'
 import { LuDot } from 'react-icons/lu'
+import Modal from './Modal'
 
 const Progress = () => {
   const user = useAuthStore((state) => state.user)
@@ -19,6 +22,39 @@ const Progress = () => {
   const [activeTab, setActiveTab] = useState<'student' | 'group'>('student')
   const [currentPage, setCurrentPage] = useState<number>(1)
   const itemsPerPage = 7
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+
+  // Toggle dropdown visibility
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev)
+  }
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
+  // Handle modal for 'Create Task'
+  const handleAddStudent = () => {
+    setIsDropdownOpen(false) // Close dropdown
+    setIsModalOpen(true) // Open modal
+  }
+
+  // Handle closing modal
+  const closeModal = () => {
+    setIsModalOpen(false)
+  }
 
   const getStreak = useAuthStore((state) => state.getStreak)
   const setAlert = useErrorStore((state) => state.setAlert)
@@ -159,8 +195,46 @@ const Progress = () => {
                 className="bg-white rounded-[8px] w-full sm:w-auto px-[12px] py-[11px] sm:py-0"
               />
             </div>
-            <div className="w-[40px] h-[40px] border-[2px] border-purple rounded-[8px] flex justify-center items-center hover:opacity-80 cursor-pointer">
-              <Image src="/assets/icons/plus-icon.svg" alt="moji gurukul menu" width={15} height={15} />
+            <div className="relative" ref={dropdownRef}>
+              <div
+                className="w-10 h-10 border-[2px] border-[#753CBD] rounded-lg flex justify-center items-center hover:opacity-80 cursor-pointer"
+                onClick={toggleDropdown}
+              >
+                <Image src="/assets/icons/plus.svg" alt="moji gurukul menu" width={24} height={24} />
+              </div>
+
+              {/* Dropdown Menu */}
+              {isDropdownOpen && (
+                <div
+                  className="absolute mt-[20px] right-0 bg-white shadow-lg rounded-[8px] py-2 w-[240px] z-10"
+                  style={{ boxShadow: '0px 0px 16px 0px #00000014' }}
+                >
+                  <IoMdArrowDropup className="absolute top-[-28px] right-[-1px]" color="white" size={40} />
+                  <ul>
+                    <li
+                      onClick={handleAddStudent}
+                      className="flex gap-[12px] items-center w-full px-[16px] py-[12px] hover:text-[#753CBD] text-[18px] font-[500] text-[#B1AFB3] leading-[20px] hover:bg-[#F1ECF8] hover:border hover:border-l-2 hover:border-l-[#753CBD] cursor-pointer"
+                    >
+                      <span className="min-w-[16px] min-h-[16px]">
+                        <img className="w-[16px] h-[16px]" src="/assets/icons/task-icon.png" alt="Task Icon" />
+                      </span>
+                      Add Student
+                    </li>
+                    <li
+                      onClick={() => setIsDropdownOpen(false)}
+                      className="flex gap-[12px] items-center w-full px-[16px] py-[12px] hover:text-[#753CBD] text-[18px] font-[500] text-[#B1AFB3] leading-[20px] hover:bg-[#F1ECF8] hover:border hover:border-l-2 hover:border-l-[#753CBD] cursor-pointer"
+                    >
+                      <span className="min-w-[16px] min-h-[16px]">
+                        <IoGameController size={16} />
+                      </span>
+                      Create Event
+                    </li>
+                  </ul>
+                </div>
+              )}
+
+              {/* Modal */}
+              {isModalOpen && <Modal isOpen={isModalOpen} closeModal={closeModal} />}
             </div>
           </div>
         </div>

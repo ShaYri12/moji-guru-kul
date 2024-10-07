@@ -282,9 +282,24 @@ p {
 }
 
 /* custom select */
-
 .custom-select {
   -webkit-appearance: none; /* Safari */
   -moz-appearance: none; /* Firefox */
   appearance: none; /* Modern browsers */
+}
+
+/* custom scrollbar for modal */
+/* Modal  scrollbar */
+.modal-scrollbar::-webkit-scrollbar {
+  width: 5px; /* Width of the scrollbar */
+}
+
+.modal-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #8888886b;
+  border-radius: 6px;
+}
+
+.modal-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #55555575;
+  cursor: pointer;
 }
