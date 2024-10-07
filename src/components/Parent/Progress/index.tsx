@@ -13,7 +13,8 @@ import { useEffect, useRef, useState } from 'react'
 import { IoMdArrowDropup } from 'react-icons/io'
 import { IoGameController } from 'react-icons/io5'
 import { LuDot } from 'react-icons/lu'
-import Modal from './Modal'
+import AddStudentModal from './AddStudentModal'
+import CreateEventModal from './CreateEventModal'
 
 const Progress = () => {
   const user = useAuthStore((state) => state.user)
@@ -24,6 +25,7 @@ const Progress = () => {
   const itemsPerPage = 7
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const [isEventModalOpen, setIsEventModalOpen] = useState<boolean>(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   // Toggle dropdown visibility
@@ -51,9 +53,15 @@ const Progress = () => {
     setIsModalOpen(true) // Open modal
   }
 
+  const handleCreateEvent = () => {
+    setIsDropdownOpen(false) // Close dropdown
+    setIsEventModalOpen(true) // Open modal
+  }
+
   // Handle closing modal
   const closeModal = () => {
     setIsModalOpen(false)
+    setIsEventModalOpen(false)
   }
 
   const getStreak = useAuthStore((state) => state.getStreak)
@@ -221,7 +229,7 @@ const Progress = () => {
                       Add Student
                     </li>
                     <li
-                      onClick={() => setIsDropdownOpen(false)}
+                      onClick={handleCreateEvent}
                       className="flex gap-[12px] items-center w-full px-[16px] py-[12px] hover:text-[#753CBD] text-[18px] font-[500] text-[#B1AFB3] leading-[20px] hover:bg-[#F1ECF8] hover:border hover:border-l-2 hover:border-l-[#753CBD] cursor-pointer"
                     >
                       <span className="min-w-[16px] min-h-[16px]">
@@ -234,7 +242,8 @@ const Progress = () => {
               )}
 
               {/* Modal */}
-              {isModalOpen && <Modal isOpen={isModalOpen} closeModal={closeModal} />}
+              {isModalOpen && <AddStudentModal isOpen={isModalOpen} closeModal={closeModal} />}
+              {isEventModalOpen && <CreateEventModal isOpen={isEventModalOpen} closeModal={closeModal} />}
             </div>
           </div>
         </div>

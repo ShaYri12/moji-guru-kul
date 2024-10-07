@@ -28,7 +28,7 @@ const students: student[] = [
   // Add more students as needed
 ]
 
-const Modal: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
+const AddStudentModal: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
   if (!isOpen) return null
   const [search, setSearch] = useState('')
   const [selectedClass, setSelectedClass] = useState('Class All')
@@ -42,7 +42,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
 
   return (
     <div className="fixed inset-0 z-20 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-lg lg:max-w-[929px] w-full md:max-w-[600px] max-w-[320px] flex-grow rounded-[15px]">
+      <div className="bg-white rounded-lg shadow-lg lg:max-w-[929px] w-full md:max-w-[600px] max-w-[90%] flex-grow rounded-[15px]">
         <div className="flex justify-between md:px-[24px] md:py-[24px] py-[15px] px-[18px] items-center border-b-[#EEEEEE] border-b overflow-hidden">
           <h1 className="text-[24px] lg:text-[36px] font-[500] text-purple leading-[48px] tracking-[2%] flex-grow">Add Student</h1>
           <button
@@ -137,4 +137,4 @@ const Modal: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
   )
 }
 
-export default Modal
+export default AddStudentModal
