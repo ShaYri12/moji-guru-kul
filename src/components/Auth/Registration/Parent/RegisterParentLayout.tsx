@@ -31,6 +31,7 @@ const RegisterParentLayout = ({ children }: RegisterParentLayoutProps) => {
   const errorState = useErrorStore((state) => state)
   const loading = useParentStore((state) => state.loading)
   const verifyChild = useParentStore((state) => state.verifyChild)
+  const { setInvalidEmail } = useErrorStore()
 
   //! Handle error
   const handleError = () => {
@@ -46,6 +47,14 @@ const RegisterParentLayout = ({ children }: RegisterParentLayoutProps) => {
       if (!parent.email) {
         errorState.setRequired(true)
         return false
+      }
+      if (parent.email) {
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+        if (!emailRegex.test(parent.email)) {
+          errorState.setRequired(true)
+          setInvalidEmail(true)
+          return false
+        }
       }
       if (parent.phoneNumber.length < 10) {
         errorState.setRequired(true)
@@ -129,7 +138,7 @@ const RegisterParentLayout = ({ children }: RegisterParentLayoutProps) => {
       case RegisterParentSteps.PasswordScreen:
         return "Set your account's password"
       case RegisterParentSteps.AgeScreen:
-        return 'Set Your Age'
+        return ''
       // case RegisterParentSteps.InvitationScreen:
       //   return 'Invitation'
       default:
@@ -139,7 +148,7 @@ const RegisterParentLayout = ({ children }: RegisterParentLayoutProps) => {
 
   return (
     <div className="flex flex-col items-center w-full p-6 h-full">
-      <div className="flex relative">
+      <div className="flex relative h-14">
         <h5 className={classNames(raleway.className, 'heading pb-6 text-primary')}>{heading(currentStep)}</h5>
       </div>
       <div className="w-[80%] relative">
@@ -153,10 +162,10 @@ const RegisterParentLayout = ({ children }: RegisterParentLayoutProps) => {
           <StepBar />
         </div>
         <div className="w-full flex flex-col items-center">{children}</div>
+        {currentStep === RegisterParentSteps.AgeScreen && <h5 className="heading pb-6 text-primary text-center">Set Your Age</h5>}
         <CustomButton onClick={() => handleStepNext(currentStep)} loading={loading} className="!w-[200px]">
           {RegisterParentSteps.AgeScreen === currentStep ? 'Done' : 'Next'}
         </CustomButton>
-        {/* <SuccessModal /> */}
       </div>
     </div>
   )

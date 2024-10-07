@@ -5,6 +5,7 @@ import { Option as BaseOption, optionClasses } from '@mui/base/Option'
 import { styled } from '@mui/system'
 import { useLocale } from 'next-intl'
 import { usePathname, useRouter } from 'next/navigation'
+import { setCookie } from '@/app/actions'
 
 export default function LanguageSwitch() {
   const locale = useLocale()
@@ -15,7 +16,8 @@ export default function LanguageSwitch() {
     <div>
       <Select
         value={locale}
-        onChange={(_, newValue) => {
+        onChange={async (_, newValue) => {
+          await setCookie('CUSTOM_NEXT_LOCALE', newValue || 'en')
           React.startTransition(() => {
             router.push(`/${newValue}${pathname.replace(`/${locale}`, '')}`)
           })

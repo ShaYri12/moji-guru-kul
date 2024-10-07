@@ -27,7 +27,7 @@ const LearningTips = () => {
             </b>
           </h1>
           <p className="text-mist text-xl leading-[22px]">
-            We&apos;ve taken away the pressure cooker-based approach to learning and replaced it with a system that is engaging, interactive
+            We have taken away the pressure cooker-based approach to learning and replaced it with a system that is engaging, interactive
             and only requires 15 minutes of your day.
           </p>
           <div>

@@ -28,6 +28,7 @@ const Signup = () => {
   const googleLogin = useAuthStore((state) => state.googleLogin)
   const setError = useErrorStore((state) => state.setAlert)
   const loading = useAuthStore((state) => state.loading)
+  const { invalidEmail, setRequired, setInvalidEmail } = useErrorStore()
 
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => {
@@ -38,21 +39,62 @@ const Signup = () => {
     },
   })
 
+  const handleError = () => {
+    if (!email) {
+      setRequired(true)
+      return true
+    }
+    if (email) {
+      const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+      if (!emailRegex.test(email)) {
+        setRequired(true)
+        setInvalidEmail(true)
+        return true
+      }
+    }
+    if (!password) {
+      setRequired(true)
+      return true
+    }
+  }
+
   return (
     <div className="w-full flex flex-col items-center">
       <div className="w-full mt-6 flex flex-col gap-4 max-w-[350px]">
-        <CustomInput label="Email" placeholder="Enter your email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <CustomInput
+          label="Email"
+          placeholder="Enter your email"
+          type="email"
+          value={email}
+          onChange={(e) => {
+            const email = e.target.value
+            if (email.split('@').length > 2) return
+            if (email.split('@').length > 1 && email.split('@')[1].split('.').length > 2) return
+            if (email.length > 50) return
+            const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+            if (emailRegex.test(email)) {
+              setInvalidEmail(false)
+              setRequired(false)
+            }
+            setEmail(e.target.value)
+          }}
+          error="Email is required"
+          invalidEmail={invalidEmail ? 'Invalid Email Format' : ''}
+        />
         <CustomInput
           label="Password"
           placeholder="Enter your password"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          error="Password is required"
         />
         <div className="mt-3">
           <CustomButton
             loading={loading}
             onClick={async () => {
+              const isError = handleError()
+              if (isError) return
               const response: SuccessResponse = await handleLogin({ email, password })
               const userResponse: UserTypes = response.returnObject
               if (!response.isSuccess || !userResponse) return
@@ -83,7 +125,7 @@ const Signup = () => {
           </div>
 
           <div className="flex flex-col gap-5">
-            <CustomButton
+            {/* <CustomButton
               loading={loading}
               onClick={() => {
                 // handleModal(false)
@@ -93,7 +135,7 @@ const Signup = () => {
               iconName={IconsEnum.Facebook}
             >
               Sign in with Facebook
-            </CustomButton>
+            </CustomButton> */}
             <CustomButton
               loading={loading}
               onClick={() => {

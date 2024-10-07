@@ -23,31 +23,50 @@ export default async function middleware(request: NextRequest) {
   const token = cookies?.value
   const path = request.nextUrl.pathname
   // const locale = request.nextUrl.pathname.split('/')[1] || 'en'
-  const locale = request.cookies.get('NEXT_LOCALE')?.value || 'en'
+  const locale = request.cookies.get('CUSTOM_NEXT_LOCALE')?.value || 'en'
 
   const isPublicPath =
-    path === `/` ||
+    path === '/' ||
+    path === `/${locale}` ||
     path === '/about-us' ||
+    path === `/${locale}/about-us` ||
     path === `/register-student` ||
+    path === `/${locale}/register-student` ||
     path === `/register-parent` ||
+    path === `/${locale}/register-parent` ||
     path === `/register-educator` ||
+    path === `/${locale}/register-educator` ||
     path === `/register-tutor` ||
+    path === `/${locale}/register-tutor` ||
     path === '/account-settings' ||
+    path === `/${locale}/register-settings` ||
     path === `/contact-us` ||
+    path === `/${locale}/contact-us` ||
     path === '/resources' ||
+    path === `/${locale}/resources` ||
     path === '/resources/blog' ||
+    path === `/${locale}/resources/blog` ||
     path === '/ambassador/login' ||
-    path === '/ambassador/register'
+    path === `/${locale}/ambassador/login` ||
+    path === '/ambassador/register' ||
+    path === `/${locale}/ambassador/register` ||
+    path === '/reset-password' ||
+    path == `/${locale}/reset-password`
 
   // if path is public then return response
+  if (path.startsWith('/reset-password')) {
+    return response
+  }
   if (isPublicPath) {
     return response
   }
+  console.log('path------', path, locale)
+  console.log('isPublicPath-------------', isPublicPath)
+  console.log('*******PROTECTED PATH**************')
 
   if (!token && request.nextUrl.pathname == '/ambassador') {
     return NextResponse.redirect(new URL(`/ambassador/login`, request.url))
   }
-
   if (!token && request.nextUrl.pathname !== '/') {
     return NextResponse.redirect(new URL(`/`, request.url))
   }
@@ -75,8 +94,6 @@ export default async function middleware(request: NextRequest) {
   //   console.log('++++++++++Public path++++++++++')
   //   return response
   // }
-  console.log('path------', path)
-  console.log('isPublicPath-------------', isPublicPath)
 
   // if (!isPublicPath && !token) {
   //   console.log('Redirecting to login due to missing token+++')
@@ -108,9 +125,5 @@ export default async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    '/((?!_next|.*\\..*).*)',
-    // matcher for localePrefix as-needed
-    // '/((?!_next|.*\\..*).*)',
-  ],
+  matcher: ['/((?!_next|.*\\..*).*)'],
 }

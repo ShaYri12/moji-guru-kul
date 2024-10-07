@@ -38,6 +38,7 @@ const config: Config = {
         'smart-card': '0px 0px 16px 0px #10182814',
         'lesson-card': '0px 8px 8px -4px #10182808,0px 20px 24px -4px #10182814',
         'subject-card': '0px 2px 5px -1px #E0E5EB',
+        'student-rank': '0px 0px 60px 0px #00000014',
       },
       fontSize: {
         '2.5xl': '32px',
@@ -91,8 +92,6 @@ const config: Config = {
         'bright-grey': '#344054',
         'davy-grey': '#475467',
       },
-
-      
     },
   },
   plugins: [],

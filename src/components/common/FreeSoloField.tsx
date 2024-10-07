@@ -32,7 +32,7 @@ const FreeSoloField = ({ label, onChange, options, error }: FreeSoloFieldProps) 
           minHeight: '50px',
         }}
       />
-      {!options.length && isRequired && error && <p className={classNames(nordeco.className, 'text-xs text-red-500 mt-1')}>{error}</p>}
+      {!options.length && isRequired && error && <p className="text-xs text-red-500 mt-1">{error}</p>}
     </div>
   )
 }

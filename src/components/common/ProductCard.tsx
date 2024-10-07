@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import { Card, CardContent, Typography, Box, IconButton } from '@mui/material'
-import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
 import CustomButton from './CustomButton'
@@ -9,12 +8,15 @@ import { CartItem, useCartStore } from '@/store/cartStore'
 import StarsIcon from '@mui/icons-material/Stars'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+
 import { Item } from '@/utils/types'
 
 interface ProductCardProps {
   id: number
   name: string
   price: number
+  discountPercentage?: number // Add discountPercentage prop here
   quantity: number
   image: string | undefined
   type: string
@@ -32,6 +34,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   id,
   name,
   price,
+  discountPercentage = 0, // Set default to 0 for no discount
   quantity,
   image,
   type,
@@ -45,37 +48,20 @@ const ProductCard: React.FC<ProductCardProps> = ({
   onViewCart,
 }) => {
   const { items, addItem, updateItemQuantity, removeItem } = useCartStore();
-  const [itemCount, setItemCount] = useState(0);
+  const itemInCart = useCartStore(state => state.items.find(item => item.id === id));
+  const itemCount = itemInCart?.quantity || 0;
+
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
-
-  const handlePrevItem = () => {
-    if (subItems.length > 0) {
-      setCurrentItemIndex((prevIndex) =>
-        prevIndex > 0 ? prevIndex - 1 : subItems.length - 1
-      );
-    }
-  };
-
-  const handleNextItem = () => {
-    if (subItems.length > 0) {
-      setCurrentItemIndex((prevIndex) =>
-        prevIndex < subItems.length - 1 ? prevIndex + 1 : 0
-      );
-    }
-  };
-
-  const currentItem = subItems.length > 0 ? subItems[currentItemIndex] : null;
-
-  useEffect(() => {
-    const cartItem = items.find(item => item.id === id);
-    setItemCount(cartItem ? cartItem.quantity : 0);
-  }, [items, id]);
+  // Calculate discounted price if discountPercentage is provided
+  const discountedPrice = discountPercentage > 0
+    ? price - (price * (discountPercentage / 100))
+    : price;
 
   const handleIncrease = () => {
     if (itemCount < quantity) {
       const newCount = itemCount + 1;
       if (itemCount === 0) {
-        addItem({ id, name, price, quantity: newCount, image, maxQuantity: quantity });
+        addItem({ id, name, price: discountedPrice, quantity: newCount, image, maxQuantity: quantity, categoryId });
       } else {
         updateItemQuantity(id, newCount);
       }
@@ -117,10 +103,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
           {isStudent ? (
             <>
               <StarsIcon className="!text-[#fe9400] mr-2"/>
-              {price} POINT
+              {discountedPrice.toFixed(2)} POINTS
             </>
           ) : (
-            <>INR{price.toFixed(2)}</>
+            <>INR {discountedPrice.toFixed(2)}</>
           )}
         </CustomButton>
       );
@@ -171,12 +157,24 @@ const ProductCard: React.FC<ProductCardProps> = ({
         <div>
           <Box className="flex justify-between items-center mb-4 mt-2">
             {type === 'Courses' ? (
-              <Typography variant="h6" component="h2" className="font-semibold p-1 text-base rounded-sm w-28 text-center text-indigo border border-indigo">
-                {name} 
+              <Typography
+                variant="h6"
+                component="h2"
+                className="font-semibold p-1 text-base rounded-sm w-28 text-center text-indigo border border-indigo"
+              >
+                {name}
               </Typography>
+            ) : quantity - itemCount === 0 ? (
+              <CustomButton 
+                variant="outlined" 
+                className="!text-white text-md border-2 font-semibold !h-12 leading-none !rounded-md !shadow-sm !bg-gray-400"
+                disabled
+              >
+                Out of Stock
+              </CustomButton>
             ) : (
               <Typography variant="caption" className="text-[#22CC9B] text-base font-bold">
-                {quantity-  itemCount} ITEMS IN STOCK
+                {quantity - itemCount} ITEMS IN STOCK
               </Typography>
             )}
           </Box>
@@ -189,36 +187,26 @@ const ProductCard: React.FC<ProductCardProps> = ({
             {description}
           </Typography>
 
-              {subItems.length > 0 && currentItem ? (
-          <Box className="flex items-center justify-between mb-4">
-              <Box className="flex items-center rounded-md">
-                {currentItem.image && currentItem.image != 'string'  && (
-                  <Image src={currentItem.image} alt={currentItem.name}
-                    width={60} height={60} 
-                    className=' rounded-md h-16 w-16 object-cover'
-                  />
-                )}
-            </Box>
-            <Box className="flex-grow mx-4">
-              <Typography variant="subtitle2" className="font-semibold">
-                {currentItem.name}
-              </Typography>
-              <Typography variant="caption" color="text.secondary" className="block">
-                {currentItem.name}
-              </Typography>
-            </Box>
-            <Box className="flex">
-              <IconButton size="small" className="text-gray-400" onClick={handlePrevItem}>
-                <ChevronLeftIcon className="text-xl md:text-3xl" />
-              </IconButton>
-              <IconButton size="small" className="text-gray-400" onClick={handleNextItem}>
-                <ChevronRightIcon className="text-xl md:text-3xl"/>
-              </IconButton>
-            </Box>
+          {/* Price with Discount */}
+          <Box className="flex items-center mb-4">
+            {discountPercentage > 0 ? (
+              <>
+                <Typography variant="h6" component="h2" className="text-red-500 font-bold">
+                  -{discountPercentage}% 
+                </Typography>
+                <Typography variant="h6" component="h2" className="ml-2 font-bold">
+                {isStudent ? `Points ${discountedPrice.toFixed(2)}` : `INR ${discountedPrice.toFixed(2)}`}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  style={{ textDecoration: 'line-through', marginLeft: '8px' }}
+                >
+                {isStudent ? `Points ${price.toFixed(2)}` : `INR ${price.toFixed(2)}`}
+                </Typography>
+              </>
+            ) : null}
           </Box>
-        ) : (
-         null
-        )}
         </div>
 
         <Box className="flex items-center justify-between mt-4">

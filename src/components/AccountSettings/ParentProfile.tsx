@@ -10,6 +10,7 @@ import { useAuthStore } from '@/store/authStore'
 import { GENDER, GRADES } from '@/utils/constants'
 import { useParentStore } from '@/store/parentStore'
 import { useErrorStore } from '@/store/errorStore'
+import SelectOption from '../common/SelectOption'
 
 const ParentProfile = () => {
   const [searchStudent, setSearchStudent] = useState('')
@@ -79,6 +80,7 @@ const ParentProfile = () => {
           label="First Name"
           value={parentProfileState.firstName}
           onChange={(e) => {
+            if (!/^[a-zA-Z]*$/.test(e.target.value)) return
             setParentProfileState({ ...parentProfileState, firstName: e.target.value })
           }}
         />
@@ -86,6 +88,7 @@ const ParentProfile = () => {
           label="Last Name"
           value={parentProfileState.lastName}
           onChange={(e) => {
+            if (!/^[a-zA-Z]*$/.test(e.target.value)) return
             setParentProfileState({ ...parentProfileState, lastName: e.target.value })
           }}
         />
@@ -116,12 +119,23 @@ const ParentProfile = () => {
             !countries.find((country) => country.name.toLocaleLowerCase() === profileDetails.country.toString().toLocaleLowerCase())
           }
         />
-        <CustomAutoComplete
+        {/* <CustomAutoComplete
           label="Gender"
           placeholder="Select your gender"
           options={GENDER}
           value={parentProfileState.genderId}
           onChange={(e, value) => setParentProfileState({ ...parentProfileState, genderId: Number(value) })}
+          error="Gender is required"
+        /> */}
+        <SelectOption
+          label="Gender"
+          options={GENDER.map((x) => ({
+            name: x.name,
+            value: x.id.toString(),
+          }))}
+          value={parentProfileState?.genderId?.toString() || ''}
+          handleChange={(val) => setParentProfileState({ ...parentProfileState, genderId: Number(val) })}
+          placeholder="Select your gender"
           error="Gender is required"
         />
         <CustomInput

@@ -6,13 +6,14 @@ import RegisterEducatorLayout from './RegisterEducatorLayout'
 import { useEducatorStore } from '@/store/educatorStore'
 import { useErrorStore } from '@/store/errorStore'
 import classNames from 'classnames'
+import SelectOption from '@/components/common/SelectOption'
 
 const InitialInfoScreen = () => {
   const [countryCode, setCountryCode] = React.useState('+91')
 
   const educator = useEducatorStore((state) => state.educator)
   const setEducator = useEducatorStore((state) => state.setEducator)
-  const isRequired = useErrorStore((state) => state.isRequired)
+  const { isRequired, invalidEmail, setRequired, setInvalidEmail } = useErrorStore()
 
   return (
     <RegisterEducatorLayout>
@@ -21,6 +22,7 @@ const InitialInfoScreen = () => {
           label="First Name"
           value={educator.firstName}
           onChange={(e) => {
+            if (!/^[a-zA-Z]*$/.test(e.target.value)) return
             setEducator({ ...educator, firstName: e.target.value })
           }}
           placeholder="Enter your first name"
@@ -30,6 +32,7 @@ const InitialInfoScreen = () => {
           label="Last Name"
           value={educator.lastName}
           onChange={(e) => {
+            if (!/^[a-zA-Z]*$/.test(e.target.value)) return
             setEducator({ ...educator, lastName: e.target.value })
           }}
           placeholder="Enter your last name"
@@ -39,11 +42,21 @@ const InitialInfoScreen = () => {
           label="Email"
           value={educator.email}
           onChange={(e) => {
+            const email = e.target.value
+            if (email.split('@').length > 2) return
+            if (email.split('@').length > 1 && email.split('@')[1].split('.').length > 2) return
+            if (email.length > 50) return
+            const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+            if (emailRegex.test(email)) {
+              setInvalidEmail(false)
+              setRequired(false)
+            }
             setEducator({ ...educator, email: e.target.value })
           }}
           placeholder="Enter your email"
           type="email"
           error="Email is required"
+          invalidEmail={invalidEmail ? 'Invalid Email Format' : ''}
         />
         <div className="w-full">
           <label className="text-sm font-bold">Phone Number</label>
@@ -55,6 +68,7 @@ const InitialInfoScreen = () => {
             <input
               value={countryCode}
               className="bg-transparent border-none outline-none text-lg font-normal tracking-[-0.15px] leading-5 input-unset text-lite-black w-8"
+              onChange={(e) => {}}
             />
 
             <input
@@ -76,22 +90,15 @@ const InitialInfoScreen = () => {
             <p className={classNames('text-xs text-red-500 mt-1')}>Phone number must be 10</p>
           )}
         </div>
-        {/* <CustomInput
-          label="Phone Number"
-          value={educator.phoneNumber}
-          onChange={(e) => {
-            setEducator({ ...educator, phoneNumber: e.target.value })
-          }}
-          placeholder="Enter your phone number"
-          type="tel"
-          error="Phone number is required"
-        /> */}
-        <CustomAutoComplete
+        <SelectOption
           label="Gender"
+          options={GENDER.map((x) => ({
+            name: x.name,
+            value: x.id.toString(),
+          }))}
+          value={educator?.genderId?.toString() || ''}
+          handleChange={(val) => setEducator({ ...educator, genderId: Number(val) })}
           placeholder="Select your gender"
-          options={GENDER}
-          value={educator.genderId}
-          onChange={(e, value) => setEducator({ ...educator, genderId: Number(value) })}
           error="Gender is required"
         />
       </div>

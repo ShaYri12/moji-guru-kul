@@ -2,7 +2,7 @@ import * as React from 'react'
 import FormControl from '@mui/joy/FormControl'
 import Autocomplete from '@mui/joy/Autocomplete'
 import classNames from 'classnames'
-import { betm, nordeco } from '@/app/font'
+import { betm } from '@/app/font'
 import { useErrorStore } from '@/store/errorStore'
 import { CircularProgress } from '@mui/joy'
 
@@ -65,7 +65,7 @@ const CustomAutoComplete = ({
           getOptionLabel={(option) => option.name}
           endDecorator={isLoading ? <CircularProgress size="sm" sx={{ bgcolor: 'background.surface' }} /> : null}
         />
-        {!value && isRequired && error && <p className={classNames(nordeco.className, 'text-xs text-red-500 mt-1')}>{error}</p>}
+        {!value && isRequired && error && <p className={classNames('text-xs text-red-500 mt-1')}>{error}</p>}
       </FormControl>
     </div>
   )

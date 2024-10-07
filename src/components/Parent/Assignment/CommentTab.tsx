@@ -31,7 +31,7 @@ const CommentTab = () => {
         className="w-full py-[10px] px-[14px] md:text-[18px] h-[128px] text-[16px] outline-none rounded-lg border-[#D0D5DD] border rounded-[8px] text-black placeholder:text-[#C2C1C4] bg-white"
         placeholder="Comment is Here"
       ></textarea>
-      <div className="flex justify-end w-fit ms-auto mt-[24px]">
+      <div className="flex justify-end mr-0 mt-[24px]">
         <CustomButton
           variant="contained"
           color="#753CBD"

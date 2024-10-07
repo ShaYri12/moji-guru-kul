@@ -8,12 +8,15 @@ import { useAuthStore } from '@/store/authStore'
 import { useErrorStore } from '@/store/errorStore'
 import CustomModal from '../common/CustomModal'
 import CustomInput from '../common/CustomInput'
+import { useRouter } from 'next/navigation'
 
 type SubscriptionProps = {
   plans: PlanResponseTypes[]
 }
 
 const Subscription = ({ plans }: SubscriptionProps) => {
+  const router = useRouter()
+
   const [couponCode, setCouponCode] = useState('')
   const [isModalOpen, setModalOpen] = useState(false)
   const [selectedPlan, setSelectedPlan] = useState<PlanResponseTypes | null>(null)
@@ -24,10 +27,21 @@ const Subscription = ({ plans }: SubscriptionProps) => {
     useSubscription()
   const { user } = useAuthStore()
   const setAlert = useErrorStore((state) => state.setAlert)
+  const { getSubscriptions } = useSubscription()
+
+  useEffect(() => {
+    ;(async () => {
+      const subscriptions = await getSubscriptions()
+      const subscription = subscriptions?.[0]
+      if (!subscription.short_url) return setAlert({ message: 'There is no short url for this subscription', type: 'error' })
+      if (subscription.status === 'created' && subscription.short_url) {
+        router.push(subscription.short_url)
+      }
+    })()
+  }, [])
 
   useEffect(() => {
     if (userLinkedCoupons && userLinkedCoupons.length && couponCode) {
-      debugger
       const findCouponByCouponCode = userLinkedCoupons.find((x) => x.code.toLocaleLowerCase() === couponCode.toLocaleLowerCase())
       setDiscountedCoupon(findCouponByCouponCode)
     }
@@ -72,7 +86,7 @@ const Subscription = ({ plans }: SubscriptionProps) => {
                 })
                 if (response.short_url) {
                   //  open new tab with response.short_url
-                  window.open(response.short_url, '_blank')
+                  router.push(response.short_url)
                 } else {
                   setAlert({ message: 'Subscription creation failed. Please try again later', type: 'error' })
                 }

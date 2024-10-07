@@ -15,6 +15,8 @@ import CustomSelect from '../common/CustomSelect'
 import GameTile from '../common/Cards/GameTile'
 import CustomInput from '../common/CustomInput'
 import { useActivityStore } from '@/store/activityStore'
+import { useProfileStore } from '@/store/profileStore'
+import { useAccountStore } from '@/store/accountStore'
 
 type GameListProps = {
   tutorGames: LearningActivityTypes[]
@@ -49,12 +51,32 @@ const GameList = ({ tutorGames }: GameListProps) => {
   const setFilteredGameFlows = useGameStore((state) => state.setFilteredGameFlows)
   const refetchGames = useGameStore((state) => state.refetchGames)
   const unlockTopic = useGameStore((state) => state.unlockTopic)
+  const { languages, getLanguages } = useProfileStore()
+  const { profileDetails, getProfileDetails } = useAccountStore()
 
   const [tabValue, setTabValue] = useState(0)
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setTabValue(newValue)
   }
+
+  useEffect(() => {
+    ;(async () => {
+      await getLanguages()
+      await getProfileDetails()
+    })()
+  }, [])
+
+  // useEffect(() => {
+  //   document.addEventListener('', () => {
+  //     debugger
+  //     if (document.hidden) {
+  //       // tab is changed
+  //     } else {
+  //       // tab is active
+  //     }
+  //   })
+  // }, [])
 
   useEffect(() => {
     if (!user || !allSubjects?.length) return
@@ -175,6 +197,10 @@ const GameList = ({ tutorGames }: GameListProps) => {
     }
   }
 
+  const userProfileLanguage = languages.find((language) => {
+    return language.id === profileDetails.languageOfAccountId
+  })
+
   return (
     <div>
       {/* <CustomButton
@@ -277,7 +303,13 @@ const GameList = ({ tutorGames }: GameListProps) => {
               handleChange={() => {}}
               width="140px"
             />
-            <LanguageDropdown
+            {userProfileLanguage && (
+              <div className="bg-purple-70 px-3 py-1 rounded-md text-white">
+                <p>{userProfileLanguage.language || ''}</p>
+              </div>
+            )}
+
+            {/* <LanguageDropdown
               options={[
                 { name: 'Hindi', value: 'hindi' },
                 { name: 'English', value: 'english' },
@@ -285,7 +317,7 @@ const GameList = ({ tutorGames }: GameListProps) => {
               value="hindi"
               handleChange={() => {}}
               width="100px"
-            />
+            /> */}
           </div>
         </Box>
         <Box

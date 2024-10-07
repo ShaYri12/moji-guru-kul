@@ -45,9 +45,10 @@ export const useMilestoneStore = create<MilestoneStore>()(
 
       getPersonalMilestones: async (userId) => {
         const response: SuccessResponse = await networkService.get({ url: `/milestones/get-user-personal-milestones?userId=${userId}` })
-        // const sortedMilestones = response.returnObject.sort((a: MilestoneResponseTypes, b: MilestoneResponseTypes) => a.id - b.id)
-        // sort milestones by order in ascending order
-        const sortedMilestones = response.returnObject.sort((a: MilestoneResponseTypes, b: MilestoneResponseTypes) => a.orders - b.orders)
+        const filteredMilestones = response.returnObject.filter(
+          (milestone: MilestoneResponseTypes) => milestone.isActive && milestone.orders !== 0
+        )
+        const sortedMilestones = filteredMilestones.sort((a: MilestoneResponseTypes, b: MilestoneResponseTypes) => a.orders - b.orders)
         set({ personalMilestones: sortedMilestones })
         return response
       },

@@ -61,6 +61,7 @@ export const useAccountStore = create<AccountStore>()(
       getProfileDetails: async () => {
         set({ loading: true })
         const response: any = await networkService.get({ url: '/profile' })
+        
         if (!response) {
           useErrorStore.getState().setAlert({ message: "Couldn't fetch profile settings", type: 'error' })
           set({ loading: false })
@@ -158,4 +159,5 @@ export const useAccountStore = create<AccountStore>()(
       //   partialize: (state) => ({}),
     }
   )
+  
 )

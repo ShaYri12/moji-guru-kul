@@ -17,6 +17,8 @@ const DeliveryForm: React.FC = () => {
   } = useCartStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [fullLocation, setFullLocation] = useState(''); 
+
   const user = useAuthStore();
 
   useEffect(() => {
@@ -25,7 +27,10 @@ const DeliveryForm: React.FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setCurrentAddress({ ...currentAddress, [name]: value });
+    const updatedAddress = { ...currentAddress, [name]: value };
+
+    setCurrentAddress(updatedAddress);
+    getFullLocation(updatedAddress);
     if (errors[name]) {
       setErrors({ ...errors, [name]: '' });
     }
@@ -53,7 +58,6 @@ const DeliveryForm: React.FC = () => {
     validateField('city', 'City is required');
     validateField('state', 'State is required');
     validateField('postalCode', 'Postal code is required');
-    validateField('fullLocation', 'Full location is required');
     validateField('roadNearBy', 'Nearby road is required');
 
 
@@ -61,15 +65,36 @@ const DeliveryForm: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const getFullLocation = (updatedAddress: { id: number; house: string; street: string; city: string; state: string; postalCode: string; fullLocation: string; roadNearBy: string; userId: number; }) => {
+    const house = currentAddress.house || '';
+    const street = currentAddress.street || '';
+    const city = currentAddress.city || '';
+    const state = currentAddress.state || '';
+    const postalCode = currentAddress.postalCode || '';
+  
+    const location = `${house}, ${street}, ${city}, ${state}, ${postalCode}`.replace(/(^[,\s]+)|([,\s]+$)/g, '').replace(/,+/g, ',').trim();
+    setFullLocation(location); 
+
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate the form first
     if (!validateForm()) {
       return;
     }
+    
     setIsSubmitting(true);
+  
     try {
-      currentAddress.userId = user.user?.id || 0;
-      await saveAddress(currentAddress);
+      const updatedAddress = {
+        ...currentAddress,
+        fullLocation, 
+        userId: user.user?.id || 0, 
+      };
+
+      await saveAddress(updatedAddress);
       await fetchAddresses();
     } catch (error) {
       console.error('Error saving address:', error);
@@ -77,6 +102,9 @@ const DeliveryForm: React.FC = () => {
       setIsSubmitting(false);
     }
   };
+  
+  
+  
 
   return (
     <div className="bg-white shadow-lg rounded-xl p-6 max-w-full mx-auto border-2 border-gray w-full">
@@ -175,9 +203,10 @@ const DeliveryForm: React.FC = () => {
             type="text"
             id="fullLocation"
             name="fullLocation"
-            value={currentAddress.fullLocation}
+            value={fullLocation}
             onChange={handleInputChange}
-            className={`w-full p-3 rounded-lg text-gray-700 border ${errors.fullLocation ? 'border-red-500' : 'border-gray-300'}`}
+            disabled
+            className={`w-full p-3 rounded-lg text-gray-700 border  ${errors.fullLocation ? 'border-red-500' : 'border-gray-300'}`}
           />
           {errors.fullLocation && <p className="text-red-500 text-xs mt-1">{errors.fullLocation}</p>}
         </div>

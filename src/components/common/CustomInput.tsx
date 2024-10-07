@@ -1,6 +1,6 @@
 'use client'
 import { useErrorStore } from '@/store/errorStore'
-import { HiddenEye } from '@/svg'
+import { HiddenEye, EyeIcon } from '@/svg'
 import classNames from 'classnames'
 import { useState } from 'react'
 import SearchIcon from '@mui/icons-material/Search'
@@ -17,17 +17,8 @@ type CustomInputProps = {
   step?: string
   name?: string
   onClick?: () => void
-}
-
-const icon = (type: string) => {
-  switch (type) {
-    case 'password':
-      return <HiddenEye />
-    case 'search':
-      return <SearchIcon sx={{ color: '#B1AFB3' }} />
-    default:
-      return null
-  }
+  notify?: string
+  invalidEmail?: string
 }
 
 const CustomInput = ({
@@ -42,18 +33,31 @@ const CustomInput = ({
   size = 'medium',
   step,
   onClick,
+  notify,
+  invalidEmail,
 }: CustomInputProps) => {
-  const isRequired = useErrorStore((state) => state.isRequired)
+  const { isRequired } = useErrorStore()
   const [showPassword, setShowPassword] = useState(false)
+
+  const icon = (type: string) => {
+    switch (type) {
+      case 'password':
+        return showPassword ? <EyeIcon fill="#753CBD" /> : <HiddenEye />
+      case 'search':
+        return <SearchIcon sx={{ color: '#B1AFB3' }} />
+      default:
+        return null
+    }
+  }
 
   return (
     <div className="w-full">
       {label && <label className="text-sm font-bold">{label}</label>}
       <div
-        className={classNames('border border-[#B1AFB3] w-full pl-[18px] pr-[14px] flex items-center justify-between', className, {
+        className={classNames('border border-nobel w-full pl-[18px] pr-[14px] flex items-center justify-between mt-1', className, {
           '!border-red-500': !value && error && isRequired,
           'h-9 rounded-lg': size === 'small',
-          'h-10  rounded-lg': size === 'medium',
+          'h-11 rounded-lg': size === 'medium',
           'h-14 rounded-lg': size === 'large',
         })}
       >
@@ -84,7 +88,13 @@ const CustomInput = ({
           {icon(type)}
         </span>
       </div>
-      {!value && isRequired && error && <p className={classNames('text-xs text-red-500 mt-1')}>{error}</p>}
+      {notify ? (
+        <p className={classNames('text-xs text-red-500 mt-1')}>{notify}</p>
+      ) : invalidEmail ? (
+        <p className={classNames('text-xs text-red-500 mt-1')}>Invalid Email Format</p>
+      ) : (
+        <>{!value && isRequired && error && <p className={classNames('text-xs text-red-500 mt-1')}>{error}</p>}</>
+      )}
     </div>
   )
 }
