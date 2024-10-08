@@ -15,8 +15,8 @@ const upcomingSessions = [
     duration: '9:00-10:00 > 1 Hour',
     status: 'In Progress',
     timeLeft: '12:44:28',
-    studentName: 'John Doe',
-    studentRole: 'Student',
+    groupName: 'Group Name',
+    images: ['/assets/images/landing-page/avater-1.svg', '/assets/images/landing-page/avater-2.svg'],
   },
   {
     id: 2,
@@ -26,8 +26,8 @@ const upcomingSessions = [
     duration: '9:00-10:00 > 1 Hour',
     status: 'In Progress',
     timeLeft: '12:44:28',
-    studentName: 'John Doe',
-    studentRole: 'Student',
+    groupName: 'Group Name',
+    images: ['/assets/images/landing-page/avater-1.svg', '/assets/images/landing-page/avater-2.svg'],
   },
   {
     id: 5,
@@ -37,8 +37,8 @@ const upcomingSessions = [
     duration: '9:00-10:00 > 1 Hour',
     status: 'In Progress',
     timeLeft: '12:44:28',
-    studentName: 'John Doe',
-    studentRole: 'Student',
+    groupName: 'Group Name',
+    images: ['/assets/images/landing-page/avater-1.svg', '/assets/images/landing-page/avater-2.svg'],
   },
   {
     id: 8,
@@ -48,8 +48,8 @@ const upcomingSessions = [
     duration: '9:00-10:00 > 1 Hour',
     status: 'In Progress',
     timeLeft: '12:44:28',
-    studentName: 'John Doe',
-    studentRole: 'Student',
+    groupName: 'Group Name',
+    images: ['/assets/images/landing-page/avater-1.svg', '/assets/images/landing-page/avater-2.svg'],
   },
   {
     id: 9,
@@ -59,8 +59,8 @@ const upcomingSessions = [
     duration: '9:00-10:00 > 1 Hour',
     status: 'In Progress',
     timeLeft: '12:44:28',
-    studentName: 'John Doe',
-    studentRole: 'Student',
+    groupName: 'Group Name',
+    images: ['/assets/images/landing-page/avater-1.svg', '/assets/images/landing-page/avater-2.svg'],
   },
   {
     id: 11,
@@ -70,8 +70,8 @@ const upcomingSessions = [
     duration: '9:00-10:00 > 1 Hour',
     status: 'In Progress',
     timeLeft: '12:44:28',
-    studentName: 'John Doe',
-    studentRole: 'Student',
+    groupName: 'Group Name',
+    images: ['/assets/images/landing-page/avater-1.svg', '/assets/images/landing-page/avater-2.svg'],
   },
 ]
 
@@ -84,8 +84,8 @@ const completedSessions = [
     duration: '10:00-11:00 > 1 Hour',
     status: 'Done',
     timeLeft: '00:00:00',
-    studentName: 'Jane Smith',
-    studentRole: 'Student',
+    groupName: 'Group Name',
+    images: ['/assets/images/landing-page/avater-1.svg', '/assets/images/landing-page/avater-2.svg'],
   },
   {
     id: 4,
@@ -95,8 +95,8 @@ const completedSessions = [
     duration: '10:00-11:00 > 1 Hour',
     status: 'Done',
     timeLeft: '00:00:00',
-    studentName: 'Jane Smith',
-    studentRole: 'Student',
+    groupName: 'Group Name',
+    images: ['/assets/images/landing-page/avater-1.svg', '/assets/images/landing-page/avater-2.svg'],
   },
   {
     id: 6,
@@ -106,8 +106,8 @@ const completedSessions = [
     duration: '10:00-11:00 > 1 Hour',
     status: 'Done',
     timeLeft: '00:00:00',
-    studentName: 'Jane Smith',
-    studentRole: 'Student',
+    groupName: 'Group Name',
+    images: ['/assets/images/landing-page/avater-1.svg', '/assets/images/landing-page/avater-2.svg'],
   },
   {
     id: 7,
@@ -117,8 +117,8 @@ const completedSessions = [
     duration: '10:00-11:00 > 1 Hour',
     status: 'Done',
     timeLeft: '00:00:00',
-    studentName: 'Jane Smith',
-    studentRole: 'Student',
+    groupName: 'Group Name',
+    images: ['/assets/images/landing-page/avater-1.svg', '/assets/images/landing-page/avater-2.svg'],
   },
   {
     id: 10,
@@ -128,8 +128,8 @@ const completedSessions = [
     duration: '10:00-11:00 > 1 Hour',
     status: 'Done',
     timeLeft: '00:00:00',
-    studentName: 'Jane Smith',
-    studentRole: 'Student',
+    groupName: 'Group Name',
+    images: ['/assets/images/landing-page/avater-1.svg', '/assets/images/landing-page/avater-2.svg'],
   },
 ]
 
@@ -199,54 +199,54 @@ const LiveSessionTable = ({ itemsPerPage = 3 }) => {
 
       <div className="max-w-6xl mx-auto rounded-lg p-6">
         {/* Tabs */}
-        <div className="w-full flex flex-col md:flex-row md:space-x-6 mb-4">
-          <div className="flex items-center gap-10 border-b border-[#F1ECF8]">
-            {tabs.map((tab) => (
-              <h3
-                key={tab.label}
-                onClick={() => {
-                  setActiveTab(tab.label)
-                  setCurrentPage(1)
-                }}
-                className={`text-sm sm:text-lg font-medium cursor-pointer pb-2 ${
-                  activeTab === tab.label ? 'text-violet-600 font-bold border-b-4 border-violet-600' : 'text-gray-400'
-                }`}
-              >
-                {tab.label} {tab.count !== null && `(${tab.count})`}
-              </h3>
-            ))}
-          </div>
+        <div className="flex items-center gap-10 border-b border-[#F1ECF8] mb-4">
+          {tabs.map((tab) => (
+            <h3
+              key={tab.label}
+              onClick={() => {
+                setActiveTab(tab.label)
+                setCurrentPage(1)
+              }}
+              className={`text-sm sm:text-lg font-medium cursor-pointer pb-2 ${
+                activeTab === tab.label ? 'text-violet-600 font-bold border-b-4 border-violet-600' : 'text-[#B1AFB3]'
+              }`}
+            >
+              {tab.label} {tab.count !== null && `(${tab.count})`}
+            </h3>
+          ))}
         </div>
 
         {/* Sessions */}
         {paginatedData.map((session, i) => (
           <div
             key={session.id}
-            className="flex flex-col md:flex-row items-center justify-between p-4 mb-4 border-2 border-off-green rounded-2xl bg-white space-y-4 md:space-y-0 md:space-x-4"
+            className="relative flex flex-col md:flex-row md:items-center justify-between p-4 mb-4 border border-[#F1ECF8] rounded-[15px] bg-white space-y-4 md:space-y-0 md:gap-4"
           >
-            <div className="flex items-center">
-              <div className="mx-2">
-                <img src="/img/profile.png" alt="Profile" className="w-[50px] h-[50px] md:w-[60px] md:h-[60px]" />
+            <div className="md:flex hidden absolute left-[-6.06px] top-1/2 rounded-full w-[10.35px] h-[10.29px] min-h-[10.29px] min-w-[10.29px] bg-[#22CC9B]"></div>
+            <div className="relative flex items-center md:gap-[16px] gap-[8px] flex-wrap">
+              <div className="md:hidden flex absolute left-[-16.06px] top-[21px] rounded-full w-[10.35px] h-[10.29px] min-h-[10.29px] min-w-[10.29px] bg-[#22CC9B]"></div>
+              <div className="w-[48px] h-[48px] rounded-full flex items-center justify-center bg-[#753CBD] bg-opacity-[0.08]">
+                <img src="/assets/icons/video-recording.png" alt="Profile" className="w-[24px] h-[24px]" />
               </div>
               <div>
-                <h3 className="text-xl md:text-2xl font-normal">{session.taskName}</h3>
-                <p className="w-40 text-base font-normal text-gray-400">{session.description}</p>
+                <h3 className="text-[18px] md:text-[20.57px] font-normal">{session.taskName}</h3>
+                <p className="lg:w-[180px] text-[14px] font-normal text-[#B1AFB3]">{session.description}</p>
               </div>
             </div>
 
             <div className="text-left mt-2 md:mt-0">
-              <p className="text-lg text-green-600 font-normal">Class</p>
-              <p className="text-base font-normal text-gray-400">{session.className}</p>
+              <p className="text-lg text-[#110F24] font-normal">Class</p>
+              <p className="text-base font-normal text-[#B1AFB3]">{session.className}</p>
             </div>
 
             <div className="text-left mt-2 md:mt-0">
-              <p className="text-lg text-green-600 font-normal">Duration</p>
-              <p className="text-base font-normal text-gray-400">{session.duration}</p>
+              <p className="text-lg text-[#110F24] font-normal">Duration</p>
+              <p className="text-base font-normal text-[#B1AFB3]">{session.duration}</p>
             </div>
 
             <div className="mt-2 md:mt-0">
-              <span className="px-4 py-2 text-base font-normal bg-off-green text-lime-green bg-green-off text-lime-green rounded-md">
-                {session.status}
+              <span className="px-4 py-2 text-base font-normal bg-[#E9FAF5] text-[#22CC9B] rounded-md flex items-center justify-center gap-[4px] min-w-[118px]">
+                <div className="rounded-full w-[10.29px] h-[10.29px] min-h-[10.29px] min-w-[10.29px] bg-[#22CC9B]"></div> {session.status}
               </span>
             </div>
 
@@ -279,17 +279,19 @@ const LiveSessionTable = ({ itemsPerPage = 3 }) => {
               </button>
             </div>
 
-            <div className="w-full md:w-auto flex items-center gap-4">
-              <div>
-                <Image src="/img/profile.png" alt="Student" width={40} height={40} className="md:w-[50px] md:h-[50px]" />
+            <div className="flex items-center gap-2 flex-wrap">
+              <div className="flex space-x-[-25px]">
+                {session.images.map((src: string, index: number) => (
+                  <img key={index} src={src} className="lg:w-[40px] lg:h-[40px] md:w-[30px] h-[30px] w-[40px] h-[40px]" alt="Mentor" />
+                ))}
               </div>
               <div>
-                <p className="text-sm md:text-lg text-green-600 font-normal">{session.studentName}</p>
-                <p className="text-xs md:text-base font-normal text-gray-500">{session.studentRole}</p>
+                <p className="text-sm lg:text-[16px] text-[#3D3842] font-[400]">{session.groupName}</p>
+                <p className="text-xs lg:text-[14px] font-[400] text-[#B1AFB3]">Group</p>
               </div>
             </div>
 
-            <div className="flex items-center w-[20px] mt-2 md:mt-0">
+            <div className="flex items-center min-w-[20px] w-[20px] mt-2 md:mt-0">
               <Image src="/assets/icons/threedots.svg" alt="moji gurukul menu" width={24} height={24} />
             </div>
           </div>
