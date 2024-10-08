@@ -305,15 +305,13 @@ const sampleMaterials = [
   },
 ]
 
-const itemsPerPage = 7
-
 const tabs = [
   { label: 'Games', count: sampleStudents.length },
   { label: 'Personal Task', count: samplePersonalTasks.length },
   { label: 'Material', count: sampleMaterials.length },
 ]
 
-const Management = () => {
+const Management = ({ itemsPerPage = 7, reduce = false }) => {
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [activeTab, setActiveTab] = useState<string>('Personal Task')
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
@@ -426,8 +424,8 @@ const Management = () => {
   }
 
   return (
-    <div className="horizontal-spacing top-spacing">
-      <div className="flex justify-between items-center">
+    <div className={`${!reduce && 'horizontal-spacing top-spacing'}`}>
+      <div className={`${reduce ? 'hidden' : 'flex'}  justify-between items-center`}>
         <div>
           <h1 className="text-[#753CBD] text-[40px] sm:text-[56px] font-bold sm:leading-[67px] tracking-[2%]">Management</h1>
         </div>

@@ -16,13 +16,12 @@ import { LuDot } from 'react-icons/lu'
 import AddStudentModal from './AddStudentModal'
 import CreateEventModal from './CreateEventModal'
 
-const Progress = () => {
+const Progress = ({ itemsPerPage = 7, reduce = false }) => {
   const user = useAuthStore((state) => state.user)
   const [activeMilestone, setActiveMilestone] = useState<MilestoneResponseTypes>()
   const [level, setLevel] = useState<number>(0)
   const [activeTab, setActiveTab] = useState<'student' | 'group'>('student')
   const [currentPage, setCurrentPage] = useState<number>(1)
-  const itemsPerPage = 7
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [isEventModalOpen, setIsEventModalOpen] = useState<boolean>(false)
@@ -162,8 +161,8 @@ const Progress = () => {
   const totalPages = Math.ceil((activeTab === 'student' ? sampleStudents.length : sampleGroups.length) / itemsPerPage)
 
   return (
-    <div className="horizontal-spacing top-spacing">
-      <div className="flex justify-between items-center">
+    <div className={`${!reduce && 'horizontal-spacing top-spacing'}`}>
+      <div className={`${reduce ? 'hidden' : 'flex'}  justify-between items-center`}>
         <div>
           <h1 className="text-purple text-[38px] md:text-[50px] lg:text-[56px] font-[700] leading-[67.2px] tracking-[2%]">Progress</h1>
         </div>
@@ -345,9 +344,9 @@ const Progress = () => {
                 </div>
               ))}
 
-              <div className="flex flex-col md:flex-row justify-between items-center mt-6">
+              <div className="flex flex-col md:flex-row flex-wrap justify-between items-center mt-6 gap-2">
                 <p className="text-gray-600 mb-4 md:mb-0">Total {sampleStudents.length} Students</p>
-                <div className="flex flex-wrap items-center justify-center md:justify-end">
+                <div className="flex flex-wrap items-center justify-center md:justify-end md:gap-0 gap-2">
                   <button
                     className="mr-2 md:mr-4 px-[16px] py-[7px] border-[1.5px] border-purple text-[16px] lg:text-[18px] font-[500] text-purple rounded-[15px] w-fit hover:opacity-80 flex items-center justify-center"
                     onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
