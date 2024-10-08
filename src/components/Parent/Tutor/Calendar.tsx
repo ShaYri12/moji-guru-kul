@@ -8,12 +8,23 @@ const getDaysInMonth = (month: number, year: number) => {
 }
 
 const Calendar = () => {
-  const [selectedDay, setSelectedDay] = useState<number | null>(1)
+  const [startDay, setStartDay] = useState<number | null>(16)
+  const [endDay, setEndDay] = useState<number | null>(21)
   const [currentMonth, setCurrentMonth] = useState<number>(0) // 0 = January, 11 = December
   const [currentYear, setCurrentYear] = useState<number>(2024)
 
   const handleDateClick = (day: number) => {
-    setSelectedDay(day)
+    // If no start day is selected, set it as the start day
+    if (!startDay) {
+      setStartDay(day)
+    } else if (!endDay && day > startDay) {
+      // If start day is selected, but no end day, and the selected day is after the start day, set it as the end day
+      setEndDay(day)
+    } else {
+      // Reset the selection
+      setStartDay(day)
+      setEndDay(null)
+    }
   }
 
   // Handle month/year change
@@ -33,8 +44,9 @@ const Calendar = () => {
         setCurrentMonth((prevMonth) => prevMonth - 1)
       }
     }
-    // Reset selected date when month changes
-    setSelectedDay(1)
+    // Reset selected dates when month changes
+    setStartDay(null)
+    setEndDay(null)
   }
 
   const daysInMonth = getDaysInMonth(currentMonth, currentYear)
@@ -64,6 +76,30 @@ const Calendar = () => {
       title: 'Q&A Session',
       description: 'General Questions and Answers',
       date: '28 Jan',
+      time: '03:00 PM - 05:00 PM',
+    },
+    {
+      title: 'Live Lesson',
+      description: 'Carry out writing exams in school',
+      date: '1 Jan',
+      time: '06:30 AM - 11:30 AM',
+    },
+    {
+      title: 'Live Workshop',
+      description: 'Interactive Math Problem Solving',
+      date: '6 Jan',
+      time: '09:00 AM - 12:00 PM',
+    },
+    {
+      title: 'Q&A Session',
+      description: 'General Questions and Answers',
+      date: '12 Jan',
+      time: '03:00 PM - 05:00 PM',
+    },
+    {
+      title: 'Q&A Session',
+      description: 'General Questions and Answers',
+      date: '15 Jan',
       time: '03:00 PM - 05:00 PM',
     },
   ]
@@ -115,7 +151,11 @@ const Calendar = () => {
               key={day}
               onClick={() => handleDateClick(day)}
               className={`md:min-w-[55px] md:w-[55px] flex md:h-[55px] md:min-h-[55px] min-w-[40px] w-[40px] flex h-[40px] min-h-[40px] md:text-[22px] flex items-center justify-center rounded-full transition ${
-                selectedDay === day ? 'bg-purple text-white' : 'text-[#0A0B26] hover:bg-purple hover:bg-opacity-[0.6] hover:text-white'
+                startDay === day || endDay === day
+                  ? 'bg-purple text-white'
+                  : startDay && endDay && day > startDay && day < endDay
+                    ? 'bg-purple bg-opacity-[0.1]' // Highlight dates between start and end
+                    : 'text-[#0A0B26] hover:bg-purple hover:bg-opacity-[0.6] hover:text-white'
               }`}
             >
               {day}
@@ -128,19 +168,24 @@ const Calendar = () => {
         {/* Upcoming Section */}
         <h3 className="text-[26px] md:text-[32px] font-[600] tracking-[2%] leading-[32.57px] text-purple">Upcoming .</h3>
         <ul className="mt-[21px] space-y-[18px]">
-          {/* Dynamically render each live session from the data array */}
-          {liveSessions.map((session, index) => (
-            <li key={index} className="flex justify-between items-center gap-2">
-              <div className="space-y-[5px]">
-                <p className="font-[500] text-[20px] text-[#3D3842] leading-[22.08px] tracking-[2%]">{session.title}</p>
-                <p className="text-[#B1AFB3] text-[14px] font-[400] leading-[18.1px] tracking-[2%]">{session.description}</p>
-              </div>
-              <div className="text-right space-y-[5px]">
-                <p className="text-purple text-[16px] leading-[18.1px] tracking-[2%] font-[500]">{session.date}</p>
-                <p className="text-purple text-[12px] leading-[14.48px] font-[400] w-max">{session.time}</p>
-              </div>
-            </li>
-          ))}
+          {/* Dynamically render each live session that falls between the selected start and end dates */}
+          {liveSessions
+            .filter((session) => {
+              const sessionDay = parseInt(session.date.split(' ')[0]) // Extract the day from session date
+              return !startDay || !endDay || (sessionDay >= startDay && sessionDay <= endDay)
+            })
+            .map((session, index) => (
+              <li key={index} className="flex justify-between items-center gap-2">
+                <div className="space-y-[5px]">
+                  <p className="font-[500] text-[20px] text-[#3D3842] leading-[22.08px] tracking-[2%]">{session.title}</p>
+                  <p className="text-[#B1AFB3] text-[14px] font-[400] leading-[18.1px] tracking-[2%]">{session.description}</p>
+                </div>
+                <div className="text-right space-y-[5px]">
+                  <p className="text-purple text-[16px] leading-[18.1px] tracking-[2%] font-[500]">{session.date}</p>
+                  <p className="text-purple text-[12px] leading-[14.48px] font-[400] w-max">{session.time}</p>
+                </div>
+              </li>
+            ))}
         </ul>
       </div>
     </div>
