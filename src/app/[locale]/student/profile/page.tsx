@@ -1,4 +1,5 @@
 'use client'
+import EarningTab from '@/components/Student/RatingTab/EarningTab';
 import RatingTab from '@/components/Student/RatingTab/RatingTab';
 import Image from 'next/image'
 import React, { useState } from 'react'
@@ -109,8 +110,8 @@ const Profile = () => {
                     </div>
                     )}
                     {activeTab === 'Earning' && (
-                    <div>
-                        <p>Earnings content goes here.</p>
+                    <div className='w-full'>
+                        <EarningTab/>
                     </div>
                     )}
                     {activeTab === 'Reviews' && (
